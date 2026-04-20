@@ -37,7 +37,7 @@ const CV_DATA = {
   availability: "Disponible · Remoto / Híbrido",
   email: "miguelcalzada2004@gmail.com",
   github: "https://github.com/miguelcalzada-dev",
-  linkedin: "https://linkedin.com/in/miguelcalzada",
+  linkedin: "https://www.linkedin.com/in/miguel-calzada-04a19b24b/",
   summary:
     "Desarrollador de Software apasionado por la IA y el Big Data. Especializado en arquitecturas de microservicios, desarrollo Full-Stack y pipelines de datos.",
   experience: [
@@ -181,7 +181,7 @@ function getBotResponse(message: string): string {
   }
   // contact
   if (msg.match(/contact|email|correo|mensaje|hablar|llam|whatsapp|linkedin/)) {
-    return "📬 Puedes contactarme a través de:\n• **Email**: miguelcalzada2004@gmail.com\n• **LinkedIn**: linkedin.com/in/miguelcalzada\n• **GitHub**: github.com/miguelcalzada-dev\n\nEstoy abierto a nuevas oportunidades y colaboraciones interesantes. ¡No dudes en escribirme!";
+    return "📬 Puedes contactarme a través de:\n• **Email**: miguelcalzada2004@gmail.com\n• **LinkedIn**: linkedin.com/in/miguel-calzada-04a19b24b\n• **GitHub**: github.com/miguelcalzada-dev\n\nEstoy abierto a nuevas oportunidades y colaboraciones interesantes. ¡No dudes en escribirme!";
   }
   // greetings
   if (msg.match(/hola|hello|hi|buenas|hey|qué tal|cómo est/)) {
