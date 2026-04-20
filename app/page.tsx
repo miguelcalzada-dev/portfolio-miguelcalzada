@@ -332,6 +332,7 @@ function Hero() {
         justifyContent: "center",
         padding: "120px 24px 80px",
         position: "relative",
+        overflow: "hidden",
       }}
     >
       {/* Decorative blobs */}
