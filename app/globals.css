@@ -278,3 +278,64 @@ body {
 .typing-dot:nth-child(1) { animation: typing-dot 1.2s infinite 0s; }
 .typing-dot:nth-child(2) { animation: typing-dot 1.2s infinite 0.2s; }
 .typing-dot:nth-child(3) { animation: typing-dot 1.2s infinite 0.4s; }
+
+/* Responsive Layout */
+.skills-grid {
+  grid-template-columns: repeat(12, 1fr);
+}
+
+.projects-grid {
+  grid-template-columns: repeat(auto-fill, minmax(480px, 1fr));
+}
+
+@media (max-width: 768px) {
+  .skills-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .skills-grid > div {
+    grid-column: span 1 !important;
+  }
+
+  .projects-grid {
+    grid-template-columns: 1fr;
+  }
+
+  section {
+    padding: 60px 16px !important;
+  }
+  
+  #hero {
+    padding: 100px 16px 60px !important;
+  }
+
+  .glass-card {
+    padding: 24px !important;
+  }
+
+  /* Hero adjustments */
+  h1 {
+    font-size: clamp(2.2rem, 8vw, 3rem) !important;
+  }
+
+  /* Navbar adjustments */
+  nav .nav-link {
+    display: none !important;
+  }
+  
+  nav > div > div:last-child {
+    gap: 12px !important;
+  }
+
+  /* AI Chatbot */
+  #ai-chat-window {
+    width: calc(100vw - 32px) !important;
+    right: 16px !important;
+    bottom: 16px !important;
+  }
+  
+  #ai-chat-button {
+    right: 16px !important;
+    bottom: 16px !important;
+  }
+}

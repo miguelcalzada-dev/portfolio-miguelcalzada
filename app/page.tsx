@@ -806,9 +806,9 @@ function Skills() {
 
           {/* Bento grid */}
           <div
+            className="skills-grid"
             style={{
               display: "grid",
-              gridTemplateColumns: "repeat(12, 1fr)",
               gap: 16,
             }}
           >
@@ -1122,9 +1122,9 @@ function Projects() {
           </motion.div>
 
           <div
+            className="projects-grid"
             style={{
               display: "grid",
-              gridTemplateColumns: "repeat(auto-fill, minmax(480px, 1fr))",
               gap: 20,
             }}
           >
