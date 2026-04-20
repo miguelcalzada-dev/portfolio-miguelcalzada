@@ -1707,7 +1707,7 @@ function AIChatbot() {
 ────────────────────────────────────────────── */
 export default function Portfolio() {
   return (
-    <main>
+    <main style={{ overflowX: "hidden", maxWidth: "100vw", width: "100%" }}>
       <Navbar />
       <Hero />
       <Experience />
