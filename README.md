@@ -81,7 +81,7 @@ portfolio-miguelcalzada/
 Desarrollador de Software · Especialidad en IA & Big Data · Madrid, España
 
 [![Email](https://img.shields.io/badge/Email-miguelcalzada2004@gmail.com-D14836?logo=gmail&logoColor=white)](mailto:miguelcalzada2004@gmail.com)
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-miguelcalzada-0A66C2?logo=linkedin&logoColor=white)](https://linkedin.com/in/miguelcalzada)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-miguel--calzada-0A66C2?logo=linkedin&logoColor=white)](https://www.linkedin.com/in/miguel-calzada-04a19b24b/)
 [![GitHub](https://img.shields.io/badge/GitHub-miguelcalzada--dev-181717?logo=github&logoColor=white)](https://github.com/miguelcalzada-dev)
 
 ---
