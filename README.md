@@ -75,52 +75,6 @@ portfolio-miguelcalzada/
 
 ---
 
-## 🚀 Ejecución Local
-
-### 1. Clona el repositorio
-
-```bash
-git clone https://github.com/miguelcalzada-dev/portfolio-miguelcalzada.git
-cd portfolio-miguelcalzada
-```
-
-### 2. Instala las dependencias
-
-```bash
-npm install
-```
-
-### 3. Inicia el servidor de desarrollo
-
-```bash
-npm run dev
-```
-
-Abre [http://localhost:3000](http://localhost:3000) en tu navegador para ver el resultado.
-
----
-
-## 📦 Scripts Disponibles
-
-| Comando | Descripción |
-| :--- | :--- |
-| `npm run dev` | Inicia el servidor de desarrollo con hot-reload |
-| `npm run build` | Genera el build de producción optimizado |
-| `npm run start` | Arranca la aplicación en modo producción |
-| `npm run lint` | Ejecuta ESLint para análisis estático de código |
-
----
-
-## ☁️ Despliegue en Vercel
-
-Este proyecto está configurado para un despliegue sin fricción en Vercel.
-
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/miguelcalzada-dev/portfolio-miguelcalzada)
-
-Consulta la [documentación de despliegue de Next.js](https://nextjs.org/docs/app/building-your-application/deploying) para más opciones de hosting.
-
----
-
 ## 👤 Contacto
 
 **Miguel Angel Calzada Martín**
