@@ -1,36 +1,143 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+<div align="center">
 
-## Getting Started
+# 🧑‍💻 Miguel Angel Calzada Martín — Portfolio
 
-First, run the development server:
+**Software Developer · IA & Big Data · Full-Stack · DevOps**
+
+Portfolio personal desplegado en producción. Diseñado para mostrar experiencia profesional, stack técnico y proyectos destacados de forma moderna e interactiva.
+
+[![Portfolio Live](https://img.shields.io/badge/🌐%20Ver%20Portfolio-portfolio--miguelcalzada.vercel.app-1DB954?style=for-the-badge)](https://portfolio-miguelcalzada.vercel.app/)
+[![Next.js](https://img.shields.io/badge/Next.js-15-black?style=for-the-badge&logo=nextdotjs)](https://nextjs.org)
+[![Vercel](https://img.shields.io/badge/Deploy-Vercel-black?style=for-the-badge&logo=vercel)](https://vercel.com)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow?style=for-the-badge)](LICENSE)
+
+</div>
+
+---
+
+## 🌐 Demo en Producción
+
+> 🚀 **[https://portfolio-miguelcalzada.vercel.app/](https://portfolio-miguelcalzada.vercel.app/)**
+
+El sitio está desplegado en Vercel con CI/CD automático. Cada push a la rama `main` activa un nuevo despliegue en producción.
+
+---
+
+## 📌 Sobre Este Proyecto
+
+Este portfolio fue construido desde cero para presentar de manera profesional:
+
+- **Experiencia laboral** en desarrollo de software con arquitecturas de microservicios.
+- **Stack técnico completo** — desde IA/ML hasta DevOps y cloud.
+- **Proyectos destacados** construidos con tecnologías modernas.
+- **Disponibilidad y contacto** para nuevas oportunidades (remoto/híbrido desde Madrid).
+
+---
+
+## ✨ Características
+
+- ⚡ **Rendimiento máximo** — Built con Next.js App Router y optimización de fuentes con `next/font`.
+- 🎨 **Animaciones fluidas** — Transiciones e interacciones implementadas con Framer Motion.
+- 📱 **Responsive Design** — Experiencia consistente en cualquier dispositivo.
+- 🌙 **SEO optimizado** — Metadatos, OG tags y estructura semántica correcta.
+- 🚀 **Deploy automático** — Integración con Vercel para CI/CD sin fricción.
+
+---
+
+## 🛠️ Stack Tecnológico
+
+| Categoría | Tecnologías |
+| :--- | :--- |
+| **Framework** | Next.js 15 (App Router) |
+| **Lenguaje** | TypeScript |
+| **Estilos** | CSS Modules / Tailwind CSS |
+| **Animaciones** | Framer Motion |
+| **Tipografía** | Geist (Vercel Font) |
+| **Deploy** | Vercel |
+
+---
+
+## 🗂️ Estructura del Proyecto
+
+```text
+portfolio-miguelcalzada/
+│
+├── app/
+│   ├── layout.tsx          # Layout raíz con metadatos globales y fuentes
+│   ├── page.tsx            # Página principal (Hero, Experiencia, Skills, Proyectos)
+│   └── globals.css         # Estilos globales
+│
+├── components/             # Componentes reutilizables de UI
+├── public/                 # Assets estáticos (imágenes, íconos)
+├── next.config.ts          # Configuración de Next.js
+└── package.json            # Dependencias y scripts
+```
+
+---
+
+## 🚀 Ejecución Local
+
+### 1. Clona el repositorio
+
+```bash
+git clone https://github.com/miguelcalzada-dev/portfolio-miguelcalzada.git
+cd portfolio-miguelcalzada
+```
+
+### 2. Instala las dependencias
+
+```bash
+npm install
+```
+
+### 3. Inicia el servidor de desarrollo
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Abre [http://localhost:3000](http://localhost:3000) en tu navegador para ver el resultado.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 📦 Scripts Disponibles
 
-## Learn More
+| Comando | Descripción |
+| :--- | :--- |
+| `npm run dev` | Inicia el servidor de desarrollo con hot-reload |
+| `npm run build` | Genera el build de producción optimizado |
+| `npm run start` | Arranca la aplicación en modo producción |
+| `npm run lint` | Ejecuta ESLint para análisis estático de código |
 
-To learn more about Next.js, take a look at the following resources:
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## ☁️ Despliegue en Vercel
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Este proyecto está configurado para un despliegue sin fricción en Vercel.
 
-## Deploy on Vercel
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/miguelcalzada-dev/portfolio-miguelcalzada)
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Consulta la [documentación de despliegue de Next.js](https://nextjs.org/docs/app/building-your-application/deploying) para más opciones de hosting.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+---
+
+## 👤 Contacto
+
+**Miguel Angel Calzada Martín**
+Desarrollador de Software · Especialidad en IA & Big Data · Madrid, España
+
+[![Email](https://img.shields.io/badge/Email-miguelcalzada2004@gmail.com-D14836?logo=gmail&logoColor=white)](mailto:miguelcalzada2004@gmail.com)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-miguelcalzada-0A66C2?logo=linkedin&logoColor=white)](https://linkedin.com/in/miguelcalzada)
+[![GitHub](https://img.shields.io/badge/GitHub-miguelcalzada--dev-181717?logo=github&logoColor=white)](https://github.com/miguelcalzada-dev)
+
+---
+
+## 📄 Licencia
+
+Este proyecto está bajo la licencia MIT. Consulta el archivo [LICENSE](LICENSE) para más detalles.
+
+---
+
+<div align="center">
+  <b>© 2026 Miguel Angel Calzada Martín · Construido con Next.js & Framer Motion</b>
+</div>
