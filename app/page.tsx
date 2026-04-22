@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { motion, useInView, AnimatePresence, type Variants } from "framer-motion";
+import { motion, useInView, AnimatePresence, type Variants, useScroll, useMotionValueEvent } from "framer-motion";
 import {
   Code2,
   Brain,
@@ -25,6 +25,7 @@ import {
   Cloud,
   Bot,
   Languages,
+  Menu,
 } from "lucide-react";
 
 /* ──────────────────────────────────────────────
@@ -243,76 +244,145 @@ function AnimSection({
 ────────────────────────────────────────────── */
 function Navbar() {
   const [scrolled, setScrolled] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   useEffect(() => {
-    const handler = () => setScrolled(window.scrollY > 40);
-    window.addEventListener("scroll", handler);
+    const handler = () => {
+      setScrolled(window.scrollY > 40);
+    };
+    window.addEventListener("scroll", handler, { passive: true });
+    handler();
     return () => window.removeEventListener("scroll", handler);
   }, []);
 
   return (
-    <motion.nav
-      initial={{ opacity: 0, y: -20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.6 }}
-      style={{
-        position: "fixed",
-        top: 0,
-        left: 0,
-        right: 0,
-        zIndex: 50,
-        backdropFilter: scrolled ? "blur(20px)" : "none",
-        backgroundColor: scrolled ? "rgba(5,5,8,0.85)" : "transparent",
-        borderBottom: scrolled ? "1px solid rgba(255,255,255,0.05)" : "1px solid transparent",
-        transition: "all 0.3s ease",
-      }}
-    >
-      <div
+    <>
+      <motion.nav
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6 }}
         style={{
-          maxWidth: 1200,
-          margin: "0 auto",
-          padding: "0 24px",
-          height: 64,
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
+          position: "fixed",
+          top: 0,
+          left: 0,
+          right: 0,
+          zIndex: 50,
+          backgroundColor: scrolled ? "var(--bg-card)" : "transparent",
+          borderBottom: scrolled ? "4px solid var(--border-main)" : "4px solid transparent",
+          transition: "all 0.1s ease",
         }}
       >
-        <a href="#hero" style={{ display: "flex", alignItems: "center", gap: 8, textDecoration: "none" }}>
-          <div
+        <div
+          style={{
+            maxWidth: 1200,
+            margin: "0 auto",
+            padding: "0 24px",
+            height: 64,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+          }}
+        >
+          {/* Logo icon */}
+          <a href="#hero" style={{ display: "flex", alignItems: "center", gap: 10, textDecoration: "none", flexShrink: 0 }}>
+            <div style={{ width: 32, height: 32, background: "var(--accent-primary)", border: "2px solid var(--border-main)", display: "flex", alignItems: "center", justifyContent: "center" }}>
+              <Code2 size={16} color="var(--bg-card)" />
+            </div>
+          </a>
+          <div style={{ flex: 1 }} />
+          
+          {/* Desktop Links */}
+          <div className="desktop-only" style={{ alignItems: "center", gap: 32 }}>
+            {["experiencia", "skills", "proyectos"].map((s) => (
+              <a key={s} href={`#${s}`} className="nav-link" style={{ textTransform: "capitalize" }}>
+                {s}
+              </a>
+            ))}
+            <a href="mailto:miguelcalzada2004@gmail.com" className="btn-primary" style={{ padding: "8px 16px", fontSize: "0.8rem" }}>
+              <Mail size={14} />
+              Contacto
+            </a>
+          </div>
+
+          {/* Mobile Menu Toggle */}
+          <button
+            className="mobile-only"
+            onClick={() => setMobileMenuOpen(true)}
             style={{
-              width: 32,
-              height: 32,
-              borderRadius: 8,
-              background: "linear-gradient(135deg, #6366f1, #8b5cf6)",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
+              width: 40, height: 40,
+              background: "var(--bg-card)",
+              border: "2px solid var(--border-main)",
+              alignItems: "center", justifyContent: "center",
+              cursor: "pointer",
             }}
           >
-            <Code2 size={16} color="white" />
-          </div>
-          <span
-            style={{ fontWeight: 700, fontSize: "0.95rem", letterSpacing: "-0.01em" }}
-            className="gradient-text"
-          >
-            miguelcalzada-dev
-          </span>
-        </a>
-
-        <div style={{ display: "flex", alignItems: "center", gap: 32 }}>
-          {["experiencia", "skills", "proyectos"].map((s) => (
-            <a key={s} href={`#${s}`} className="nav-link" style={{ textTransform: "capitalize" }}>
-              {s}
-            </a>
-          ))}
-          <a href="mailto:miguelcalzada2004@gmail.com" className="btn-primary" style={{ padding: "8px 16px", fontSize: "0.8rem" }}>
-            <Mail size={14} />
-            Contacto
-          </a>
+            <Menu size={20} color="var(--text-primary)" />
+          </button>
         </div>
-      </div>
-    </motion.nav>
+      </motion.nav>
+
+      {/* Mobile Fullscreen Menu */}
+      <AnimatePresence>
+        {mobileMenuOpen && (
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            style={{
+              position: "fixed",
+              inset: 0,
+              zIndex: 100,
+              background: "var(--bg-primary)",
+              display: "flex",
+              flexDirection: "column",
+              padding: 24,
+            }}
+          >
+            <div style={{ display: "flex", justifyContent: "flex-end" }}>
+              <button
+                onClick={() => setMobileMenuOpen(false)}
+                style={{
+                  width: 48, height: 48,
+                  background: "var(--bg-card)",
+                  border: "2px solid var(--border-main)",
+                  display: "flex", alignItems: "center", justifyContent: "center",
+                  cursor: "pointer",
+                }}
+              >
+                <X size={24} color="var(--text-primary)" />
+              </button>
+            </div>
+            <div style={{ flex: 1, display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", gap: 32 }}>
+              {["experiencia", "skills", "proyectos"].map((s) => (
+                <a
+                  key={s}
+                  href={`#${s}`}
+                  onClick={() => setMobileMenuOpen(false)}
+                  style={{
+                    fontFamily: "var(--font-heading)",
+                    fontSize: "2.5rem",
+                    color: "var(--text-primary)",
+                    textDecoration: "none",
+                    textTransform: "uppercase",
+                  }}
+                >
+                  {s}
+                </a>
+              ))}
+              <a
+                href="mailto:miguelcalzada2004@gmail.com"
+                className="btn-primary"
+                onClick={() => setMobileMenuOpen(false)}
+                style={{ padding: "16px 32px", fontSize: "1.2rem", marginTop: 16 }}
+              >
+                <Mail size={18} />
+                Contactar
+              </a>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </>
   );
 }
 
@@ -323,82 +393,37 @@ function Hero() {
   return (
     <section
       id="hero"
-      className="bg-mesh noise-overlay"
+      className="brutalist-section"
       style={{
         minHeight: "100vh",
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
         justifyContent: "center",
-        padding: "120px 24px 80px",
         position: "relative",
         overflow: "hidden",
+        textAlign: "center",
       }}
     >
-      {/* Decorative blobs */}
-      <div
-        style={{
-          position: "absolute",
-          top: "15%",
-          left: "10%",
-          width: 600,
-          height: 600,
-          borderRadius: "50%",
-          background: "radial-gradient(circle, rgba(99,102,241,0.06) 0%, transparent 70%)",
-          pointerEvents: "none",
-        }}
-      />
-      <div
-        style={{
-          position: "absolute",
-          bottom: "20%",
-          right: "5%",
-          width: 500,
-          height: 500,
-          borderRadius: "50%",
-          background: "radial-gradient(circle, rgba(139,92,246,0.06) 0%, transparent 70%)",
-          pointerEvents: "none",
-        }}
-      />
-
-      {/* Grid lines decoration */}
-      <div
-        style={{
-          position: "absolute",
-          inset: 0,
-          backgroundImage:
-            "linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px)",
-          backgroundSize: "72px 72px",
-          pointerEvents: "none",
-        }}
-      />
-
-      <div style={{ maxWidth: 800, textAlign: "center", position: "relative", zIndex: 1 }}>
+      <div style={{ maxWidth: 900, position: "relative", zIndex: 1 }}>
         <AnimatePresence>
           <motion.div
             key="hero-badge"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
-            style={{ marginBottom: 24 }}
+            style={{ marginBottom: 32 }}
           >
             <span
+              className="tag-chip"
               style={{
-                display: "inline-flex",
-                alignItems: "center",
-                gap: 8,
-                padding: "6px 14px",
-                borderRadius: 999,
-                background: "rgba(99,102,241,0.1)",
-                border: "1px solid rgba(99,102,241,0.2)",
-                fontSize: "0.8rem",
-                fontWeight: 500,
-                color: "#a5b4fc",
-                letterSpacing: "0.02em",
+                fontSize: "0.85rem",
+                padding: "8px 16px",
+                background: "var(--bg-card) !important",
               }}
             >
-              <div className="dot-glow" />
-              Disponible para nuevas oportunidades
+              <div className="dot-glow" style={{ background: "var(--success)" }} />
+              DISPONIBLE PARA NUEVAS OPORTUNIDADES
             </span>
           </motion.div>
 
@@ -408,17 +433,17 @@ function Hero() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.1 }}
             style={{
-              fontSize: "clamp(2.8rem, 6vw, 5rem)",
-              fontWeight: 800,
-              letterSpacing: "-0.03em",
-              lineHeight: 1.1,
-              marginBottom: 20,
+              fontFamily: "var(--font-heading)",
+              fontSize: "clamp(3.5rem, 8vw, 7rem)",
+              lineHeight: 0.9,
+              color: "var(--text-primary)",
+              margin: "0 0 24px 0",
+              letterSpacing: "-0.02em",
+              textTransform: "uppercase",
             }}
           >
-            Miguel Angel{" "}
-            <span className="gradient-text">Calzada</span>
-            <br />
-            <span style={{ color: "var(--text-secondary)", fontWeight: 600 }}>Martín</span>
+            MIGUEL ANGEL<br />
+            <span style={{ color: "var(--accent-primary)" }}>CALZADA</span>
           </motion.h1>
 
           <motion.p
@@ -427,99 +452,44 @@ function Hero() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}
             style={{
-              fontSize: "clamp(1rem, 2.5vw, 1.25rem)",
+              fontSize: "clamp(1.1rem, 2vw, 1.4rem)",
               color: "var(--text-secondary)",
-              maxWidth: 600,
-              margin: "0 auto 16px",
-              lineHeight: 1.65,
+              maxWidth: 700,
+              margin: "0 auto 40px",
+              lineHeight: 1.6,
             }}
           >
             Desarrollador de Software especializado en{" "}
-            <span style={{ color: "#a5b4fc", fontWeight: 600 }}>Inteligencia Artificial</span> y{" "}
-            <span style={{ color: "#67e8f9", fontWeight: 600 }}>Big Data</span>. Arquitecturas de
-            microservicios, Full-Stack & DevOps desde Madrid.
+            <strong style={{ color: "var(--text-primary)" }}>Inteligencia Artificial</strong> y{" "}
+            <strong style={{ color: "var(--text-primary)" }}>Big Data</strong>. Arquitecturas de
+            microservicios, Full-Stack &amp; DevOps.
           </motion.p>
-
-          <motion.div
-            key="hero-location"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.3 }}
-            style={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              gap: 8,
-              marginBottom: 40,
-              color: "var(--text-muted)",
-              fontSize: "0.85rem",
-            }}
-          >
-            <MapPin size={14} />
-            Madrid, España · Inglés B2 · Remoto/Híbrido
-          </motion.div>
 
           <motion.div
             key="hero-actions"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.4 }}
-            style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 12, flexWrap: "wrap" }}
+            style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 16, flexWrap: "wrap" }}
           >
-            <a href="#proyectos" className="btn-primary">
-              <Sparkles size={16} />
+            <a href="#proyectos" className="btn-primary" style={{ padding: "16px 32px", fontSize: "1rem" }}>
+              <Sparkles size={18} />
               Ver Proyectos
             </a>
-            <a href="mailto:miguelcalzada2004@gmail.com" className="btn-secondary">
-              <Mail size={16} />
+            <a href="mailto:miguelcalzada2004@gmail.com" className="btn-secondary" style={{ padding: "16px 32px", fontSize: "1rem" }}>
+              <Mail size={18} />
               Contactar
             </a>
-            <a
-              href={CV_DATA.github}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="btn-secondary"
-            >
-              <GitFork size={16} />
+            <a href={CV_DATA.linkedin} target="_blank" rel="noopener noreferrer" className="btn-secondary" style={{ padding: "16px 32px", fontSize: "1rem" }} aria-label="LinkedIn">
+              <Link2 size={18} />
+              LinkedIn
+            </a>
+            <a href={CV_DATA.github} target="_blank" rel="noopener noreferrer" className="btn-secondary" style={{ padding: "16px 32px", fontSize: "1rem" }} aria-label="GitHub">
+              <GitFork size={18} />
               GitHub
             </a>
           </motion.div>
         </AnimatePresence>
-
-        {/* Tech pill row */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.7, duration: 0.8 }}
-          style={{
-            marginTop: 64,
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            gap: 8,
-            flexWrap: "wrap",
-          }}
-        >
-          {["Node.js", "React", "TypeScript", "Docker", "Kubernetes", "Python", "ML/NLP"].map(
-            (t) => (
-              <span
-                key={t}
-                style={{
-                  padding: "4px 12px",
-                  borderRadius: 999,
-                  fontSize: "0.75rem",
-                  fontWeight: 500,
-                  background: "rgba(255,255,255,0.04)",
-                  border: "1px solid rgba(255,255,255,0.07)",
-                  color: "var(--text-muted)",
-                  letterSpacing: "0.01em",
-                }}
-              >
-                {t}
-              </span>
-            )
-          )}
-        </motion.div>
       </div>
 
       {/* Scroll indicator */}
@@ -529,26 +499,28 @@ function Hero() {
         transition={{ delay: 1.2 }}
         style={{
           position: "absolute",
-          bottom: 32,
+          bottom: 40,
           left: "50%",
           transform: "translateX(-50%)",
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
-          gap: 4,
+          gap: 8,
           color: "var(--text-muted)",
         }}
       >
+        <span className="label-text" style={{ fontSize: "0.7rem" }}>SCROLL</span>
         <motion.div
-          animate={{ y: [0, 6, 0] }}
-          transition={{ repeat: Infinity, duration: 1.8, ease: "easeInOut" }}
+          animate={{ y: [0, 8, 0] }}
+          transition={{ repeat: Infinity, duration: 2, ease: "easeInOut" }}
         >
-          <ChevronDown size={20} />
+          <ChevronDown size={24} />
         </motion.div>
       </motion.div>
     </section>
   );
 }
+
 
 /* ──────────────────────────────────────────────
    EXPERIENCE
@@ -557,19 +529,19 @@ function Experience() {
   return (
     <section
       id="experiencia"
-      style={{ padding: "100px 24px", maxWidth: 900, margin: "0 auto" }}
+      className="brutalist-section"
+      style={{ borderBottom: "none", paddingBottom: "40px" }}
     >
+      <div style={{ maxWidth: 1100, margin: "0 auto" }}>
       <AnimSection>
-        <motion.div variants={fadeUp} style={{ marginBottom: 64 }}>
-          <p style={{ color: "var(--accent-indigo)", fontSize: "0.85rem", fontWeight: 600, letterSpacing: "0.1em", textTransform: "uppercase", marginBottom: 12 }}>
+        <motion.div variants={fadeUp} style={{ marginBottom: 64, textAlign: "center" }}>
+          <p className="label-text" style={{ color: "var(--accent-primary)", marginBottom: 12 }}>
             Trayectoria
           </p>
-          <h2
-            style={{ fontSize: "clamp(1.8rem, 4vw, 2.5rem)", fontWeight: 800, letterSpacing: "-0.03em", marginBottom: 12 }}
-          >
-            Experiencia <span className="gradient-text">Profesional</span>
+          <h2 className="brutalist-heading">
+            Experiencia Profesional
           </h2>
-          <p style={{ color: "var(--text-secondary)", maxWidth: 480 }}>
+          <p style={{ color: "var(--text-secondary)", maxWidth: 480, margin: "0 auto" }}>
             Construyendo sistemas escalables y soluciones de datos inteligentes en entornos de producción reales.
           </p>
         </motion.div>
@@ -578,7 +550,7 @@ function Experience() {
         {CV_DATA.experience.map((exp, i) => (
           <motion.div key={i} variants={fadeUp}>
             <div
-              className="glass-card"
+              className="brutalist-grid-box"
               style={{ padding: 40, position: "relative", overflow: "hidden" }}
             >
               {/* Top glow accent */}
@@ -589,7 +561,7 @@ function Experience() {
                   left: 0,
                   right: 0,
                   height: 2,
-                  background: "linear-gradient(90deg, #6366f1, #8b5cf6, transparent)",
+                  background: "var(--border-main)",
                 }}
               />
 
@@ -609,8 +581,8 @@ function Experience() {
                       width: 52,
                       height: 52,
                       borderRadius: 12,
-                      background: "linear-gradient(135deg, rgba(99,102,241,0.2), rgba(139,92,246,0.2))",
-                      border: "1px solid rgba(99,102,241,0.3)",
+                      background: "var(--bg-secondary)",
+                      border: "2px solid var(--border-main)",
                       display: "flex",
                       alignItems: "center",
                       justifyContent: "center",
@@ -719,7 +691,7 @@ function Experience() {
             {CV_DATA.education.map((edu, i) => (
               <div
                 key={i}
-                className="glass-card glass-card-hover"
+                className="brutalist-grid-box"
                 style={{ padding: 24 }}
               >
                 <div style={{ display: "flex", alignItems: "flex-start", gap: 12 }}>
@@ -766,6 +738,7 @@ function Experience() {
           </div>
         </motion.div>
       </AnimSection>
+      </div>
     </section>
   );
 }
@@ -787,62 +760,49 @@ function Skills() {
   return (
     <section
       id="skills"
-      style={{ padding: "100px 24px", background: "rgba(255,255,255,0.01)" }}
+      className="brutalist-section"
     >
       <div style={{ maxWidth: 1100, margin: "0 auto" }}>
         <AnimSection>
           <motion.div variants={fadeUp} style={{ marginBottom: 64, textAlign: "center" }}>
-            <p style={{ color: "var(--accent-indigo)", fontSize: "0.85rem", fontWeight: 600, letterSpacing: "0.1em", textTransform: "uppercase", marginBottom: 12 }}>
+            <p className="label-text" style={{ color: "var(--accent-primary)", marginBottom: 12 }}>
               Competencias
             </p>
-            <h2
-              style={{ fontSize: "clamp(1.8rem, 4vw, 2.5rem)", fontWeight: 800, letterSpacing: "-0.03em", marginBottom: 12 }}
-            >
-              Stack <span className="gradient-text">Técnico</span>
+            <h2 className="brutalist-heading">
+              Stack Técnico
             </h2>
             <p style={{ color: "var(--text-secondary)", maxWidth: 480, margin: "0 auto" }}>
               Desde la capa de datos hasta el frontend, full-cycle engineering con enfoque en IA.
             </p>
           </motion.div>
 
-          {/* Bento grid */}
+          {/* Compact skills grid */}
           <div
             className="skills-grid"
             style={{
               display: "grid",
+              gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
               gap: 16,
             }}
           >
-            {/* AI — wide */}
+            {/* AI */}
             <motion.div
               variants={fadeUp}
-              className="glass-card glass-card-hover"
+              className="brutalist-grid-box"
               style={{
-                gridColumn: "span 7",
-                padding: 32,
+                padding: 20,
                 position: "relative",
                 overflow: "hidden",
               }}
             >
-              <div
-                style={{
-                  position: "absolute",
-                  top: -40,
-                  right: -40,
-                  width: 180,
-                  height: 180,
-                  borderRadius: "50%",
-                  background: `radial-gradient(circle, ${CV_DATA.skills.ai.color}20, transparent 70%)`,
-                  pointerEvents: "none",
-                }}
-              />
+              {/* Blob removed */}
               <div
                 style={{
                   width: 44,
                   height: 44,
-                  borderRadius: 12,
-                  background: `${CV_DATA.skills.ai.color}20`,
-                  border: `1px solid ${CV_DATA.skills.ai.color}30`,
+                  borderRadius: 0,
+                  background: `${CV_DATA.skills.ai.color}15`,
+                  border: `2px solid ${CV_DATA.skills.ai.color}`,
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
@@ -859,14 +819,11 @@ function Skills() {
                 {CV_DATA.skills.ai.items.map((item) => (
                   <span
                     key={item}
+                    className="tag-chip"
                     style={{
-                      padding: "6px 12px",
-                      borderRadius: 8,
-                      fontSize: "0.82rem",
-                      fontWeight: 500,
-                      background: `${CV_DATA.skills.ai.color}12`,
-                      border: `1px solid ${CV_DATA.skills.ai.color}25`,
-                      color: CV_DATA.skills.ai.color,
+                      background: `${CV_DATA.skills.ai.color}10 !important`,
+                      color: `${CV_DATA.skills.ai.color} !important`,
+                      borderColor: `${CV_DATA.skills.ai.color}40 !important`
                     }}
                   >
                     {item}
@@ -875,31 +832,20 @@ function Skills() {
               </div>
             </motion.div>
 
-            {/* Web — narrow */}
+            {/* Web */}
             <motion.div
               variants={fadeUp}
-              className="glass-card glass-card-hover"
-              style={{ gridColumn: "span 5", padding: 28, position: "relative", overflow: "hidden" }}
+              className="brutalist-grid-box"
+              style={{ padding: 20, position: "relative", overflow: "hidden" }}
             >
-              <div
-                style={{
-                  position: "absolute",
-                  top: -30,
-                  right: -30,
-                  width: 130,
-                  height: 130,
-                  borderRadius: "50%",
-                  background: `radial-gradient(circle, ${CV_DATA.skills.web.color}20, transparent 70%)`,
-                  pointerEvents: "none",
-                }}
-              />
+              {/* Blob removed */}
               <div
                 style={{
                   width: 40,
                   height: 40,
-                  borderRadius: 10,
+                  borderRadius: 0,
                   background: `${CV_DATA.skills.web.color}15`,
-                  border: `1px solid ${CV_DATA.skills.web.color}25`,
+                  border: `2px solid ${CV_DATA.skills.web.color}`,
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
@@ -916,14 +862,11 @@ function Skills() {
                 {CV_DATA.skills.web.items.map((item) => (
                   <span
                     key={item}
+                    className="tag-chip"
                     style={{
-                      padding: "5px 10px",
-                      borderRadius: 7,
-                      fontSize: "0.78rem",
-                      fontWeight: 500,
-                      background: `${CV_DATA.skills.web.color}10`,
-                      border: `1px solid ${CV_DATA.skills.web.color}20`,
-                      color: CV_DATA.skills.web.color,
+                      background: `${CV_DATA.skills.web.color}10 !important`,
+                      color: `${CV_DATA.skills.web.color} !important`,
+                      borderColor: `${CV_DATA.skills.web.color}40 !important`
                     }}
                   >
                     {item}
@@ -935,14 +878,14 @@ function Skills() {
             {/* Backend */}
             <motion.div
               variants={fadeUp}
-              className="glass-card glass-card-hover"
-              style={{ gridColumn: "span 4", padding: 28, position: "relative", overflow: "hidden" }}
+              className="brutalist-grid-box"
+              style={{ padding: 20, position: "relative", overflow: "hidden" }}
             >
               <div
                 style={{
-                  width: 40, height: 40, borderRadius: 10,
+                  width: 40, height: 40, borderRadius: 0,
                   background: `${CV_DATA.skills.backend.color}15`,
-                  border: `1px solid ${CV_DATA.skills.backend.color}25`,
+                  border: `2px solid ${CV_DATA.skills.backend.color}`,
                   display: "flex", alignItems: "center", justifyContent: "center",
                   marginBottom: 14, color: CV_DATA.skills.backend.color,
                 }}
@@ -954,7 +897,7 @@ function Skills() {
               </h3>
               <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
                 {CV_DATA.skills.backend.items.map((item) => (
-                  <span key={item} style={{ padding: "4px 9px", borderRadius: 6, fontSize: "0.75rem", fontWeight: 500, background: `${CV_DATA.skills.backend.color}10`, border: `1px solid ${CV_DATA.skills.backend.color}20`, color: CV_DATA.skills.backend.color }}>
+                  <span key={item} className="tag-chip" style={{ background: `${CV_DATA.skills.backend.color}10 !important`, color: `${CV_DATA.skills.backend.color} !important`, borderColor: `${CV_DATA.skills.backend.color}40 !important` }}>
                     {item}
                   </span>
                 ))}
@@ -964,14 +907,14 @@ function Skills() {
             {/* Data */}
             <motion.div
               variants={fadeUp}
-              className="glass-card glass-card-hover"
-              style={{ gridColumn: "span 4", padding: 28, position: "relative", overflow: "hidden" }}
+              className="brutalist-grid-box"
+              style={{ padding: 20, position: "relative", overflow: "hidden" }}
             >
               <div
                 style={{
-                  width: 40, height: 40, borderRadius: 10,
+                  width: 40, height: 40, borderRadius: 0,
                   background: `${CV_DATA.skills.data.color}15`,
-                  border: `1px solid ${CV_DATA.skills.data.color}25`,
+                  border: `2px solid ${CV_DATA.skills.data.color}`,
                   display: "flex", alignItems: "center", justifyContent: "center",
                   marginBottom: 14, color: CV_DATA.skills.data.color,
                 }}
@@ -983,7 +926,7 @@ function Skills() {
               </h3>
               <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
                 {CV_DATA.skills.data.items.map((item) => (
-                  <span key={item} style={{ padding: "4px 9px", borderRadius: 6, fontSize: "0.75rem", fontWeight: 500, background: `${CV_DATA.skills.data.color}10`, border: `1px solid ${CV_DATA.skills.data.color}20`, color: CV_DATA.skills.data.color }}>
+                  <span key={item} className="tag-chip" style={{ background: `${CV_DATA.skills.data.color}10 !important`, color: `${CV_DATA.skills.data.color} !important`, borderColor: `${CV_DATA.skills.data.color}40 !important` }}>
                     {item}
                   </span>
                 ))}
@@ -993,14 +936,14 @@ function Skills() {
             {/* DevOps */}
             <motion.div
               variants={fadeUp}
-              className="glass-card glass-card-hover"
-              style={{ gridColumn: "span 4", padding: 28, position: "relative", overflow: "hidden" }}
+              className="brutalist-grid-box"
+              style={{ padding: 20, position: "relative", overflow: "hidden" }}
             >
               <div
                 style={{
-                  width: 40, height: 40, borderRadius: 10,
+                  width: 40, height: 40, borderRadius: 0,
                   background: `${CV_DATA.skills.devops.color}15`,
-                  border: `1px solid ${CV_DATA.skills.devops.color}25`,
+                  border: `2px solid ${CV_DATA.skills.devops.color}`,
                   display: "flex", alignItems: "center", justifyContent: "center",
                   marginBottom: 14, color: CV_DATA.skills.devops.color,
                 }}
@@ -1012,85 +955,39 @@ function Skills() {
               </h3>
               <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
                 {CV_DATA.skills.devops.items.map((item) => (
-                  <span key={item} style={{ padding: "4px 9px", borderRadius: 6, fontSize: "0.75rem", fontWeight: 500, background: `${CV_DATA.skills.devops.color}10`, border: `1px solid ${CV_DATA.skills.devops.color}20`, color: CV_DATA.skills.devops.color }}>
+                  <span key={item} className="tag-chip" style={{ background: `${CV_DATA.skills.devops.color}10 !important`, color: `${CV_DATA.skills.devops.color} !important`, borderColor: `${CV_DATA.skills.devops.color}40 !important` }}>
                     {item}
                   </span>
                 ))}
               </div>
             </motion.div>
 
-            {/* Language + availability banner */}
+            {/* Small merged Languages & Availability at the bottom */}
             <motion.div
               variants={fadeUp}
-              className="glass-card"
               style={{
-                gridColumn: "span 6",
-                padding: 28,
+                gridColumn: "1 / -1",
                 display: "flex",
+                flexWrap: "wrap",
                 alignItems: "center",
-                gap: 16,
-                background: "linear-gradient(135deg, rgba(99,102,241,0.08), rgba(139,92,246,0.08))",
-                border: "1px solid rgba(99,102,241,0.2)",
+                justifyContent: "center",
+                gap: 24,
+                marginTop: 16,
+                padding: "16px",
+                border: "2px dashed var(--border-main)",
+                background: "var(--bg-card)",
+                fontFamily: "var(--font-mono)",
+                fontSize: "0.85rem",
+                color: "var(--text-secondary)",
               }}
             >
-              <div
-                style={{
-                  width: 48,
-                  height: 48,
-                  borderRadius: 12,
-                  background: "rgba(99,102,241,0.15)",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  flexShrink: 0,
-                }}
-              >
-                <Languages size={22} color="#6366f1" />
+              <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                <Languages size={16} color="var(--text-primary)" />
+                <strong>IDIOMAS:</strong> 🇪🇸 ES (Nativo) · 🇬🇧 EN (B2)
               </div>
-              <div>
-                <h4 style={{ fontWeight: 700, marginBottom: 4, fontSize: "0.95rem" }}>
-                  Idiomas
-                </h4>
-                <p style={{ color: "var(--text-secondary)", fontSize: "0.85rem" }}>
-                  🇪🇸 Español — Nativo &nbsp;·&nbsp; 🇬🇧 Inglés — B2 Upper-Intermediate
-                </p>
-              </div>
-            </motion.div>
-
-            <motion.div
-              variants={fadeUp}
-              className="glass-card"
-              style={{
-                gridColumn: "span 6",
-                padding: 28,
-                display: "flex",
-                alignItems: "center",
-                gap: 16,
-                background: "linear-gradient(135deg, rgba(16,185,129,0.08), rgba(34,211,238,0.05))",
-                border: "1px solid rgba(16,185,129,0.2)",
-              }}
-            >
-              <div
-                style={{
-                  width: 48,
-                  height: 48,
-                  borderRadius: 12,
-                  background: "rgba(16,185,129,0.15)",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  flexShrink: 0,
-                }}
-              >
-                <MapPin size={22} color="#10b981" />
-              </div>
-              <div>
-                <h4 style={{ fontWeight: 700, marginBottom: 4, fontSize: "0.95rem" }}>
-                  Disponibilidad
-                </h4>
-                <p style={{ color: "var(--text-secondary)", fontSize: "0.85rem" }}>
-                  📍 Madrid, España &nbsp;·&nbsp; ✅ Remoto / Híbrido &nbsp;·&nbsp; 🚀 Inmediata
-                </p>
+              <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                <MapPin size={16} color="var(--text-primary)" />
+                <strong>DISPONIBILIDAD:</strong> Madrid · Remoto / Híbrido · Inmediata
               </div>
             </motion.div>
           </div>
@@ -1105,17 +1002,15 @@ function Skills() {
 ────────────────────────────────────────────── */
 function Projects() {
   return (
-    <section id="proyectos" style={{ padding: "100px 24px" }}>
+    <section id="proyectos" className="brutalist-section">
       <div style={{ maxWidth: 1100, margin: "0 auto" }}>
         <AnimSection>
           <motion.div variants={fadeUp} style={{ marginBottom: 64, textAlign: "center" }}>
-            <p style={{ color: "var(--accent-indigo)", fontSize: "0.85rem", fontWeight: 600, letterSpacing: "0.1em", textTransform: "uppercase", marginBottom: 12 }}>
+            <p className="label-text" style={{ color: "var(--accent-primary)", marginBottom: 12 }}>
               Portafolio
             </p>
-            <h2
-              style={{ fontSize: "clamp(1.8rem, 4vw, 2.5rem)", fontWeight: 800, letterSpacing: "-0.03em", marginBottom: 12 }}
-            >
-              Proyectos <span className="gradient-text">Destacados</span>
+            <h2 className="brutalist-heading">
+              Proyectos Destacados
             </h2>
             <p style={{ color: "var(--text-secondary)", maxWidth: 480, margin: "0 auto" }}>
               Soluciones que combinan ingeniería robusta con inteligencia artificial aplicada.
@@ -1137,7 +1032,7 @@ function Projects() {
                 transition={{ type: "spring", stiffness: 300, damping: 25 }}
               >
                 <div
-                  className="glass-card"
+                  className="brutalist-grid-box"
                   style={{
                     padding: 32,
                     height: "100%",
@@ -1147,37 +1042,23 @@ function Projects() {
                     cursor: "default",
                   }}
                   onMouseEnter={(e) => {
-                    (e.currentTarget as HTMLDivElement).style.borderColor = `${project.color}40`;
-                    (e.currentTarget as HTMLDivElement).style.boxShadow = `0 0 40px ${project.color}15`;
+                    (e.currentTarget as HTMLDivElement).style.borderColor = "var(--accent-primary)";
+                    (e.currentTarget as HTMLDivElement).style.boxShadow = "8px 8px 0px var(--accent-primary)";
                   }}
                   onMouseLeave={(e) => {
-                    (e.currentTarget as HTMLDivElement).style.borderColor = "rgba(255,255,255,0.06)";
-                    (e.currentTarget as HTMLDivElement).style.boxShadow = "none";
+                    (e.currentTarget as HTMLDivElement).style.borderColor = "var(--border-main)";
+                    (e.currentTarget as HTMLDivElement).style.boxShadow = "4px 4px 0px var(--border-main)";
                   }}
                 >
-                  {/* Top gradient border */}
+                  {/* Brutalist accent bar */}
                   <div
                     style={{
                       position: "absolute",
                       top: 0,
                       left: 0,
                       right: 0,
-                      height: 2,
-                      background: `linear-gradient(90deg, ${project.color}, transparent)`,
-                    }}
-                  />
-
-                  {/* BG glow */}
-                  <div
-                    style={{
-                      position: "absolute",
-                      top: -60,
-                      right: -60,
-                      width: 200,
-                      height: 200,
-                      borderRadius: "50%",
-                      background: `radial-gradient(circle, ${project.color}10, transparent 70%)`,
-                      pointerEvents: "none",
+                      height: 4,
+                      background: project.color,
                     }}
                   />
 
@@ -1188,9 +1069,9 @@ function Projects() {
                       style={{
                         width: 44,
                         height: 44,
-                        borderRadius: 12,
+                        borderRadius: 0,
                         background: `${project.color}15`,
-                        border: `1px solid ${project.color}25`,
+                        border: `2px solid ${project.color}`,
                         display: "flex",
                         alignItems: "center",
                         justifyContent: "center",
@@ -1198,18 +1079,8 @@ function Projects() {
                     >
                       <GitBranch size={20} color={project.color} />
                     </div>
-                    <span
-                      style={{
-                        padding: "4px 10px",
-                        borderRadius: 6,
-                        fontSize: "0.72rem",
-                        fontWeight: 600,
-                        background: `${project.color}12`,
-                        border: `1px solid ${project.color}20`,
-                        color: project.color,
-                        textTransform: "uppercase",
-                        letterSpacing: "0.05em",
-                      }}
+                    <span className="tag-chip"
+                      style={{ background: `${project.color}15 !important`, color: `${project.color} !important`, borderColor: `${project.color}40 !important` }}
                     >
                       {project.type}
                     </span>
@@ -1229,15 +1100,7 @@ function Projects() {
                       {project.stack.map((s) => (
                         <span
                           key={s}
-                          style={{
-                            padding: "3px 8px",
-                            borderRadius: 6,
-                            fontSize: "0.72rem",
-                            fontWeight: 500,
-                            background: "rgba(255,255,255,0.04)",
-                            border: "1px solid rgba(255,255,255,0.07)",
-                            color: "var(--text-muted)",
-                          }}
+                          className="tag-chip"
                         >
                           {s}
                         </span>
@@ -1276,66 +1139,28 @@ function Projects() {
 }
 
 /* ──────────────────────────────────────────────
-   FOOTER / CONTACT
+   MINI FOOTER — copyright bar only
 ────────────────────────────────────────────── */
 function Footer() {
   return (
     <footer
       style={{
-        padding: "80px 24px 40px",
-        borderTop: "1px solid rgba(255,255,255,0.05)",
-        background: "rgba(5,5,8,0.8)",
+        borderTop: "4px solid var(--border-main)",
+        background: "var(--bg-primary)",
+        padding: "20px 40px",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "space-between",
+        flexWrap: "wrap",
+        gap: 12,
       }}
     >
-      <div style={{ maxWidth: 900, margin: "0 auto", textAlign: "center" }}>
-        <AnimSection>
-          <motion.div variants={fadeUp}>
-            <h2
-              style={{ fontSize: "clamp(1.8rem, 4vw, 2.8rem)", fontWeight: 800, letterSpacing: "-0.03em", marginBottom: 16 }}
-            >
-              Hablemos de{" "}
-              <span className="gradient-text">tu próximo proyecto</span>
-            </h2>
-            <p style={{ color: "var(--text-secondary)", maxWidth: 480, margin: "0 auto 40px", lineHeight: 1.65 }}>
-              Estoy disponible para nuevas oportunidades, proyectos freelance o simplemente para charlar sobre tecnología e IA.
-            </p>
-
-            <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 12, flexWrap: "wrap", marginBottom: 60 }}>
-              <a href="mailto:miguelcalzada2004@gmail.com" className="btn-primary">
-                <Mail size={16} />
-                Enviar Email
-              </a>
-              <a href={CV_DATA.linkedin} target="_blank" rel="noopener noreferrer" className="btn-secondary">
-                <Link2 size={16} />
-                LinkedIn
-              </a>
-              <a href={CV_DATA.github} target="_blank" rel="noopener noreferrer" className="btn-secondary">
-                <GitFork size={16} />
-                GitHub
-              </a>
-            </div>
-
-            <div
-              style={{
-                borderTop: "1px solid rgba(255,255,255,0.05)",
-                paddingTop: 24,
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "space-between",
-                flexWrap: "wrap",
-                gap: 12,
-              }}
-            >
-              <p style={{ color: "var(--text-muted)", fontSize: "0.82rem" }}>
-                © 2026 Miguel Angel Calzada Martín. Construido con Next.js & Framer Motion.
-              </p>
-              <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
-                <div className="dot-glow" style={{ width: 6, height: 6 }} />
-                <span style={{ color: "var(--text-muted)", fontSize: "0.82rem" }}>Open to opportunities</span>
-              </div>
-            </div>
-          </motion.div>
-        </AnimSection>
+      <p className="label-text" style={{ fontSize: "0.65rem", color: "var(--text-muted)" }}>
+        © 2026 MIGUEL ANGEL CALZADA MARTÍN — BUILT WITH NEXT.JS &amp; FRAMER MOTION
+      </p>
+      <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+        <div className="dot-glow" style={{ width: 7, height: 7, background: "var(--success)" }} />
+        <span className="label-text" style={{ fontSize: "0.65rem", color: "var(--text-muted)" }}>OPEN TO OPPORTUNITIES</span>
       </div>
     </footer>
   );
@@ -1429,17 +1254,17 @@ function AIChatbot() {
           zIndex: 100,
           width: 60,
           height: 60,
-          borderRadius: "50%",
-          background: "linear-gradient(135deg, #6366f1, #8b5cf6)",
-          border: "none",
+          borderRadius: 0,
+          background: "var(--accent-primary)",
+          border: "4px solid var(--border-main)",
           cursor: "pointer",
           display: open ? "none" : "flex",
           alignItems: "center",
           justifyContent: "center",
-          boxShadow: "0 8px 32px rgba(99,102,241,0.4)",
-          color: "white",
+          boxShadow: "4px 4px 0px var(--border-main)",
+          color: "var(--bg-card)",
         }}
-        whileHover={{ scale: 1.1, boxShadow: "0 12px 40px rgba(99,102,241,0.55)" }}
+        whileHover={{ scale: 1.1, boxShadow: "8px 8px 0px var(--border-main)" }}
         whileTap={{ scale: 0.95 }}
       >
         <Bot size={26} />
@@ -1462,12 +1287,12 @@ function AIChatbot() {
               zIndex: 100,
               width: 380,
               maxWidth: "calc(100vw - 48px)",
-              borderRadius: 20,
+              borderRadius: 0,
               overflow: "hidden",
-              background: "rgba(10,10,16,0.95)",
-              backdropFilter: "blur(24px)",
-              border: "1px solid rgba(99,102,241,0.25)",
-              boxShadow: "0 24px 80px rgba(0,0,0,0.6), 0 0 0 1px rgba(99,102,241,0.1)",
+              background: "var(--bg-card)",
+              backdropFilter: "none",
+              border: "4px solid var(--border-main)",
+              boxShadow: "8px 8px 0px var(--border-main)",
               display: "flex",
               flexDirection: "column",
               maxHeight: "75vh",
@@ -1477,8 +1302,8 @@ function AIChatbot() {
             <div
               style={{
                 padding: "16px 20px",
-                borderBottom: "1px solid rgba(255,255,255,0.06)",
-                background: "linear-gradient(135deg, rgba(99,102,241,0.15), rgba(139,92,246,0.1))",
+                borderBottom: "4px solid var(--border-main)",
+                background: "var(--bg-card)",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "space-between",
@@ -1489,8 +1314,8 @@ function AIChatbot() {
                   style={{
                     width: 36,
                     height: 36,
-                    borderRadius: "50%",
-                    background: "linear-gradient(135deg, #6366f1, #8b5cf6)",
+                    borderRadius: 0,
+                    background: "var(--accent-primary)",
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "center",
@@ -1551,8 +1376,9 @@ function AIChatbot() {
                       style={{
                         width: 24,
                         height: 24,
-                        borderRadius: "50%",
-                        background: "linear-gradient(135deg, #6366f1, #8b5cf6)",
+                        borderRadius: 0,
+                        background: "var(--accent-primary)",
+                        border: "2px solid var(--border-main)",
                         display: "flex",
                         alignItems: "center",
                         justifyContent: "center",
@@ -1561,7 +1387,7 @@ function AIChatbot() {
                         marginTop: 4,
                       }}
                     >
-                      <Bot size={12} color="white" />
+                      <Bot size={12} color="var(--bg-card)" />
                     </div>
                   )}
                   <div className={msg.role === "user" ? "chat-bubble-user" : "chat-bubble-bot"}>
@@ -1574,12 +1400,13 @@ function AIChatbot() {
                 <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
                   <div
                     style={{
-                      width: 24, height: 24, borderRadius: "50%",
-                      background: "linear-gradient(135deg, #6366f1, #8b5cf6)",
+                      width: 24, height: 24, borderRadius: 0,
+                      background: "var(--accent-primary)",
+                      border: "2px solid var(--border-main)",
                       display: "flex", alignItems: "center", justifyContent: "center",
                     }}
                   >
-                    <Bot size={12} color="white" />
+                    <Bot size={12} color="var(--bg-card)" />
                   </div>
                   <div
                     className="chat-bubble-bot"
@@ -1614,20 +1441,23 @@ function AIChatbot() {
                     }}
                     style={{
                       padding: "6px 12px",
-                      borderRadius: 999,
+                      borderRadius: 0,
                       fontSize: "0.75rem",
-                      fontWeight: 500,
-                      background: "rgba(99,102,241,0.1)",
-                      border: "1px solid rgba(99,102,241,0.2)",
-                      color: "#a5b4fc",
+                      fontWeight: 700,
+                      background: "var(--bg-secondary)",
+                      border: "2px solid var(--border-main)",
+                      color: "var(--text-primary)",
                       cursor: "pointer",
-                      transition: "all 0.2s",
+                      transition: "all 0.1s",
+                      fontFamily: "var(--font-mono)",
                     }}
                     onMouseEnter={(e) => {
-                      (e.currentTarget as HTMLButtonElement).style.background = "rgba(99,102,241,0.2)";
+                      (e.currentTarget as HTMLButtonElement).style.background = "var(--accent-primary)";
+                      (e.currentTarget as HTMLButtonElement).style.color = "var(--bg-card)";
                     }}
                     onMouseLeave={(e) => {
-                      (e.currentTarget as HTMLButtonElement).style.background = "rgba(99,102,241,0.1)";
+                      (e.currentTarget as HTMLButtonElement).style.background = "var(--bg-secondary)";
+                      (e.currentTarget as HTMLButtonElement).style.color = "var(--text-primary)";
                     }}
                   >
                     {s}
@@ -1640,7 +1470,7 @@ function AIChatbot() {
             <div
               style={{
                 padding: "12px 16px",
-                borderTop: "1px solid rgba(255,255,255,0.06)",
+                borderTop: "4px solid var(--border-main)",
                 display: "flex",
                 gap: 8,
               }}
@@ -1655,9 +1485,9 @@ function AIChatbot() {
                 placeholder="Escribe tu pregunta..."
                 style={{
                   flex: 1,
-                  background: "rgba(255,255,255,0.05)",
-                  border: "1px solid rgba(255,255,255,0.08)",
-                  borderRadius: 12,
+                  background: "var(--bg-primary)",
+                  border: "2px solid var(--border-main)",
+                  borderRadius: 0,
                   padding: "10px 14px",
                   fontSize: "0.875rem",
                   color: "var(--text-primary)",
@@ -1665,10 +1495,10 @@ function AIChatbot() {
                   transition: "border-color 0.2s",
                 }}
                 onFocus={(e) => {
-                  (e.currentTarget as HTMLInputElement).style.borderColor = "rgba(99,102,241,0.4)";
+                  (e.currentTarget as HTMLInputElement).style.borderColor = "var(--accent-primary)";
                 }}
                 onBlur={(e) => {
-                  (e.currentTarget as HTMLInputElement).style.borderColor = "rgba(255,255,255,0.08)";
+                  (e.currentTarget as HTMLInputElement).style.borderColor = "var(--border-main)";
                 }}
               />
               <button
@@ -1679,11 +1509,11 @@ function AIChatbot() {
                 style={{
                   width: 40,
                   height: 40,
-                  borderRadius: 12,
+                  borderRadius: 0,
                   background: input.trim()
-                    ? "linear-gradient(135deg, #6366f1, #8b5cf6)"
-                    : "rgba(255,255,255,0.05)",
-                  border: "none",
+                    ? "var(--accent-primary)"
+                    : "var(--bg-secondary)",
+                  border: "2px solid var(--border-main)",
                   cursor: input.trim() ? "pointer" : "default",
                   display: "flex",
                   alignItems: "center",

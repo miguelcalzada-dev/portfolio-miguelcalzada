@@ -1,10 +1,24 @@
 import type { Metadata, Viewport } from "next";
-import { Inter } from "next/font/google";
+import { DM_Serif_Display, Space_Grotesk, Space_Mono } from "next/font/google";
 import "./globals.css";
 
-const inter = Inter({
+const dmSerifDisplay = DM_Serif_Display({
+  weight: "400",
   subsets: ["latin"],
-  variable: "--font-inter",
+  variable: "--font-dm-serif",
+  display: "swap",
+});
+
+const spaceGrotesk = Space_Grotesk({
+  subsets: ["latin"],
+  variable: "--font-space-grotesk",
+  display: "swap",
+});
+
+const spaceMono = Space_Mono({
+  weight: ["400", "700"],
+  subsets: ["latin"],
+  variable: "--font-space-mono",
   display: "swap",
 });
 
@@ -58,8 +72,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="es" className={inter.variable}>
-      <body className="antialiased">{children}</body>
+    <html lang="es" className={`${dmSerifDisplay.variable} ${spaceGrotesk.variable} ${spaceMono.variable}`}>
+      <body className="antialiased font-sans">
+        <main className="brutalist-container">
+          {children}
+        </main>
+      </body>
     </html>
   );
 }
