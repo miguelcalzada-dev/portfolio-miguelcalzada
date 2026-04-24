@@ -1,36 +1,27 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Miguel Angel Calzada Martín - Portfolio Profesional
 
-## Getting Started
+[![Website](https://img.shields.io/badge/Website-Live-success?style=for-the-badge&logo=vercel)](https://portfolio-miguelcalzada.vercel.app)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-Connect-blue?style=for-the-badge&logo=linkedin)](https://www.linkedin.com/in/miguel-calzada-04a19b24b)
 
-First, run the development server:
+Bienvenidos al repositorio de mi portfolio profesional. Soy un **Desarrollador de Software especializado en Inteligencia Artificial y Big Data**, con sede en Madrid, España.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+Puedes visitar mi portfolio interactivo en producción aquí: **[portfolio-miguelcalzada.vercel.app](https://portfolio-miguelcalzada.vercel.app)**
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Sobre mi Perfil
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Combino sólidas bases en desarrollo web Full-Stack con una profunda pasión por la Inteligencia Artificial. Tengo experiencia práctica trabajando en arquitecturas escalables, ingeniería de datos, integraciones backend y desarrollo de interfaces de usuario eficientes.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### Stack Técnico Principal
 
-## Learn More
+- **Desarrollo Frontend:** React, Next.js, TypeScript, HTML/CSS, Bootstrap
+- **Backend & APIs:** Node.js, Python, ASP, VBScript
+- **Inteligencia Artificial:** Machine Learning, Deep Learning, NLP
+- **Datos y DevOps:** PostgreSQL, SQL Server, MongoDB, Docker, Kubernetes, Git
 
-To learn more about Next.js, take a look at the following resources:
+## Contacto
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Si estás buscando un perfil técnico versátil, resolutivo y orientado al dato, no dudes en contactarme:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- **Email:** miguelcalzada2004@gmail.com
+- **LinkedIn:** [Perfil de LinkedIn](https://www.linkedin.com/in/miguel-calzada-04a19b24b)
+- **Teléfono:** +34 665 17 88 25
