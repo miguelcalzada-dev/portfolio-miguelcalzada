@@ -38,7 +38,7 @@ const CV_DATA = {
   availability: "Disponible · Remoto / Híbrido",
   email: "miguelcalzada2004@gmail.com",
   github: "https://github.com/miguelcalzada-dev",
-  linkedin: "https://linkedin.com/in/miguelcalzada",
+  linkedin: "https://www.linkedin.com/in/miguel-calzada-04a19b24b",
   summary:
     "Desarrollador de Software apasionado por la IA y el Big Data. Especializado en arquitecturas de microservicios, desarrollo Full-Stack y pipelines de datos.",
   experience: [
@@ -49,28 +49,29 @@ const CV_DATA = {
       period: "Marzo 2024 – Presente",
       type: "Jornada completa",
       description:
-        "Diseño e implementación de arquitecturas de microservicios escalables para análisis de datos a gran escala. Desarrollo Full-Stack con Node.js y React. Ingeniería de datos con PostgreSQL y MongoDB. Orquestación de servicios con Docker y Kubernetes.",
+        "Desarrollo front-end de cuestionarios web para estudios de mercado, mantenimiento y mejora del back-end de datos, desarrollo de mejoras en plataformas internas y trabajo colaborativo en equipo con seguimiento de tareas y control de versiones.",
       highlights: [
-        "Arquitecturas de microservicios con Node.js",
-        "Desarrollo Full-Stack React + TypeScript",
-        "Pipelines de datos con PostgreSQL / MongoDB",
-        "DevOps: Docker, Kubernetes, RabbitMQ",
-        "APIs RESTful y GraphQL",
+        "Front-end de cuestionarios web con HTML, CSS, JS, jQuery y Bootstrap",
+        "Back-end y gestión de datos con SQL Server y VBScript",
+        "Mejoras de plataformas con ASP, JavaScript, CSS y HTML",
+        "Conexiones a sistemas de datos con SQL Server",
+        "Trabajo en equipo, coordinación técnica y gestión de tiempos",
+        "Control de versiones con Git y GitHub",
       ],
-      stack: ["Node.js", "React", "TypeScript", "PostgreSQL", "Docker", "Kubernetes", "RabbitMQ"],
+      stack: ["HTML", "CSS", "JavaScript", "jQuery", "Bootstrap", "SQL Server", "VBScript", "ASP", "Git"],
     },
   ],
   education: [
     {
       title: "Especialización en Inteligencia Artificial y Big Data",
       institution: "Formación Superior",
-      period: "2022 – 2024",
+      period: "2025 – 2026",
       highlights: ["Machine Learning", "Deep Learning", "NLP", "Big Data Analytics"],
     },
     {
       title: "Técnico Superior en Desarrollo de Aplicaciones Multiplataforma (DAM)",
       institution: "Instituto Técnico",
-      period: "2020 – 2022",
+      period: "2022 – 2024",
       highlights: ["Java", "Android", "Diseño de BD", "Programación Orientada a Objetos"],
     },
   ],
@@ -108,36 +109,44 @@ const CV_DATA = {
   },
   projects: [
     {
-      name: "AI Survey Analytics Engine",
+      name: "Applied AI Solutions",
       description:
-        "Motor de análisis inteligente de encuestas con procesamiento NLP para extracción automática de insights y visualización de datos en tiempo real.",
-      stack: ["Node.js", "Python", "NLP", "PostgreSQL", "React"],
-      type: "Producción",
+        "Portfolio interactivo de proyectos de IA aplicada: chat con Gemini, visión artificial, RAG, NLP y prompt engineering, todo integrado en una sola plataforma desplegada en producción.",
+      stack: ["FastAPI", "Python", "Gemini API", "HTML", "CSS", "JavaScript"],
+      type: "Desplegado",
       color: "#6366f1",
+      github: "https://github.com/miguelcalzada-dev/applied-ai-engineering-showcase",
+      url: "https://web-production-2ec10.up.railway.app/",
     },
     {
-      name: "Microservices Data Platform",
+      name: "FitCity",
       description:
-        "Plataforma de microservicios para procesamiento masivo de datos con colas de mensajería, orquestación en Kubernetes y monitoreo avanzado.",
-      stack: ["Node.js", "Docker", "Kubernetes", "RabbitMQ", "MongoDB"],
-      type: "Arquitectura",
-      color: "#8b5cf6",
-    },
-    {
-      name: "Full-Stack BI Dashboard",
-      description:
-        "Dashboard de Business Intelligence con visualizaciones interactivas, filtros dinámicos y exportación de reportes en múltiples formatos.",
-      stack: ["React", "TypeScript", "D3.js", "Node.js", "PostgreSQL"],
-      type: "Full-Stack",
-      color: "#22d3ee",
-    },
-    {
-      name: "ML Pipeline Orchestrator",
-      description:
-        "Orquestador de pipelines de Machine Learning con entrenamiento distribuido, versionado de modelos y despliegue automatizado mediante CI/CD.",
-      stack: ["Python", "Docker", "TensorFlow", "Flask", "Redis"],
-      type: "ML/DevOps",
+        "Plataforma Full Stack orientada al fitness: gestión de usuarios, check-in en gimnasios, validación de PRs de Powerlifting mediante IA y rankings de la comunidad. Frontend Angular 19 + TailwindCSS, backend FastAPI con Supabase (PostgreSQL).",
+      stack: ["Angular 19", "TailwindCSS", "FastAPI", "Python", "Supabase", "PostgreSQL"],
+      type: "En Desarrollo",
       color: "#10b981",
+      github: "https://github.com/FitCity-Team/FitCity",
+      url: null,
+    },
+    {
+      name: "Barber Books Template",
+      description:
+        "Plantilla web moderna y elegante para barberías y peluquerías premium. Permite mostrar servicios, portafolio y equipo de barberos, incluyendo un sistema integrado para agenciar y gestionar citas de clientes de forma rápida.",
+      stack: ["HTML", "CSS", "JavaScript"],
+      type: "Sin Desplegar",
+      color: "#f59e0b",
+      github: "https://github.com/miguelcalzada-dev/barber-books-template",
+      url: null,
+    },
+    {
+      name: "Spotify Voice Assistant",
+      description:
+        "Asistente de voz offline para Windows que controla Spotify mediante comandos de voz sin interrumpir el flujo de trabajo. Activa con la palabra \"asistente\" y ofrece más de 20 interacciones para gestionar la reproducción sin conexión a internet.",
+      stack: ["Python", "SpeechRecognition", "Spotipy", "Windows"],
+      type: "Escritorio",
+      color: "#22d3ee",
+      github: "https://github.com/miguelcalzada-dev/spotify_voice_assistant",
+      url: null,
     },
   ],
 };
@@ -150,7 +159,7 @@ function getBotResponse(message: string): string {
 
   // experience
   if (msg.match(/experiencia|trabaj|empresa|analisis survey|trabajo actual|empleo/)) {
-    return "💼 Actualmente trabajo como **Software Developer en Analisis Survey Unit** (Madrid) desde marzo de 2024. Me especializo en arquitecturas de microservicios, desarrollo Full-Stack con Node.js + React, ingeniería de datos con PostgreSQL/MongoDB y DevOps con Docker y Kubernetes.";
+    return "💼 Actualmente trabajo en **Analisis Survey Unit** (Madrid) desde marzo de 2024. Me encargo del desarrollo front-end de cuestionarios web para estudios de mercado (HTML, CSS, JS, jQuery, Bootstrap), mantenimiento del back-end con SQL Server y VBScript, mejoras de plataformas internas con ASP, y control de versiones con Git y GitHub.";
   }
   // education / studies
   if (msg.match(/estudi|formaci|título|educaci|universidad|instituto|dam|big data/)) {
@@ -162,7 +171,7 @@ function getBotResponse(message: string): string {
   }
   // AI / ML
   if (msg.match(/inteligencia artificial|ia|machine learning|deep learning|nlp|tensorflow|pytorch|ml/)) {
-    return "🧠 La IA es mi gran pasión. Tengo especialización formal en:\n• **Machine Learning** y modelos predictivos\n• **Deep Learning** con redes neuronales\n• **NLP** para procesamiento de lenguaje natural\n• **Big Data Analytics** para datasets a gran escala\nLo aplico directamente en mi trabajo en Analisis Survey Unit.";
+    return "🧠 La IA es mi gran pasión. Tengo especialización formal en:\n• **Machine Learning** y modelos predictivos\n• **Deep Learning** con redes neuronales\n• **NLP** para procesamiento de lenguaje natural\n• **Big Data Analytics** para datasets a gran escala\nEstas habilidades complementan mi perfil de desarrollador web y de datos.";
   }
   // location / availability
   if (msg.match(/ubicaci|madrid|remoto|híbrido|disponib|contrat|ofert/)) {
@@ -174,15 +183,15 @@ function getBotResponse(message: string): string {
   }
   // devops
   if (msg.match(/devops|docker|kubernetes|ci\/cd|pipeline|deploy|desplieg/)) {
-    return "🐳 En DevOps tengo experiencia práctica con:\n• **Docker** — containerización de aplicaciones\n• **Kubernetes** — orquestación y escalado\n• **RabbitMQ** — mensajería entre microservicios\n• **CI/CD** — pipelines de integración y despliegue continuo\nTodo esto lo aplico en el entorno de producción de Analisis Survey Unit.";
+    return "🛠️ En control de versiones y herramientas de desarrollo tengo experiencia con:\n• **Git y GitHub** — control de versiones y colaboración en equipo\n• **SQL Server** — gestión y mantenimiento de bases de datos\n• **ASP / VBScript** — desarrollo de plataformas internas\n• **Bootstrap / jQuery** — front-end de cuestionarios web\nLo aplico en mi trabajo diario en Analisis Survey Unit.";
   }
   // projects
   if (msg.match(/proyecto|project|portafolio|portfolio|github|repositori/)) {
-    return "🚀 Algunos de mis proyectos destacados:\n• **AI Survey Analytics Engine** — NLP para análisis de encuestas\n• **Microservices Data Platform** — Plataforma de microservicios con Kubernetes\n• **Full-Stack BI Dashboard** — Visualizaciones interactivas con React y D3.js\n• **ML Pipeline Orchestrator** — Orquestador de pipelines de Machine Learning\nPuedes ver más detalles directamente en la sección de proyectos de este portfolio.";
+    return "🚀 Mis proyectos destacados:\n• **Applied AI Solutions** — Portfolio de IA con Gemini, RAG y NLP, desplegado en Railway\n• **FitCity** — Plataforma Full Stack de fitness con validación de PRs mediante IA (Angular + FastAPI + Supabase)\n• **Barber Books Template** — Plantilla web premium para barberías con sistema de reservas\n• **Spotify Voice Assistant** — Asistente de voz offline para Windows con más de 20 comandos\nPuedes ver más detalles y los repos en la sección de proyectos de este portfolio.";
   }
   // contact
   if (msg.match(/contact|email|correo|mensaje|hablar|llam|whatsapp|linkedin/)) {
-    return "📬 Puedes contactarme a través de:\n• **Email**: miguelcalzada2004@gmail.com\n• **LinkedIn**: linkedin.com/in/miguelcalzada\n• **GitHub**: github.com/miguelcalzada-dev\n\nEstoy abierto a nuevas oportunidades y colaboraciones interesantes. ¡No dudes en escribirme!";
+    return "📬 Puedes contactarme a través de:\n• **Email**: miguelcalzada2004@gmail.com\n• **LinkedIn**: linkedin.com/in/miguel-calzada-04a19b24b\n• **GitHub**: github.com/miguelcalzada-dev\n• **Teléfono**: +34 665 17 88 25\n\nEstoy abierto a nuevas oportunidades y colaboraciones interesantes. ¡No dudes en escribirme!";
   }
   // greetings
   if (msg.match(/hola|hello|hi|buenas|hey|qué tal|cómo est/)) {
@@ -190,7 +199,7 @@ function getBotResponse(message: string): string {
   }
   // name / who
   if (msg.match(/quién es|quien es|cuéntame sobre|sobre miguel|sobre ti|quién eres/)) {
-    return "👨‍💻 **Miguel Angel Calzada Martín** es un Desarrollador de Software especializado en **IA y Big Data**, con sede en Madrid. Trabaja actualmente en Analisis Survey Unit donde diseña microservicios, desarrolla aplicaciones Full-Stack y construye pipelines de datos. Combina sólidas bases en ingeniería de software con una profunda pasión por la inteligencia artificial.";
+    return "👨‍💻 **Miguel Angel Calzada Martín** es un Desarrollador de Software con sede en Madrid. Trabaja actualmente en Analisis Survey Unit, donde desarrolla front-end para cuestionarios web (HTML, CSS, JS, jQuery, Bootstrap), mantiene el back-end de datos con SQL Server y VBScript, y mejora plataformas internas con ASP. Combina sólidas bases en desarrollo web con una profunda pasión por la inteligencia artificial y el Big Data.";
   }
   // skills / abilities
   if (msg.match(/habilidad|skill|capaz|puede|sabe|experto|conocimiento/)) {
@@ -1098,36 +1107,43 @@ function Projects() {
                   <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                     <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
                       {project.stack.map((s) => (
-                        <span
-                          key={s}
-                          className="tag-chip"
-                        >
-                          {s}
-                        </span>
+                        <span key={s} className="tag-chip">{s}</span>
                       ))}
                     </div>
-                    <a
-                      href={CV_DATA.github}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      style={{
-                        display: "flex",
-                        alignItems: "center",
-                        gap: 4,
-                        color: "var(--text-muted)",
-                        fontSize: "0.8rem",
-                        textDecoration: "none",
-                        transition: "color 0.2s",
-                        flexShrink: 0,
-                        marginLeft: 12,
-                      }}
-                      onMouseEnter={(e) => ((e.currentTarget as HTMLAnchorElement).style.color = project.color)}
-                      onMouseLeave={(e) => ((e.currentTarget as HTMLAnchorElement).style.color = "var(--text-muted)")}
-                    >
-                      <GitFork size={14} />
-                      <ExternalLink size={12} />
-                    </a>
+                    <div style={{ display: "flex", gap: 10, flexShrink: 0, marginLeft: 12 }}>
+                      {project.url && (
+                        <a
+                          href={project.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          title="Ver demo en vivo"
+                          style={{
+                            display: "flex", alignItems: "center", gap: 4,
+                            color: project.color, fontSize: "0.8rem",
+                            textDecoration: "none", transition: "opacity 0.2s",
+                          }}
+                        >
+                          <ExternalLink size={14} />
+                        </a>
+                      )}
+                      <a
+                        href={project.github}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        title="Ver en GitHub"
+                        style={{
+                          display: "flex", alignItems: "center", gap: 4,
+                          color: "var(--text-muted)", fontSize: "0.8rem",
+                          textDecoration: "none", transition: "color 0.2s",
+                        }}
+                        onMouseEnter={(e) => ((e.currentTarget as HTMLAnchorElement).style.color = project.color)}
+                        onMouseLeave={(e) => ((e.currentTarget as HTMLAnchorElement).style.color = "var(--text-muted)")}
+                      >
+                        <GitFork size={14} />
+                      </a>
+                    </div>
                   </div>
+
                 </div>
               </motion.div>
             ))}
@@ -1156,7 +1172,7 @@ function Footer() {
       }}
     >
       <p className="label-text" style={{ fontSize: "0.65rem", color: "var(--text-muted)" }}>
-        © 2026 MIGUEL ANGEL CALZADA MARTÍN — BUILT WITH NEXT.JS &amp; FRAMER MOTION
+        © 2026 MIGUEL ANGEL CALZADA MARTÍN — +34 665 17 88 25
       </p>
       <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
         <div className="dot-glow" style={{ width: 7, height: 7, background: "var(--success)" }} />
