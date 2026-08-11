@@ -158,6 +158,16 @@ const CV_DATA = {
       github: "https://github.com/miguelcalzada-dev/spotify_voice_assistant",
       url: null,
     },
+    {
+      name: "SQLSense AI",
+      description:
+        "Aprende SQL hablando con IA. Traduce lenguaje natural a SQL y viceversa, con un laboratorio efímero de base de datos SQLite que vive en el navegador gracias a WebAssembly. Incluye editor SQL libre, retos guiados y modo dual IA con fallback local.",
+      stack: ["Next.js", "TypeScript", "SQLite WASM", "OpenAI", "Framer Motion", "Tailwind CSS"],
+      type: "Desplegado",
+      color: "#8b5cf6",
+      github: "https://github.com/miguelcalzada-dev/sqlsense-ai",
+      url: "https://sqlsense-ai-production.up.railway.app/",
+    },
   ],
 };
 
