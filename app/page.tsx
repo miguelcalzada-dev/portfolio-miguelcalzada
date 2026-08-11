@@ -129,6 +129,16 @@ const CV_DATA = {
       url: "https://madrid-transit-pulse.vercel.app/",
     },
     {
+      name: "SQLSense AI",
+      description:
+        "Aprende SQL hablando con IA. Traduce lenguaje natural a SQL y viceversa, con un laboratorio efímero de base de datos SQLite que vive en el navegador gracias a WebAssembly. Incluye editor SQL libre, retos guiados y modo dual IA con fallback local.",
+      stack: ["Next.js", "TypeScript", "SQLite WASM", "OpenAI", "Framer Motion", "Tailwind CSS"],
+      type: "Desplegado",
+      color: "#ec4899",
+      github: "https://github.com/miguelcalzada-dev/sqlsense-ai",
+      url: "https://sqlsense-ai-production.up.railway.app/",
+    },
+    {
       name: "FitCity",
       description:
         "Plataforma Full Stack orientada al fitness: gestión de usuarios, check-in en gimnasios, validación de PRs de Powerlifting mediante IA y rankings de la comunidad. Frontend Angular 19 + TailwindCSS, backend FastAPI con Supabase (PostgreSQL).",
@@ -157,16 +167,6 @@ const CV_DATA = {
       color: "#22d3ee",
       github: "https://github.com/miguelcalzada-dev/spotify_voice_assistant",
       url: null,
-    },
-    {
-      name: "SQLSense AI",
-      description:
-        "Aprende SQL hablando con IA. Traduce lenguaje natural a SQL y viceversa, con un laboratorio efímero de base de datos SQLite que vive en el navegador gracias a WebAssembly. Incluye editor SQL libre, retos guiados y modo dual IA con fallback local.",
-      stack: ["Next.js", "TypeScript", "SQLite WASM", "OpenAI", "Framer Motion", "Tailwind CSS"],
-      type: "Desplegado",
-      color: "#8b5cf6",
-      github: "https://github.com/miguelcalzada-dev/sqlsense-ai",
-      url: "https://sqlsense-ai-production.up.railway.app/",
     },
   ],
 };
@@ -207,7 +207,7 @@ function getBotResponse(message: string): string {
   }
   // projects
   if (msg.match(/proyecto|project|portafolio|portfolio|github|repositori/)) {
-    return "🚀 Mis proyectos destacados:\n• **Applied AI Solutions** — Portfolio de IA con Gemini, RAG y NLP, desplegado en Railway\n• **Madrid Transit Pulse** — Plataforma de visualización y análisis de Big Data sobre la movilidad en Madrid\n• **FitCity** — Plataforma Full Stack de fitness con validación de PRs mediante IA (Angular + FastAPI + Supabase)\n• **Barber Books Template** — Plantilla web premium para barberías con sistema de reservas\n• **Spotify Voice Assistant** — Asistente de voz offline para Windows con más de 20 comandos\nPuedes ver más detalles y los repos en la sección de proyectos de este portfolio.";
+    return "🚀 Mis proyectos destacados:\n• **Applied AI Solutions** — Portfolio de IA con Gemini, RAG y NLP, desplegado en Railway\n• **Madrid Transit Pulse** — Plataforma de visualización y análisis de Big Data sobre la movilidad en Madrid\n• **SQLSense AI** — Laboratorio de SQL con IA: traduce lenguaje natural a SQL y viceversa, con SQLite WASM en el navegador\n• **FitCity** — Plataforma Full Stack de fitness con validación de PRs mediante IA (Angular + FastAPI + Supabase)\n• **Barber Books Template** — Plantilla web premium para barberías con sistema de reservas\n• **Spotify Voice Assistant** — Asistente de voz offline para Windows con más de 20 comandos\nPuedes ver más detalles y los repos en la sección de proyectos de este portfolio.";
   }
   // contact
   if (msg.match(/contact|email|correo|mensaje|hablar|llam|whatsapp|linkedin/)) {
