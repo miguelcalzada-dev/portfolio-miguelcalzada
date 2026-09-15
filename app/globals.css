@@ -369,21 +369,26 @@ label, .label-text, .metadata, .tag-chip, button, .nav-link, .uppercase-mono {
 .project-foot {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-end;
   gap: 12px;
   flex-wrap: wrap;
+  margin-top: 20px;
+  padding-top: 18px;
+  border-top: 2px solid var(--border-main);
 }
 
 .project-stack {
   display: flex;
   flex-wrap: wrap;
   gap: 6px;
+  margin-right: auto;
 }
 
 .project-actions {
   display: flex;
   gap: 8px;
   flex-shrink: 0;
+  margin-left: auto;
 }
 
 .project-actions a {

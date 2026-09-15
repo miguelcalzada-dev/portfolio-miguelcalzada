@@ -195,60 +195,125 @@ const CV_DATA = {
 /* ──────────────────────────────────────────────
    AI CHATBOT LOGIC
 ────────────────────────────────────────────── */
+const BOT_KB: { test: RegExp; reply: string }[] = [
+  {
+    test: /\b(hola|buenas|hey|hello|hi|saludos)\b|qué tal|que tal|cómo est|como est/,
+    reply:
+      "¡Hola! 👋 Soy el asistente de **Miguel Angel**. Puedo contarte sobre su perfil, experiencia, formación, stack técnico, proyectos, disponibilidad, idiomas o cómo contactarle. ¿Qué quieres saber?",
+  },
+  {
+    test: /quién es|quien es|quién eres|quien eres|cuéntame|cuentame|sobre miguel|sobre ti|preséntate|presentate|perfil|resumen|quién es él/,
+    reply:
+      "👨‍💻 **Miguel Angel Calzada Martín** es un desarrollador **Backend & Cloud** con sede en Madrid. Diseña e implementa APIs REST y microservicios, despliega soluciones en **AWS** y trabaja con **agentes de IA basados en LLMs**, arquitecturas **RAG** y pipelines de **CI/CD**. Está especializado en Inteligencia Artificial y Big Data, con varios proyectos desplegados en producción.",
+  },
+  {
+    test: /experiencia|trabaj|empleo|empresa|analisis survey|trayectoria|actualidad|puesto|cargo|curro/,
+    reply:
+      "💼 Trabaja en **Analisis Survey Unit** (Madrid) desde marzo de 2024, como **Software Developer** especializado en **Backend & Cloud**:\n• **APIs REST y microservicios** con Java (Spring Boot), Node.js y Python (FastAPI)\n• **AWS y cloud**: Docker, Kubernetes, despliegue y operación de servicios\n• **Agentes de IA y LLMs** (Gemini, Claude): orquestación, memoria conversacional y RAG\n• **CI/CD**: GitHub Actions y despliegue automatizado (AWS, Railway, Render)\n• **Seguridad**: autenticación, control de accesos y buenas prácticas en entornos exigentes",
+  },
+  {
+    test: /formaci|estudi|educaci|título|titulo|universidad|instituto|\bdam\b|curso|especializaci|teide|académic|academic|titulaci/,
+    reply:
+      "🎓 Formación:\n• **Curso de Especialización en Inteligencia Artificial y Big Data** (Sep 2025 – May 2026): Machine Learning, Deep Learning, NLP, agentes de IA y gestión de datos masivos.\n• **Técnico Superior en Desarrollo de Aplicaciones Multiplataforma (DAM)** (2022 – 2024, Teide IV): desarrollo de software, arquitecturas backend, bases de datos y programación orientada a objetos.",
+  },
+  {
+    test: /madrid transit|transit|movilidad|cercanías|cercanias|gtfs|flota/,
+    reply:
+      "🚆 **Madrid Transit Pulse**: plataforma de visualización y análisis de Big Data sobre el tránsito y la movilidad en Madrid, con mapas en vivo, alertas y analítica. Está desplegada y puedes abrirla desde la sección de proyectos.",
+  },
+  {
+    test: /sqlsense|\bsql\b|sqlite/,
+    reply:
+      "🧮 **SQLSense AI**: aprende SQL conversando con IA. Traduce lenguaje natural a SQL y viceversa, con un laboratorio efímero de SQLite que vive en el navegador gracias a WebAssembly. Incluye editor SQL, retos guiados y modo dual IA.",
+  },
+  {
+    test: /ai lab|ai-lab|applied ai|showcase|visión por computador|prompt engineering/,
+    reply:
+      "🤖 **Applied AI Solutions (AI Project Showcase)**: portfolio interactivo de IA con chat con Gemini, visión por computador, RAG, NLP y prompt engineering, todo desplegado en producción.",
+  },
+  {
+    test: /fitcity|fitness|\bgym\b|barber|spotify|asistente de voz/,
+    reply:
+      "📦 Otros proyectos: **FitCity** (plataforma fitness Full Stack con Angular 19, FastAPI y Supabase), **Barber Books Template** (plantilla web para barberías con sistema de reservas) y **Spotify Voice Assistant** (asistente de voz offline para Windows). Están listados en la sección de proyectos.",
+  },
+  {
+    test: /proyecto|project|portafolio|portfolio|repositori|\brepo\b|qué ha construido|qué has hecho/,
+    reply:
+      "🚀 Proyectos destacados:\n• **Applied AI Solutions** — IA con Gemini, visión, RAG y NLP (desplegado)\n• **Madrid Transit Pulse** — Big Data y visualización de la movilidad en Madrid\n• **SQLSense AI** — aprende SQL con IA y SQLite WASM en el navegador\n• **FitCity** — plataforma fitness Full Stack (Angular + FastAPI + Supabase)\n• **Barber Books Template** — plantilla web para barberías con reservas\n• **Spotify Voice Assistant** — asistente de voz offline para Windows\nEn la sección de proyectos tienes el detalle y los enlaces a cada uno.",
+  },
+  {
+    test: /cloud|\baws\b|\bec2\b|\bs3\b|\blambda\b|infraestructura|\brailway\b|\brender\b|serverless/,
+    reply:
+      "☁️ **Cloud & AWS**: despliegue y operación de servicios en **AWS** (EC2, S3, Lambda), entornos contenerizados con **Docker** y **Kubernetes**, y despliegue automatizado en **Railway** y **Render**, con foco en disponibilidad y seguridad en producción.",
+  },
+  {
+    test: /devops|ci\/cd|pipeline|github actions|contenedor|kubernetes|\bk8s\b|docker|automatizaci|despliegue/,
+    reply:
+      "🔧 **DevOps & CI/CD**: pipelines con **GitHub Actions**, control de versiones con **Git/GitHub**, **Docker** y **Kubernetes**, y despliegue automatizado en cloud (AWS, Railway, Render), reduciendo tiempos de entrega y asegurando calidad en cada release.",
+  },
+  {
+    test: /inteligencia artificial|\bia\b|\bml\b|machine learning|deep learning|\bnlp\b|llm|gemini|claude|\brag\b|agente|embedding|vectorial|tensorflow|pytorch|visión|vision|big data/,
+    reply:
+      "🧠 **IA & Agentes**: agentes de IA y **LLMs (Gemini, Claude)**, arquitecturas **RAG**, orquestación de flujos, memoria conversacional, **NLP**, **embeddings** y bases de datos vectoriales, además de Machine Learning y Deep Learning (especialización en IA y Big Data). Puedes probar varios de estos proyectos en el **AI Project Showcase**.",
+  },
+  {
+    test: /base de datos|postgres|mongo|mysql|sql server|firebase|redis|bbdd/,
+    reply:
+      "🗄️ **Bases de datos**: PostgreSQL, MongoDB, MySQL, SQL Server, Firebase y bases de datos vectoriales (para RAG).",
+  },
+  {
+    test: /backend|\bapi\b|\brest\b|microservicio|spring|\bnode\b|fastapi|flask|\bjava\b|\bpython\b|autenticaci|seguridad/,
+    reply:
+      "⚙️ **Backend & APIs**: Java (**Spring Boot**), **Node.js** y **Python** (FastAPI, Flask), APIs REST, arquitecturas de microservicios, autenticación y seguridad.",
+  },
+  {
+    test: /frontend|react|next\.?js|angular|typescript|javascript|html|css|tailwind|interfaz/,
+    reply:
+      "🎨 **Frontend**: React, Next.js, Angular, TypeScript, JavaScript, HTML5 y CSS3 (y TailwindCSS). Este mismo portfolio está hecho con Next.js + Tailwind.",
+  },
+  {
+    test: /stack|tecnolog|herramienta|lenguaje|framework|competencia|habilidad|skill|experto|qué sabe|qué conoce/,
+    reply:
+      "🧰 **Stack técnico**:\n• **Cloud & AWS**: AWS (EC2, S3, Lambda), Docker, Kubernetes, Railway, Render\n• **Backend & APIs**: Java (Spring Boot), Node.js, Python (FastAPI, Flask), REST, microservicios\n• **IA & Agentes**: LLMs (Gemini, Claude), RAG, NLP, embeddings, bases de datos vectoriales\n• **DevOps & CI/CD**: GitHub Actions, Git/GitHub, Docker, Kubernetes\n• **Datos**: PostgreSQL, MongoDB, MySQL, SQL Server, Firebase\n• **Frontend**: React, Next.js, Angular, TypeScript, HTML5, CSS3",
+  },
+  {
+    test: /idioma|inglés|ingles|english|\bb2\b|español|espanol/,
+    reply:
+      "🌍 Idiomas: **español** nativo e **inglés B2** (competencia profesional para entornos técnicos: documentación, reuniones y equipos internacionales).",
+  },
+  {
+    test: /ubicaci|ubicado|dónde|donde|madrid|remoto|híbrido|hibrido|disponib|contrat|ofert|incorporaci|inmediat|presencial/,
+    reply:
+      "📍 Está en **Madrid, España**, con **disponibilidad inmediata** para trabajo **remoto, híbrido o presencial**. Escríbele a miguelcalzada2004@gmail.com si quieres hablar de una oportunidad.",
+  },
+  {
+    test: /salario|sueldo|remuneraci|pretensi|cuánto cobra|cuanto cobra/,
+    reply:
+      "💰 La banda salarial no está publicada; lo mejor es comentarlo directamente. Escríbele a **miguelcalzada2004@gmail.com**.",
+  },
+  {
+    test: /contact|email|correo|mensaje|hablar|llam|teléfono|telefono|whatsapp|linkedin|github|escrib/,
+    reply:
+      "📬 Contacto:\n• **Email**: miguelcalzada2004@gmail.com\n• **LinkedIn**: linkedin.com/in/miguel-calzada-04a19b24b\n• **GitHub**: github.com/miguelcalzada-dev\n• **Teléfono**: +34 665 17 88 25\n\nAbierto a nuevas oportunidades y colaboraciones.",
+  },
+  {
+    test: /\bcv\b|currículum|curriculum|descargar|\bpdf\b/,
+    reply:
+      "📄 El CV está disponible bajo petición: escríbele a **miguelcalzada2004@gmail.com** y te lo envía en PDF.",
+  },
+  {
+    test: /equipo|soft skill|comunicaci|metodolog|scrum|agile|ágil|colabora|liderazgo/,
+    reply:
+      "🤝 Trabaja en equipo con coordinación técnica, control de versiones (Git/GitHub) y seguimiento de tareas, en entornos de alta exigencia con foco en calidad y buenas prácticas.",
+  },
+];
+
 function getBotResponse(message: string): string {
   const msg = message.toLowerCase().trim();
-
-  // experience
-  if (msg.match(/experiencia|trabaj|empresa|analisis survey|trabajo actual|empleo/)) {
-    return "💼 Actualmente trabajo en **Analisis Survey Unit** (Madrid) desde marzo de 2024. Me encargo del desarrollo front-end de cuestionarios web para estudios de mercado (HTML, CSS, JS, jQuery, Bootstrap), mantenimiento del back-end con SQL Server y VBScript, mejoras de plataformas internas con ASP, y control de versiones con Git y GitHub.";
+  for (const item of BOT_KB) {
+    if (item.test.test(msg)) return item.reply;
   }
-  // education / studies
-  if (msg.match(/estudi|formaci|título|educaci|universidad|instituto|dam|big data/)) {
-    return "🎓 Tengo dos titulaciones principales:\n• **Especialización en IA y Big Data** — con enfoque en Machine Learning, Deep Learning y NLP.\n• **Técnico Superior en DAM** — Desarrollo de Aplicaciones Multiplataforma.\nEstas bases me permiten combinar el mundo del software con la inteligencia artificial.";
-  }
-  // tech stack
-  if (msg.match(/tecnolog|stack|herramienta|lenguaje|framework|programación|código|node|react|docker|python|java/)) {
-    return "⚙️ Mi stack principal:\n• **Frontend**: React, Next.js, TypeScript\n• **Backend**: Node.js, Java/Spring Boot, .NET Core, Flask\n• **Datos**: PostgreSQL, MongoDB, Redis\n• **DevOps**: Docker, Kubernetes, RabbitMQ, CI/CD\n• **IA**: Machine Learning, Deep Learning, NLP, TensorFlow, PyTorch";
-  }
-  // AI / ML
-  if (msg.match(/inteligencia artificial|ia|machine learning|deep learning|nlp|tensorflow|pytorch|ml/)) {
-    return "🧠 La IA es mi gran pasión. Tengo especialización formal en:\n• **Machine Learning** y modelos predictivos\n• **Deep Learning** con redes neuronales\n• **NLP** para procesamiento de lenguaje natural\n• **Big Data Analytics** para datasets a gran escala\nEstas habilidades complementan mi perfil de desarrollador web y de datos.";
-  }
-  // location / availability
-  if (msg.match(/ubicaci|madrid|remoto|híbrido|disponib|contrat|ofert/)) {
-    return "📍 Estoy basado en **Madrid, España** y estoy disponible para trabajo **remoto o híbrido**. Me adapto perfectamente a equipos distribuidos internacionalmente gracias a mi nivel de inglés B2.";
-  }
-  // languages (idiomas)
-  if (msg.match(/idioma|inglés|english|b2|español/)) {
-    return "🗣️ Hablo **español** como idioma nativo y tengo nivel **inglés B2** (intermedio-alto). Me desenvuelvo con fluidez en entornos técnicos internacionales, revisando documentación, participando en reuniones y colaborando con equipos globales.";
-  }
-  // devops
-  if (msg.match(/devops|docker|kubernetes|ci\/cd|pipeline|deploy|desplieg/)) {
-    return "🛠️ En control de versiones y herramientas de desarrollo tengo experiencia con:\n• **Git y GitHub** — control de versiones y colaboración en equipo\n• **SQL Server** — gestión y mantenimiento de bases de datos\n• **ASP / VBScript** — desarrollo de plataformas internas\n• **Bootstrap / jQuery** — front-end de cuestionarios web\nLo aplico en mi trabajo diario en Analisis Survey Unit.";
-  }
-  // projects
-  if (msg.match(/proyecto|project|portafolio|portfolio|github|repositori/)) {
-    return "🚀 Mis proyectos destacados:\n• **Applied AI Solutions** — Portfolio de IA con Gemini, RAG y NLP, desplegado en Railway\n• **Madrid Transit Pulse** — Plataforma de visualización y análisis de Big Data sobre la movilidad en Madrid\n• **SQLSense AI** — Laboratorio de SQL con IA: traduce lenguaje natural a SQL y viceversa, con SQLite WASM en el navegador\n• **FitCity** — Plataforma Full Stack de fitness con validación de PRs mediante IA (Angular + FastAPI + Supabase)\n• **Barber Books Template** — Plantilla web premium para barberías con sistema de reservas\n• **Spotify Voice Assistant** — Asistente de voz offline para Windows con más de 20 comandos\nPuedes ver más detalles y los repos en la sección de proyectos de este portfolio.";
-  }
-  // contact
-  if (msg.match(/contact|email|correo|mensaje|hablar|llam|whatsapp|linkedin/)) {
-    return "📬 Puedes contactarme a través de:\n• **Email**: miguelcalzada2004@gmail.com\n• **LinkedIn**: linkedin.com/in/miguel-calzada-04a19b24b\n• **GitHub**: github.com/miguelcalzada-dev\n• **Teléfono**: +34 665 17 88 25\n\nEstoy abierto a nuevas oportunidades y colaboraciones interesantes. ¡No dudes en escribirme!";
-  }
-  // greetings
-  if (msg.match(/hola|hello|hi|buenas|hey|qué tal|cómo est/)) {
-    return "¡Hola! 👋 Soy el asistente de **Miguel Angel**. Puedo contarte sobre su experiencia, formación, stack técnico, proyectos o disponibilidad. ¿Qué te gustaría saber?";
-  }
-  // name / who
-  if (msg.match(/quién es|quien es|cuéntame sobre|sobre miguel|sobre ti|quién eres/)) {
-    return "👨‍💻 **Miguel Angel Calzada Martín** es un Desarrollador de Software con sede en Madrid. Trabaja actualmente en Analisis Survey Unit, donde desarrolla front-end para cuestionarios web (HTML, CSS, JS, jQuery, Bootstrap), mantiene el back-end de datos con SQL Server y VBScript, y mejora plataformas internas con ASP. Combina sólidas bases en desarrollo web con una profunda pasión por la inteligencia artificial y el Big Data.";
-  }
-  // skills / abilities
-  if (msg.match(/habilidad|skill|capaz|puede|sabe|experto|conocimiento/)) {
-    return "🛠️ Miguel Angel es experto en:\n• Arquitecturas de **microservicios** escalables\n• Desarrollo **Full-Stack** (React + Node.js)\n• **Ingeniería de datos** (PostgreSQL, MongoDB)\n• **IA y ML** (Machine Learning, Deep Learning, NLP)\n• **DevOps** (Docker, Kubernetes, CI/CD)\n• Múltiples lenguajes: JavaScript/TypeScript, Python, Java, C#";
-  }
-
-  // default
-  return "🤖 Puedo responder preguntas sobre la **experiencia**, **formación**, **stack técnico**, **proyectos** o **disponibilidad** de Miguel Angel. ¡Prueba preguntarme algo específico!";
+  return "🤔 No estoy seguro de eso. Puedo contarte sobre **experiencia**, **formación**, **stack técnico**, **proyectos**, **disponibilidad**, **idiomas** o **contacto**. ¿Sobre qué quieres saber?";
 }
 
 /* ──────────────────────────────────────────────
