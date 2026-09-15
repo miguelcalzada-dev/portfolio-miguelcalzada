@@ -116,7 +116,7 @@ const CV_DATA = {
       type: "Desplegado",
       color: "#6366f1",
       github: "https://github.com/miguelcalzada-dev/applied-ai-engineering-showcase",
-      url: "https://web-production-2ec10.up.railway.app/",
+      url: "/ai-lab",
     },
     {
       name: "Madrid Transit Pulse",
@@ -126,7 +126,7 @@ const CV_DATA = {
       type: "Desplegado",
       color: "#3b82f6",
       github: "https://github.com/miguelcalzada-dev/madrid-transit-pulse",
-      url: "https://madrid-transit-pulse.vercel.app/",
+      url: "/madrid-transit",
     },
     {
       name: "SQLSense AI",
@@ -136,7 +136,7 @@ const CV_DATA = {
       type: "Desplegado",
       color: "#ec4899",
       github: "https://github.com/miguelcalzada-dev/sqlsense-ai",
-      url: "https://sqlsense-ai-production.up.railway.app/",
+      url: "/sqlsense",
     },
     {
       name: "FitCity",
@@ -1134,9 +1134,7 @@ function Projects() {
                       {project.url && (
                         <a
                           href={project.url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          title="Ver demo en vivo"
+                          title="Abrir proyecto"
                           style={{
                             display: "flex", alignItems: "center", gap: 4,
                             color: project.color, fontSize: "0.8rem",

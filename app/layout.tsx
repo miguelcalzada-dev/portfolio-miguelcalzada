@@ -30,6 +30,8 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://miguelcalzada.com"),
+  alternates: { canonical: "/portfolio" },
   title: "Miguel Angel Calzada Martín — Software Developer | IA & Big Data",
   description:
     "Desarrollador de Software especializado en Inteligencia Artificial y Big Data. Arquitecturas de microservicios, Full-Stack (Node.js/React), ingeniería de datos y DevOps. Disponible para remoto/híbrido desde Madrid.",
