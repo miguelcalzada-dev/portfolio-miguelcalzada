@@ -276,7 +276,7 @@ label, .label-text, .metadata, .tag-chip, button, .nav-link, .uppercase-mono {
   gap: 24px !important;
 }
 
-.skills-grid > *, .projects-grid > * {
+.skills-grid > * {
   border: 4px solid var(--border-main) !important;
   border-radius: 0 !important;
   box-shadow: 4px 4px 0px var(--border-main) !important;
@@ -284,10 +284,127 @@ label, .label-text, .metadata, .tag-chip, button, .nav-link, .uppercase-mono {
   transition: transform 0.1s ease, box-shadow 0.1s ease, border-color 0.1s ease !important;
 }
 
-.skills-grid > *:hover, .projects-grid > *:hover {
+.skills-grid > *:hover {
   transform: translate(-2px, -2px) !important;
   box-shadow: 8px 8px 0px var(--border-main) !important;
   border-color: var(--accent-primary) !important;
+}
+
+/* Projects: cuadrícula de tarjetas */
+.projects-grid {
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)) !important;
+}
+
+.projects-grid > * {
+  display: flex;
+}
+
+.project-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  padding: 32px;
+  border: 4px solid var(--border-main) !important;
+  border-radius: 0 !important;
+  background: var(--bg-card) !important;
+  box-shadow: 4px 4px 0px var(--border-main) !important;
+  transition: transform 0.1s ease, box-shadow 0.1s ease, border-color 0.1s ease !important;
+}
+
+.project-card:hover {
+  transform: translate(-4px, -4px) !important;
+  border-color: var(--card-accent) !important;
+  box-shadow: 8px 8px 0px var(--card-accent) !important;
+}
+
+.project-accent {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: var(--card-accent);
+}
+
+.project-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.project-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  flex-shrink: 0;
+  border: 2px solid var(--border-main);
+  transition: transform 0.1s ease;
+}
+
+.project-card:hover .project-icon {
+  transform: translate(-2px, -2px);
+}
+
+.project-title {
+  margin: 0 0 10px;
+  font-size: 1.05rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.project-desc {
+  flex: 1;
+  margin: 0 0 24px;
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+  line-height: 1.65;
+}
+
+.project-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.project-stack {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.project-actions {
+  display: flex;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.project-actions a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border: 2px solid var(--border-main);
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  box-shadow: 2px 2px 0px var(--border-main);
+  transition: transform 0.1s ease, box-shadow 0.1s ease, background 0.1s ease, color 0.1s ease, border-color 0.1s ease;
+}
+
+.project-actions a:hover {
+  transform: translate(-2px, -2px);
+  border-color: var(--card-accent);
+  background: var(--card-accent);
+  color: var(--bg-card);
+  box-shadow: 4px 4px 0px var(--card-accent);
 }
 
 .brutalist-heading {
