@@ -292,7 +292,7 @@ label, .label-text, .metadata, .tag-chip, button, .nav-link, .uppercase-mono {
 
 /* Projects: cuadrícula de tarjetas */
 .projects-grid {
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)) !important;
+  grid-template-columns: repeat(2, 1fr) !important;
 }
 
 .projects-grid > * {
@@ -407,6 +407,18 @@ label, .label-text, .metadata, .tag-chip, button, .nav-link, .uppercase-mono {
   box-shadow: 4px 4px 0px var(--card-accent);
 }
 
+.project-actions a.project-enter {
+  width: auto;
+  height: auto;
+  gap: 6px;
+  padding: 8px 14px;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
 .brutalist-heading {
   font-family: var(--font-heading);
   text-transform: uppercase;
@@ -450,5 +462,8 @@ h2.brutalist-heading {
   }
   .brutalist-section {
     padding: 60px 16px !important;
+  }
+  .projects-grid {
+    grid-template-columns: 1fr !important;
   }
 }

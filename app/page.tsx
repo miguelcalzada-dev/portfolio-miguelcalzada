@@ -71,16 +71,15 @@ const CV_DATA = {
       period: "Marzo 2024 – Presente",
       type: "Jornada completa",
       description:
-        "Desarrollo front-end de cuestionarios web para estudios de mercado, mantenimiento y mejora del back-end de datos, desarrollo de mejoras en plataformas internas y trabajo colaborativo en equipo con seguimiento de tareas y control de versiones.",
+        "Diseño, desarrollo y despliegue de APIs REST y arquitecturas de microservicios con Java (Spring Boot), Node.js y Python (FastAPI). Soluciones cloud en AWS con entornos contenerizados, agentes de IA basados en LLMs, arquitecturas RAG y pipelines de CI/CD en producción.",
       highlights: [
-        "Front-end de cuestionarios web con HTML, CSS, JS, jQuery y Bootstrap",
-        "Back-end y gestión de datos con SQL Server y VBScript",
-        "Mejoras de plataformas con ASP, JavaScript, CSS y HTML",
-        "Conexiones a sistemas de datos con SQL Server",
-        "Trabajo en equipo, coordinación técnica y gestión de tiempos",
-        "Control de versiones con Git y GitHub",
+        "APIs REST y microservicios con Java (Spring Boot), Node.js y Python (FastAPI)",
+        "Despliegue y operación en AWS con Docker y Kubernetes",
+        "Agentes de IA y LLMs (Gemini, Claude): orquestación, memoria conversacional y RAG",
+        "CI/CD con GitHub Actions y despliegue automatizado (AWS, Railway, Render)",
+        "Seguridad de datos, autenticación y control de accesos en entornos exigentes",
       ],
-      stack: ["HTML", "CSS", "JavaScript", "jQuery", "Bootstrap", "SQL Server", "VBScript", "ASP", "Git"],
+      stack: ["Java", "Spring Boot", "Node.js", "Python", "FastAPI", "AWS", "Docker", "Kubernetes", "LLMs", "RAG", "CI/CD"],
     },
   ],
   education: [
@@ -332,6 +331,7 @@ function Navbar() {
             display: "flex",
             alignItems: "center",
             justifyContent: "space-between",
+            position: "relative",
           }}
         >
           {/* Logo icon */}
@@ -340,15 +340,26 @@ function Navbar() {
               <Code2 size={16} color="var(--bg-card)" />
             </div>
           </a>
-          <div style={{ flex: 1 }} />
-          
-          {/* Desktop Links */}
-          <div className="desktop-only" style={{ alignItems: "center", gap: 32 }}>
+          {/* Enlaces centrados */}
+          <div
+            className="desktop-only"
+            style={{
+              position: "absolute",
+              left: "50%",
+              transform: "translateX(-50%)",
+              alignItems: "center",
+              gap: 32,
+            }}
+          >
             {["experiencia", "skills", "proyectos"].map((s) => (
               <a key={s} href={`#${s}`} className="nav-link" style={{ textTransform: "capitalize" }}>
                 {s}
               </a>
             ))}
+          </div>
+
+          {/* Acciones derecha */}
+          <div className="desktop-only" style={{ alignItems: "center", gap: 12 }}>
             <a
               href={CV_DATA.github}
               target="_blank"
@@ -1124,8 +1135,9 @@ function Projects() {
                     </div>
                     <div className="project-actions">
                       {project.url && (
-                        <a href={project.url} title="Abrir proyecto" aria-label={`Abrir ${project.name}`}>
-                          <ExternalLink size={15} />
+                        <a className="project-enter" href={project.url} aria-label={`Abrir ${project.name}`}>
+                          Entrar
+                          <ExternalLink size={14} />
                         </a>
                       )}
                       <a
