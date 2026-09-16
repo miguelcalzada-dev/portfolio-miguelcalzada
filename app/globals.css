@@ -20,6 +20,9 @@
   --font-heading: var(--font-dm-serif), serif;
   --font-body: var(--font-space-grotesk), sans-serif;
   --font-mono: var(--font-space-mono), monospace;
+
+  /* Motion */
+  --ease-smooth: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 @theme inline {
@@ -470,5 +473,65 @@ h2.brutalist-heading {
   }
   .projects-grid {
     grid-template-columns: 1fr !important;
+  }
+}
+
+/* ============================================================
+   CUSTOM CURSOR - solo escritorio (puntero fino)
+   Punto + anillo que siguen al raton con inversion de color.
+   ============================================================ */
+.cursor-dot,
+.cursor-ring {
+  position: fixed;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  border-radius: 50% !important;
+  mix-blend-mode: difference;
+  opacity: 0;
+  will-change: transform;
+}
+
+.cursor-dot {
+  width: 8px;
+  height: 8px;
+  background: #ffffff;
+  z-index: 99999;
+}
+
+.cursor-ring {
+  width: 38px;
+  height: 38px;
+  border: 1px solid #ffffff59;
+  z-index: 99998;
+  transition:
+    width 0.25s var(--ease-smooth),
+    height 0.25s var(--ease-smooth),
+    background-color 0.25s var(--ease-smooth),
+    border-color 0.25s var(--ease-smooth),
+    opacity 0.3s var(--ease-smooth);
+}
+
+.cursor-ring.is-hovering {
+  width: 62px;
+  height: 62px;
+  border-color: transparent;
+  background-color: #ffffff1f;
+}
+
+.cursor-ring.is-down {
+  background-color: #ffffff2e;
+}
+
+@media (hover: none), (pointer: coarse) {
+  .cursor-dot,
+  .cursor-ring {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cursor-ring {
+    transition: none;
   }
 }
