@@ -2,10 +2,9 @@
 
 import { useEffect, useRef } from "react";
 
-const HOVER_SELECTOR =
-  "a, button, [role='button'], input, textarea, select, label, .cursor-hover";
-
-const LERP = 0.15;
+const HOVER_SELECTOR = "a, button, [role='button'], label, select, .cursor-hover";
+const TEXT_SELECTOR = "input, textarea, [contenteditable='true']";
+const LERP = 0.14;
 
 export default function CustomCursor() {
   const dotRef = useRef<HTMLDivElement>(null);
@@ -21,50 +20,71 @@ export default function CustomCursor() {
     const ring = ringRef.current;
     if (!dot || !ring) return;
 
+    // El cursor nativo solo se oculta si este componente se monta correctamente.
+    document.documentElement.classList.add("has-custom-cursor");
+
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const lerp = reduceMotion.matches ? 1 : LERP;
+
     let mouseX = window.innerWidth / 2;
     let mouseY = window.innerHeight / 2;
     let ringX = mouseX;
     let ringY = mouseY;
-    let visible = false;
+    let active = false;
     let frame = 0;
 
+    const setMode = (mode: "hover" | "text" | null) => {
+      ring.classList.toggle("is-hovering", mode === "hover");
+      ring.classList.toggle("is-text", mode === "text");
+      dot.classList.toggle("is-hovering", mode === "hover");
+      dot.classList.toggle("is-text", mode === "text");
+    };
+
     const show = () => {
-      if (visible) return;
-      visible = true;
-      dot.style.opacity = "1";
-      ring.style.opacity = "1";
+      if (active) return;
+      active = true;
+      ring.classList.add("is-active");
+      dot.classList.add("is-active");
     };
 
     const hide = () => {
-      visible = false;
-      dot.style.opacity = "0";
-      ring.style.opacity = "0";
+      active = false;
+      ring.classList.remove("is-active");
+      dot.classList.remove("is-active");
     };
 
     const onMove = (event: MouseEvent) => {
       mouseX = event.clientX;
       mouseY = event.clientY;
+      // Al aparecer, el anillo arranca en el puntero para no venir desde el centro.
+      if (!active) {
+        ringX = mouseX;
+        ringY = mouseY;
+      }
       show();
     };
 
     const onOver = (event: MouseEvent) => {
       const target = event.target as Element | null;
-      if (target?.closest(HOVER_SELECTOR)) ring.classList.add("is-hovering");
+      if (!target) return;
+      if (target.closest(TEXT_SELECTOR)) setMode("text");
+      else if (target.closest(HOVER_SELECTOR)) setMode("hover");
     };
 
     const onOut = (event: MouseEvent) => {
       const target = event.target as Element | null;
-      if (target?.closest(HOVER_SELECTOR)) ring.classList.remove("is-hovering");
+      if (!target) return;
+      if (target.closest(TEXT_SELECTOR) || target.closest(HOVER_SELECTOR)) setMode(null);
     };
 
     const onDown = () => ring.classList.add("is-down");
     const onUp = () => ring.classList.remove("is-down");
 
     const render = () => {
-      ringX += (mouseX - ringX) * LERP;
-      ringY += (mouseY - ringY) * LERP;
+      ringX += (mouseX - ringX) * lerp;
+      ringY += (mouseY - ringY) * lerp;
       dot.style.transform = `translate3d(${mouseX}px, ${mouseY}px, 0) translate(-50%, -50%)`;
-      ring.style.transform = `translate3d(${ringX}px, ${ringY}px, 0) translate(-50%, -50%)`;
+      ring.style.transform = `translate3d(${ringX}px, ${ringY}px, 0)`;
       frame = requestAnimationFrame(render);
     };
 
@@ -80,6 +100,7 @@ export default function CustomCursor() {
 
     return () => {
       cancelAnimationFrame(frame);
+      document.documentElement.classList.remove("has-custom-cursor");
       window.removeEventListener("mousemove", onMove);
       window.removeEventListener("mouseover", onOver);
       window.removeEventListener("mouseout", onOut);
@@ -92,7 +113,9 @@ export default function CustomCursor() {
 
   return (
     <>
-      <div ref={ringRef} className="cursor-ring" aria-hidden="true" />
+      <div ref={ringRef} className="cursor-ring" aria-hidden="true">
+        <span className="cursor-ring__circle" />
+      </div>
       <div ref={dotRef} className="cursor-dot" aria-hidden="true" />
     </>
   );
