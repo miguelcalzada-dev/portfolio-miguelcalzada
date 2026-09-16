@@ -25,16 +25,28 @@ const spaceMono = Space_Mono({
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
-  maximumScale: 1,
-  userScalable: false,
+  themeColor: "#111111",
+  colorScheme: "dark",
 };
 
+const SITE_URL = "https://miguelcalzada.com";
+const TITLE = "Miguel Angel Calzada Martin - Software Developer | IA & Big Data";
+const DESCRIPTION =
+  "Desarrollador de Software especializado en Inteligencia Artificial y Big Data. Arquitecturas de microservicios, Full-Stack (Node.js/React), ingenieria de datos y DevOps. Disponible para remoto/hibrido desde Madrid.";
+
 export const metadata: Metadata = {
-  metadataBase: new URL("https://miguelcalzada.com"),
+  metadataBase: new URL(SITE_URL),
   alternates: { canonical: "/" },
-  title: "Miguel Angel Calzada Martín — Software Developer | IA & Big Data",
-  description:
-    "Desarrollador de Software especializado en Inteligencia Artificial y Big Data. Arquitecturas de microservicios, Full-Stack (Node.js/React), ingeniería de datos y DevOps. Disponible para remoto/híbrido desde Madrid.",
+  title: {
+    default: TITLE,
+    template: "%s | Miguel Angel Calzada",
+  },
+  description: DESCRIPTION,
+  applicationName: "Miguel Angel Calzada - Portfolio",
+  authors: [{ name: "Miguel Angel Calzada Martin", url: SITE_URL }],
+  creator: "Miguel Angel Calzada Martin",
+  publisher: "Miguel Angel Calzada Martin",
+  category: "technology",
   keywords: [
     "Miguel Angel Calzada",
     "Software Developer",
@@ -45,26 +57,36 @@ export const metadata: Metadata = {
     "Next.js",
     "TypeScript",
     "Docker",
+    "Kubernetes",
     "Machine Learning",
+    "RAG",
+    "LLM",
     "Madrid",
   ],
-  authors: [{ name: "Miguel Angel Calzada Martín" }],
   openGraph: {
-    title: "Miguel Angel Calzada Martín — Software Developer | IA & Big Data",
-    description:
-      "Desarrollador de Software especializado en Inteligencia Artificial y Big Data, disponible para remoto/híbrido desde Madrid.",
     type: "website",
     locale: "es_ES",
+    url: SITE_URL,
+    siteName: "Miguel Angel Calzada Martin",
+    title: TITLE,
+    description:
+      "Desarrollador de Software especializado en Inteligencia Artificial y Big Data, disponible para remoto/hibrido desde Madrid.",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Miguel Angel Calzada Martín — Software Developer",
+    title: TITLE,
     description:
       "Desarrollador especializado en IA, Big Data, microservicios y DevOps desde Madrid.",
   },
   robots: {
     index: true,
     follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
   },
 };
 
