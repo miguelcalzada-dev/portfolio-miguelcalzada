@@ -512,14 +512,14 @@ h2.brutalist-heading {
 }
 
 .cursor-dot.is-active {
-  width: 8px;
-  height: 8px;
+  width: 6px;
+  height: 6px;
   opacity: 1;
 }
 
 .cursor-dot.is-hovering {
-  width: 5px;
-  height: 5px;
+  width: 4px;
+  height: 4px;
 }
 
 .cursor-dot.is-text {
