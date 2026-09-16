@@ -477,7 +477,9 @@ h2.brutalist-heading {
 }
 /* ============================================================
    CUSTOM CURSOR - solo escritorio (puntero fino)
-   Punto solido + anillo con seguimiento suavizado e inversion.
+   Punto solido + anillo que sigue al raton con retardo.
+   Ambos usan mix-blend-mode: difference, asi que SIEMPRE
+   invierten el color del fondo y se ven sobre cualquier tono.
    ============================================================ */
 
 /* El cursor nativo solo se oculta si el componente JS se ha montado
@@ -526,62 +528,53 @@ h2.brutalist-heading {
   opacity: 0;
 }
 
-/* --- Anillo: sigue al raton con retardo --- */
+/* --- Anillo: sigue al raton con retardo ---
+   mix-blend-mode va en ESTE elemento (no en un hijo) para que el
+   blending no quede aislado por el stacking context del padre. */
 .cursor-ring {
   position: fixed;
   top: 0;
   left: 0;
-  width: 0;
-  height: 0;
+  width: 10px;
+  height: 10px;
+  border: 1.5px solid rgba(255, 255, 255, 0.9);
+  border-radius: 50% !important;
+  background-color: transparent;
+  mix-blend-mode: difference;
   pointer-events: none;
   z-index: 99998;
   opacity: 0;
-  --ring-scale: 0.4;
-  will-change: transform;
-  transition: opacity 0.35s var(--ease-smooth);
-}
-
-.cursor-ring.is-active {
-  opacity: 1;
-  --ring-scale: 1;
-}
-
-.cursor-ring.is-down {
-  --ring-scale: 0.78;
-}
-
-.cursor-ring__circle {
-  position: absolute;
-  top: 0;
-  left: 0;
-  display: block;
-  width: 40px;
-  height: 40px;
-  border: 1px solid rgba(255, 255, 255, 0.4);
-  border-radius: 50% !important;
-  mix-blend-mode: difference;
-  transform: translate(-50%, -50%) scale(var(--ring-scale));
+  will-change: transform, width, height, background-color, border-color;
   transition:
     width 0.4s var(--ease-smooth),
     height 0.4s var(--ease-smooth),
-    transform 0.3s var(--ease-smooth),
     background-color 0.4s var(--ease-smooth),
-    border-color 0.4s var(--ease-smooth);
+    border-color 0.4s var(--ease-smooth),
+    opacity 0.35s var(--ease-smooth);
 }
 
-.cursor-ring.is-hovering .cursor-ring__circle {
+.cursor-ring.is-active {
+  width: 40px;
+  height: 40px;
+  opacity: 1;
+}
+
+.cursor-ring.is-hovering {
   width: 64px;
   height: 64px;
-  border-color: transparent;
-  background-color: rgba(255, 255, 255, 0.14);
+  background-color: rgba(255, 255, 255, 0.22);
 }
 
-.cursor-ring.is-text .cursor-ring__circle {
+.cursor-ring.is-down {
+  background-color: rgba(255, 255, 255, 0.5);
+}
+
+.cursor-ring.is-text {
   width: 3px;
   height: 30px;
-  border-color: transparent;
+  border: 0;
   border-radius: 2px !important;
-  background-color: rgba(255, 255, 255, 0.85);
+  background-color: rgba(255, 255, 255, 0.95);
 }
 
 @media (hover: none), (pointer: coarse) {
@@ -593,7 +586,7 @@ h2.brutalist-heading {
 
 @media (prefers-reduced-motion: reduce) {
   .cursor-dot,
-  .cursor-ring__circle {
+  .cursor-ring {
     transition: opacity 0.2s linear;
   }
 }
