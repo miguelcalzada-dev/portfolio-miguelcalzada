@@ -29,7 +29,14 @@ export default function OpengraphImage() {
               display: "flex",
             }}
           />
-          <span style={{ fontSize: 26, letterSpacing: 4, textTransform: "uppercase", color: "#a3a3a3" }}>
+          <span
+            style={{
+              fontSize: 26,
+              letterSpacing: 4,
+              textTransform: "uppercase",
+              color: "#a3a3a3",
+            }}
+          >
             miguelcalzada.com
           </span>
         </div>
@@ -37,6 +44,8 @@ export default function OpengraphImage() {
         <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
           <div
             style={{
+              display: "flex",
+              flexDirection: "column",
               fontSize: 78,
               fontWeight: 800,
               lineHeight: 1.02,
@@ -44,8 +53,7 @@ export default function OpengraphImage() {
               letterSpacing: -2,
             }}
           >
-            Miguel Angel
-            <br />
+            <span>Miguel Angel</span>
             <span style={{ color: "#FF3E00" }}>Calzada Martin</span>
           </div>
           <div style={{ fontSize: 34, color: "#d4d4d4" }}>
