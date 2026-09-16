@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { DM_Serif_Display, Space_Grotesk, Space_Mono } from "next/font/google";
 import "./globals.css";
+import CustomCursor from "@/components/CustomCursor";
 
 const dmSerifDisplay = DM_Serif_Display({
   weight: "400",
@@ -101,6 +102,7 @@ export default function RootLayout({
         <main className="brutalist-container">
           {children}
         </main>
+        <CustomCursor />
       </body>
     </html>
   );
