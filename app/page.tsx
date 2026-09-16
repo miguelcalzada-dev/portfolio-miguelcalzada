@@ -25,7 +25,6 @@ import {
   Languages,
   Menu,
 } from "lucide-react";
-import CustomCursor from "@/components/CustomCursor";
 
 /* ──────────────────────────────────────────────
    BRAND ICONS (logos reales de marca)
@@ -1636,7 +1635,6 @@ export default function Portfolio() {
       <Projects />
       <Footer />
       <AIChatbot />
-      <CustomCursor />
     </main>
   );
 }
