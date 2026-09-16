@@ -5,6 +5,7 @@ import { useEffect, useRef } from "react";
 const HOVER_SELECTOR = "a, button, [role='button'], label, select, .cursor-hover";
 const TEXT_SELECTOR = "input, textarea, [contenteditable='true']";
 const LERP = 0.14;
+const SCALE_LERP = 0.18;
 
 export default function CustomCursor() {
   const dotRef = useRef<HTMLDivElement>(null);
@@ -24,12 +25,15 @@ export default function CustomCursor() {
     document.documentElement.classList.add("has-custom-cursor");
 
     const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
-    const lerp = reduceMotion.matches ? 1 : LERP;
+    const positionLerp = reduceMotion.matches ? 1 : LERP;
+    const scaleLerp = reduceMotion.matches ? 1 : SCALE_LERP;
 
     let mouseX = window.innerWidth / 2;
     let mouseY = window.innerHeight / 2;
     let ringX = mouseX;
     let ringY = mouseY;
+    let ringScale = 1;
+    let ringScaleTarget = 1;
     let active = false;
     let frame = 0;
 
@@ -77,14 +81,22 @@ export default function CustomCursor() {
       if (target.closest(TEXT_SELECTOR) || target.closest(HOVER_SELECTOR)) setMode(null);
     };
 
-    const onDown = () => ring.classList.add("is-down");
-    const onUp = () => ring.classList.remove("is-down");
+    const onDown = () => {
+      ringScaleTarget = 0.82;
+      ring.classList.add("is-down");
+    };
+
+    const onUp = () => {
+      ringScaleTarget = 1;
+      ring.classList.remove("is-down");
+    };
 
     const render = () => {
-      ringX += (mouseX - ringX) * lerp;
-      ringY += (mouseY - ringY) * lerp;
+      ringX += (mouseX - ringX) * positionLerp;
+      ringY += (mouseY - ringY) * positionLerp;
+      ringScale += (ringScaleTarget - ringScale) * scaleLerp;
       dot.style.transform = `translate3d(${mouseX}px, ${mouseY}px, 0) translate(-50%, -50%)`;
-      ring.style.transform = `translate3d(${ringX}px, ${ringY}px, 0)`;
+      ring.style.transform = `translate3d(${ringX}px, ${ringY}px, 0) translate(-50%, -50%) scale(${ringScale})`;
       frame = requestAnimationFrame(render);
     };
 
@@ -113,9 +125,7 @@ export default function CustomCursor() {
 
   return (
     <>
-      <div ref={ringRef} className="cursor-ring" aria-hidden="true">
-        <span className="cursor-ring__circle" />
-      </div>
+      <div ref={ringRef} className="cursor-ring" aria-hidden="true" />
       <div ref={dotRef} className="cursor-dot" aria-hidden="true" />
     </>
   );
