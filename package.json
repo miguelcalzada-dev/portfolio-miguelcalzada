@@ -1,12 +1,14 @@
 {
-  "name": "portfolio",
-  "version": "0.1.0",
+  "name": "portfolio-miguelcalzada",
+  "version": "1.0.0",
   "private": true,
+  "description": "Portfolio profesional de Miguel Angel Calzada Martin - Software Developer especializado en IA y Big Data.",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "@fontsource/dm-serif-display": "^5.2.8",
@@ -27,5 +29,8 @@
     "eslint-config-next": "16.2.4",
     "tailwindcss": "^4",
     "typescript": "^5"
+  },
+  "engines": {
+    "node": ">=20.9.0"
   }
 }
