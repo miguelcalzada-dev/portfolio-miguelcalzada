@@ -103,12 +103,7 @@ export default function RootLayout({
           {children}
         </main>
         <CustomCursor />
-        {/* Cloudflare Web Analytics */}
-        <script
-          defer
-          src="https://static.cloudflareinsights.com/beacon.min.js"
-          data-cf-beacon={'{"token": "1f517d798f314877860e151bb7b33f83"}'}
-        />      </body>
+      </body>
     </html>
   );
 }
