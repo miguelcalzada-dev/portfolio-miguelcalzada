@@ -55,6 +55,10 @@ const nextConfig: NextConfig = {
   async headers() {
     const noStore = [
       { key: "Cache-Control", value: "no-store, max-age=0, must-revalidate" },
+      // Vercel cachea en el borde segun estas cabeceras; sin ellas, una copia
+      // antigua de un proyecto proxeado puede servirse durante mucho tiempo.
+      { key: "CDN-Cache-Control", value: "no-store" },
+      { key: "Vercel-CDN-Cache-Control", value: "no-store" },
     ];
     return [
       { source: "/sqlsense", headers: noStore },
