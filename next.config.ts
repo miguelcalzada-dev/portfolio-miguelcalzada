@@ -48,6 +48,23 @@ const nextConfig: NextConfig = {
       { source: "/ai-lab/:path*", destination: `${SITES.aiLab}/ai-lab/:path*` },
     ];
   },
+
+  // Los proyectos se sirven por rewrite. Se evita cachear sus respuestas en el
+  // borde: si no, un deploy nuevo tarda en verse y pueden quedar versiones
+  // mezcladas (HTML nuevo apuntando a un CSS ya inexistente) entre rutas.
+  async headers() {
+    const noStore = [
+      { key: "Cache-Control", value: "no-store, max-age=0, must-revalidate" },
+    ];
+    return [
+      { source: "/sqlsense", headers: noStore },
+      { source: "/sqlsense/:path*", headers: noStore },
+      { source: "/madrid-transit", headers: noStore },
+      { source: "/madrid-transit/:path*", headers: noStore },
+      { source: "/ai-lab", headers: noStore },
+      { source: "/ai-lab/:path*", headers: noStore },
+    ];
+  },
 };
 
 export default nextConfig;
