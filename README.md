@@ -49,6 +49,7 @@ Este repositorio es además el **portal único** del ecosistema: agrupa y sirve 
 | `/madrid-transit` | [Madrid Transit Pulse](https://github.com/miguelcalzada-dev/madrid-transit-pulse) | Analítica y visualización en tiempo real de Cercanías Madrid. |
 | `/sqlsense` | [SQLSense AI](https://github.com/miguelcalzada-dev/sqlsense-ai) | Aprende SQL conversando con IA y SQLite WASM en el navegador. |
 | `/ai-lab` | [Applied AI Engineering Showcase](https://github.com/miguelcalzada-dev/applied-ai-engineering-showcase) | Suite de IA aplicada: chat, visión, RAG, NLP y prompt engineering. |
+| `/impactdb` | [ImpactDB MCP](https://github.com/miguelcalzada-dev/data-lineage-mcp) | Linaje de datos e impacto de cambios en PostgreSQL con herramientas MCP. |
 
 Las URLs de cada destino se centralizan en el objeto `SITES` de [`next.config.ts`](./next.config.ts).
 
@@ -76,7 +77,8 @@ miguelcalzada.com  (Next.js · Vercel)
    ├── /              → portfolio (este repo)
    ├── /madrid-transit → rewrite → madrid-transit-pulse.vercel.app
    ├── /sqlsense       → rewrite → sqlsense-ai (Railway)
-   └── /ai-lab         → rewrite → applied-ai-engineering-showcase (Railway)
+   ├── /ai-lab         → rewrite → applied-ai-engineering-showcase (Railway)
+   └── /impactdb       → rewrite → data-lineage-mcp (Railway)
 ```
 
 - **Redirecciones de host** (301): `miguelcalzada.es`, `www.miguelcalzada.es` y `www.miguelcalzada.com` → `miguelcalzada.com`.

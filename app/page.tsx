@@ -160,6 +160,16 @@ const CV_DATA = {
       url: "/sqlsense",
     },
     {
+      name: "ImpactDB MCP",
+      description:
+        "Analizador de linaje de datos e impacto de cambios para PostgreSQL. Conecta tu base, pregunta en lenguaje natural qué se rompería antes de un ALTER / DROP / RENAME y lo visualiza en un grafo interactivo. Expone 4 herramientas del estándar Model Context Protocol (MCP) listas para agentes externos.",
+      stack: ["Next.js", "TypeScript", "PostgreSQL", "MCP", "Groq", "React Flow"],
+      type: "Desplegado",
+      color: "#14b8a6",
+      github: "https://github.com/miguelcalzada-dev/data-lineage-mcp",
+      url: "/impactdb",
+    },
+    {
       name: "FitCity",
       description:
         "Plataforma Full Stack orientada al fitness: gestión de usuarios, check-in en gimnasios, validación de PRs de Powerlifting mediante IA y rankings de la comunidad. Frontend Angular 19 + TailwindCSS, backend FastAPI con Supabase (PostgreSQL).",
@@ -232,6 +242,11 @@ const BOT_KB: { test: RegExp; reply: string }[] = [
       "🤖 **Applied AI Solutions (AI Project Showcase)**: portfolio interactivo de IA con chat con Gemini, visión por computador, RAG, NLP y prompt engineering, todo desplegado en producción.",
   },
   {
+    test: /impactdb|impact db|linaje|lineage|\bmcp\b|model context protocol/,
+    reply:
+      "🧬 **ImpactDB MCP**: analizador de linaje de datos e impacto de cambios para PostgreSQL. Pregunta en lenguaje natural qué se rompería antes de un `ALTER` / `DROP` / `RENAME` y lo ves en un grafo interactivo de dependencias. Expone 4 herramientas del estándar **Model Context Protocol (MCP)** para agentes externos. Está desplegado y puedes abrirlo desde la sección de proyectos.",
+  },
+  {
     test: /fitcity|fitness|\bgym\b|barber|spotify|asistente de voz/,
     reply:
       "📦 Otros proyectos: **FitCity** (plataforma fitness Full Stack con Angular 19, FastAPI y Supabase), **Barber Books Template** (plantilla web para barberías con sistema de reservas) y **Spotify Voice Assistant** (asistente de voz offline para Windows). Están listados en la sección de proyectos.",
@@ -239,7 +254,7 @@ const BOT_KB: { test: RegExp; reply: string }[] = [
   {
     test: /proyecto|project|portafolio|portfolio|repositori|\brepo\b|qué ha construido|qué has hecho/,
     reply:
-      "🚀 Proyectos destacados:\n• **Applied AI Solutions** — IA con Gemini, visión, RAG y NLP (desplegado)\n• **Madrid Transit Pulse** — Big Data y visualización de la movilidad en Madrid\n• **SQLSense AI** — aprende SQL con IA y SQLite WASM en el navegador\n• **FitCity** — plataforma fitness Full Stack (Angular + FastAPI + Supabase)\n• **Barber Books Template** — plantilla web para barberías con reservas\n• **Spotify Voice Assistant** — asistente de voz offline para Windows\nEn la sección de proyectos tienes el detalle y los enlaces a cada uno.",
+      "🚀 Proyectos destacados:\n• **Applied AI Solutions** — IA con Gemini, visión, RAG y NLP (desplegado)\n• **Madrid Transit Pulse** — Big Data y visualización de la movilidad en Madrid\n• **SQLSense AI** — aprende SQL con IA y SQLite WASM en el navegador\n• **ImpactDB MCP** — linaje de datos e impacto de cambios en PostgreSQL con herramientas MCP (desplegado)\n• **FitCity** — plataforma fitness Full Stack (Angular + FastAPI + Supabase)\n• **Barber Books Template** — plantilla web para barberías con reservas\n• **Spotify Voice Assistant** — asistente de voz offline para Windows\nEn la sección de proyectos tienes el detalle y los enlaces a cada uno.",
   },
   {
     test: /cloud|\baws\b|\bec2\b|\bs3\b|\blambda\b|infraestructura|\brailway\b|\brender\b|serverless/,

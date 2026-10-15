@@ -5,6 +5,7 @@ const SITES = {
   madridTransit: "https://madrid-transit-pulse.vercel.app",
   sqlsense: "https://sqlsense-ai-production.up.railway.app",
   aiLab: "https://web-production-2ec10.up.railway.app",
+  impactdb: "https://data-lineage-mcp-production.up.railway.app",
 };
 
 const nextConfig: NextConfig = {
@@ -46,6 +47,9 @@ const nextConfig: NextConfig = {
 
       { source: "/ai-lab", destination: `${SITES.aiLab}/ai-lab/` },
       { source: "/ai-lab/:path*", destination: `${SITES.aiLab}/ai-lab/:path*` },
+
+      { source: "/impactdb", destination: `${SITES.impactdb}/impactdb` },
+      { source: "/impactdb/:path*", destination: `${SITES.impactdb}/impactdb/:path*` },
     ];
   },
 
@@ -67,6 +71,8 @@ const nextConfig: NextConfig = {
       { source: "/madrid-transit/:path*", headers: noStore },
       { source: "/ai-lab", headers: noStore },
       { source: "/ai-lab/:path*", headers: noStore },
+      { source: "/impactdb", headers: noStore },
+      { source: "/impactdb/:path*", headers: noStore },
     ];
   },
 };
