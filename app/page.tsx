@@ -1,7 +1,14 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { motion, useInView, AnimatePresence, type Variants, useScroll, useMotionValueEvent } from "framer-motion";
+import {
+  motion,
+  useInView,
+  AnimatePresence,
+  useScroll,
+  useReducedMotion,
+  type Variants,
+} from "framer-motion";
 import {
   Code2,
   Brain,
@@ -22,8 +29,19 @@ import {
   Server,
   Cloud,
   Bot,
-  Languages,
   Menu,
+  Briefcase,
+  TrendingUp,
+  Layers,
+  ArrowUp,
+  Rocket,
+  Network,
+  Terminal,
+  Cpu,
+  BrainCircuit,
+  Workflow,
+  Gauge,
+  Phone,
 } from "lucide-react";
 
 /* ──────────────────────────────────────────────
@@ -59,6 +77,7 @@ const CV_DATA = {
   location: "Madrid, España",
   availability: "Disponible · Remoto / Híbrido",
   email: "miguelcalzada2004@gmail.com",
+  phone: "+34 665 17 88 25",
   github: "https://github.com/miguelcalzada-dev",
   linkedin: "https://www.linkedin.com/in/miguel-calzada-04a19b24b",
   summary:
@@ -332,14 +351,16 @@ function getBotResponse(message: string): string {
 }
 
 /* ──────────────────────────────────────────────
-   ANIMATION VARIANTS
+   ANIMATION VARIANTS & HELPERS
 ────────────────────────────────────────────── */
+const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
+
 const fadeUp: Variants = {
   hidden: { opacity: 0, y: 30 },
   visible: {
     opacity: 1,
     y: 0,
-    transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] },
+    transition: { duration: 0.6, ease: EASE },
   },
 };
 
@@ -356,12 +377,13 @@ function AnimSection({
 }) {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-80px" });
+  const reduce = useReducedMotion();
   return (
     <motion.div
       ref={ref}
       variants={stagger}
-      initial="hidden"
-      animate={inView ? "visible" : "hidden"}
+      initial={reduce ? "visible" : "hidden"}
+      animate={inView || reduce ? "visible" : "hidden"}
       className={className}
     >
       {children}
@@ -370,11 +392,100 @@ function AnimSection({
 }
 
 /* ──────────────────────────────────────────────
+   MARQUEE
+────────────────────────────────────────────── */
+function Marquee({
+  children,
+  duration = 34,
+  reverse = false,
+  gap = "2.5rem",
+  className = "",
+}: {
+  children: React.ReactNode;
+  duration?: number;
+  reverse?: boolean;
+  gap?: string;
+  className?: string;
+}) {
+  const trackStyle = { "--marquee-duration": `${duration}s` } as React.CSSProperties;
+  return (
+    <div
+      className={`marquee ${reverse ? "marquee--reverse" : ""} ${className}`}
+      style={{ "--marquee-gap": gap } as React.CSSProperties}
+      aria-hidden="true"
+    >
+      <div className="marquee__track" style={trackStyle}>
+        {children}
+      </div>
+      <div className="marquee__track" style={trackStyle}>
+        {children}
+      </div>
+    </div>
+  );
+}
+
+/* ──────────────────────────────────────────────
+   SCROLL PROGRESS
+────────────────────────────────────────────── */
+function ScrollProgress() {
+  const { scrollYProgress } = useScroll();
+  return <motion.div className="scroll-progress" style={{ scaleX: scrollYProgress }} aria-hidden="true" />;
+}
+
+/* ──────────────────────────────────────────────
+   COUNTER
+────────────────────────────────────────────── */
+function Counter({
+  to,
+  suffix = "",
+  duration = 1.4,
+}: {
+  to: number;
+  suffix?: string;
+  duration?: number;
+}) {
+  const ref = useRef<HTMLSpanElement>(null);
+  const inView = useInView(ref, { once: true, margin: "-40px" });
+  const reduce = useReducedMotion();
+  const [value, setValue] = useState(0);
+
+  useEffect(() => {
+    if (!inView) return;
+    let raf = 0;
+    const start = performance.now();
+    const total = reduce ? 0 : duration;
+    const tick = (now: number) => {
+      const progress = total <= 0 ? 1 : Math.min((now - start) / (total * 1000), 1);
+      const eased = 1 - Math.pow(1 - progress, 3);
+      setValue(Math.round(eased * to));
+      if (progress < 1) raf = requestAnimationFrame(tick);
+    };
+    raf = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(raf);
+  }, [inView, to, duration, reduce]);
+
+  return (
+    <span ref={ref}>
+      {value}
+      {suffix}
+    </span>
+  );
+}
+
+/* ──────────────────────────────────────────────
    NAV
 ────────────────────────────────────────────── */
+const NAV_ITEMS = [
+  { id: "experiencia", label: "Experiencia" },
+  { id: "skills", label: "Skills" },
+  { id: "proyectos", label: "Proyectos" },
+  { id: "contacto", label: "Contacto" },
+];
+
 function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [active, setActive] = useState("experiencia");
 
   useEffect(() => {
     const handler = () => {
@@ -383,6 +494,23 @@ function Navbar() {
     window.addEventListener("scroll", handler, { passive: true });
     handler();
     return () => window.removeEventListener("scroll", handler);
+  }, []);
+
+  useEffect(() => {
+    const sections = NAV_ITEMS.map((item) => document.getElementById(item.id)).filter(
+      (el): el is HTMLElement => Boolean(el),
+    );
+    if (!sections.length) return;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) setActive(entry.target.id);
+        });
+      },
+      { rootMargin: "-45% 0px -50% 0px", threshold: 0 },
+    );
+    sections.forEach((section) => observer.observe(section));
+    return () => observer.disconnect();
   }, []);
 
   return (
@@ -414,13 +542,12 @@ function Navbar() {
             position: "relative",
           }}
         >
-          {/* Logo icon */}
           <a href="#hero" style={{ display: "flex", alignItems: "center", gap: 10, textDecoration: "none", flexShrink: 0 }}>
             <div style={{ width: 32, height: 32, background: "var(--accent-primary)", border: "2px solid var(--border-main)", display: "flex", alignItems: "center", justifyContent: "center" }}>
               <Code2 size={16} color="var(--bg-card)" />
             </div>
           </a>
-          {/* Enlaces centrados */}
+
           <div
             className="desktop-only"
             style={{
@@ -428,17 +555,26 @@ function Navbar() {
               left: "50%",
               transform: "translateX(-50%)",
               alignItems: "center",
-              gap: 32,
+              gap: 12,
             }}
           >
-            {["experiencia", "skills", "proyectos"].map((s) => (
-              <a key={s} href={`#${s}`} className="nav-link" style={{ textTransform: "capitalize" }}>
-                {s}
+            {NAV_ITEMS.map((item) => (
+              <a
+                key={item.id}
+                href={`#${item.id}`}
+                className="nav-link"
+                style={{
+                  fontSize: "0.78rem",
+                  ...(active === item.id
+                    ? { borderColor: "var(--border-main)", background: "var(--bg-card)" }
+                    : {}),
+                }}
+              >
+                {item.label}
               </a>
             ))}
           </div>
 
-          {/* Acciones derecha */}
           <div className="desktop-only" style={{ alignItems: "center", gap: 12 }}>
             <a
               href={CV_DATA.github}
@@ -462,16 +598,16 @@ function Navbar() {
             >
               <BrandIcon name="linkedin" size={17} />
             </a>
-            <a href="mailto:miguelcalzada2004@gmail.com" className="btn-primary" style={{ padding: "8px 16px", fontSize: "0.8rem" }}>
+            <a href={`mailto:${CV_DATA.email}`} className="btn-primary" style={{ padding: "8px 16px", fontSize: "0.8rem" }}>
               <Mail size={14} />
               Contacto
             </a>
           </div>
 
-          {/* Mobile Menu Toggle */}
           <button
             className="mobile-only"
             onClick={() => setMobileMenuOpen(true)}
+            aria-label="Abrir menú"
             style={{
               width: 40, height: 40,
               background: "var(--bg-card)",
@@ -485,7 +621,6 @@ function Navbar() {
         </div>
       </motion.nav>
 
-      {/* Mobile Fullscreen Menu */}
       <AnimatePresence>
         {mobileMenuOpen && (
           <motion.div
@@ -505,6 +640,7 @@ function Navbar() {
             <div style={{ display: "flex", justifyContent: "flex-end" }}>
               <button
                 onClick={() => setMobileMenuOpen(false)}
+                aria-label="Cerrar menú"
                 style={{
                   width: 48, height: 48,
                   background: "var(--bg-card)",
@@ -516,11 +652,11 @@ function Navbar() {
                 <X size={24} color="var(--text-primary)" />
               </button>
             </div>
-            <div style={{ flex: 1, display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", gap: 32 }}>
-              {["experiencia", "skills", "proyectos"].map((s) => (
+            <div style={{ flex: 1, display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", gap: 28 }}>
+              {NAV_ITEMS.map((item) => (
                 <a
-                  key={s}
-                  href={`#${s}`}
+                  key={item.id}
+                  href={`#${item.id}`}
                   onClick={() => setMobileMenuOpen(false)}
                   style={{
                     fontFamily: "var(--font-heading)",
@@ -530,11 +666,11 @@ function Navbar() {
                     textTransform: "uppercase",
                   }}
                 >
-                  {s}
+                  {item.label}
                 </a>
               ))}
               <a
-                href="mailto:miguelcalzada2004@gmail.com"
+                href={`mailto:${CV_DATA.email}`}
                 className="btn-primary"
                 onClick={() => setMobileMenuOpen(false)}
                 style={{ padding: "16px 32px", fontSize: "1.2rem", marginTop: 16 }}
@@ -554,6 +690,12 @@ function Navbar() {
    HERO
 ────────────────────────────────────────────── */
 function Hero() {
+  const reduce = useReducedMotion();
+  const line = (i: number): Variants => ({
+    hidden: { y: "115%" },
+    visible: { y: 0, transition: { duration: 0.9, ease: EASE, delay: 0.1 + i * 0.12 } },
+  });
+
   return (
     <section
       id="hero"
@@ -567,96 +709,119 @@ function Hero() {
         position: "relative",
         overflow: "hidden",
         textAlign: "center",
+        borderBottom: "4px solid var(--border-main)",
       }}
     >
       <div style={{ maxWidth: 900, position: "relative", zIndex: 1 }}>
-        <AnimatePresence>
-          <motion.div
-            key="hero-badge"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            style={{ marginBottom: 32 }}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: reduce ? 0 : 0.2 }}
+          style={{ marginBottom: 32 }}
+        >
+          <span
+            className="tag-chip"
+            style={{ fontSize: "0.85rem", padding: "8px 16px", background: "var(--bg-card) !important" }}
           >
-            <span
-              className="tag-chip"
-              style={{
-                fontSize: "0.85rem",
-                padding: "8px 16px",
-                background: "var(--bg-card) !important",
-              }}
+            <div className="dot-glow" style={{ background: "var(--success)" }} />
+            DISPONIBLE PARA NUEVAS OPORTUNIDADES
+          </span>
+        </motion.div>
+
+        <h1
+          style={{
+            fontFamily: "var(--font-heading)",
+            fontSize: "clamp(3.5rem, 8vw, 7rem)",
+            lineHeight: 1,
+            color: "var(--text-primary)",
+            margin: "0 0 24px 0",
+            letterSpacing: "-0.02em",
+            textTransform: "uppercase",
+          }}
+        >
+          <span className="reveal-line">
+            <motion.span
+              style={{ display: "block" }}
+              variants={line(0)}
+              initial={reduce ? "visible" : "hidden"}
+              animate="visible"
             >
-              <div className="dot-glow" style={{ background: "var(--success)" }} />
-              DISPONIBLE PARA NUEVAS OPORTUNIDADES
-            </span>
-          </motion.div>
+              MIGUEL ANGEL
+            </motion.span>
+          </span>
+          <span className="reveal-line">
+            <motion.span
+              style={{ display: "block", color: "var(--accent-primary)" }}
+              variants={line(1)}
+              initial={reduce ? "visible" : "hidden"}
+              animate="visible"
+            >
+              CALZADA
+            </motion.span>
+          </span>
+        </h1>
 
-          <motion.h1
-            key="hero-title"
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.1 }}
-            style={{
-              fontFamily: "var(--font-heading)",
-              fontSize: "clamp(3.5rem, 8vw, 7rem)",
-              lineHeight: 0.9,
-              color: "var(--text-primary)",
-              margin: "0 0 24px 0",
-              letterSpacing: "-0.02em",
-              textTransform: "uppercase",
-            }}
-          >
-            MIGUEL ANGEL<br />
-            <span style={{ color: "var(--accent-primary)" }}>CALZADA</span>
-          </motion.h1>
+        <motion.p
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.6, delay: reduce ? 0 : 0.45 }}
+          style={{
+            fontFamily: "var(--font-mono)",
+            fontSize: "0.8rem",
+            fontWeight: 700,
+            textTransform: "uppercase",
+            letterSpacing: "0.14em",
+            color: "var(--text-muted)",
+            margin: "0 auto 24px",
+            maxWidth: 640,
+          }}
+        >
+          IA &amp; Big Data · Microservicios · Full-Stack · DevOps
+        </motion.p>
 
-          <motion.p
-            key="hero-desc"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            style={{
-              fontSize: "clamp(1.1rem, 2vw, 1.4rem)",
-              color: "var(--text-secondary)",
-              maxWidth: 700,
-              margin: "0 auto 40px",
-              lineHeight: 1.6,
-            }}
-          >
-            Desarrollador de Software especializado en{" "}
-            <strong style={{ color: "var(--text-primary)" }}>Inteligencia Artificial</strong> y{" "}
-            <strong style={{ color: "var(--text-primary)" }}>Big Data</strong>. Arquitecturas de
-            microservicios, Full-Stack &amp; DevOps.
-          </motion.p>
+        <motion.p
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: reduce ? 0 : 0.55 }}
+          style={{
+            fontSize: "clamp(1.05rem, 2vw, 1.3rem)",
+            color: "var(--text-secondary)",
+            maxWidth: 680,
+            margin: "0 auto 40px",
+            lineHeight: 1.6,
+          }}
+        >
+          Desarrollador de Software especializado en{" "}
+          <strong style={{ color: "var(--text-primary)" }}>Inteligencia Artificial</strong> y{" "}
+          <strong style={{ color: "var(--text-primary)" }}>Big Data</strong>. Arquitecturas de
+          microservicios, Full-Stack &amp; DevOps.
+        </motion.p>
 
-          <motion.div
-            key="hero-actions"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.4 }}
-            style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 16, flexWrap: "wrap" }}
-          >
-            <a href="#proyectos" className="btn-primary" style={{ padding: "16px 32px", fontSize: "1rem" }}>
-              <Sparkles size={18} />
-              Ver Proyectos
-            </a>
-            <a href="mailto:miguelcalzada2004@gmail.com" className="btn-secondary" style={{ padding: "16px 32px", fontSize: "1rem" }}>
-              <Mail size={18} />
-              Contactar
-            </a>
-            <a href={CV_DATA.linkedin} target="_blank" rel="noopener noreferrer" className="btn-secondary" style={{ padding: "16px 32px", fontSize: "1rem" }} aria-label="LinkedIn">
-              <BrandIcon name="linkedin" size={18} />
-              LinkedIn
-            </a>
-            <a href={CV_DATA.github} target="_blank" rel="noopener noreferrer" className="btn-secondary" style={{ padding: "16px 32px", fontSize: "1rem" }} aria-label="GitHub">
-              <BrandIcon name="github" size={18} />
-              GitHub
-            </a>
-          </motion.div>
-        </AnimatePresence>
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: reduce ? 0 : 0.7 }}
+          style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 14, flexWrap: "wrap" }}
+        >
+          <a href="#proyectos" className="btn-primary" style={{ padding: "16px 32px", fontSize: "1rem" }}>
+            <Sparkles size={18} />
+            Ver Proyectos
+          </a>
+          <a href={`mailto:${CV_DATA.email}`} className="btn-secondary" style={{ padding: "16px 32px", fontSize: "1rem" }}>
+            <Mail size={18} />
+            Contactar
+          </a>
+          <a href={CV_DATA.linkedin} target="_blank" rel="noopener noreferrer" className="btn-secondary" style={{ padding: "16px 32px", fontSize: "1rem" }} aria-label="LinkedIn">
+            <BrandIcon name="linkedin" size={18} />
+            LinkedIn
+          </a>
+          <a href={CV_DATA.github} target="_blank" rel="noopener noreferrer" className="btn-secondary" style={{ padding: "16px 32px", fontSize: "1rem" }} aria-label="GitHub">
+            <BrandIcon name="github" size={18} />
+            GitHub
+          </a>
+        </motion.div>
       </div>
 
-      {/* Scroll indicator */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -675,7 +840,7 @@ function Hero() {
       >
         <span className="label-text" style={{ fontSize: "0.7rem" }}>SCROLL</span>
         <motion.div
-          animate={{ y: [0, 8, 0] }}
+          animate={reduce ? undefined : { y: [0, 8, 0] }}
           transition={{ repeat: Infinity, duration: 2, ease: "easeInOut" }}
         >
           <ChevronDown size={24} />
@@ -685,554 +850,243 @@ function Hero() {
   );
 }
 
+/* ──────────────────────────────────────────────
+   STATS
+────────────────────────────────────────────── */
+function Stats() {
+  const deployed = CV_DATA.projects.filter((p) => p.type === "Desplegado").length;
+  const areas = Object.keys(CV_DATA.skills).length;
+  const items = [
+    { icon: <Briefcase size={18} />, value: 2, suffix: "+", label: "Años de experiencia" },
+    { icon: <Layers size={18} />, value: CV_DATA.projects.length, suffix: "", label: "Proyectos construidos" },
+    { icon: <Rocket size={18} />, value: deployed, suffix: "", label: "En producción" },
+    { icon: <TrendingUp size={18} />, value: areas, suffix: "", label: "Áreas de stack" },
+  ];
+
+  return (
+    <section aria-label="Resumen profesional" style={{ borderBottom: "4px solid var(--border-main)", background: "var(--bg-tertiary)" }}>
+      <div
+        style={{
+          maxWidth: 1148,
+          margin: "0 auto",
+          display: "grid",
+          gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
+          gap: 4,
+          background: "var(--border-main)",
+        }}
+      >
+        {items.map((item) => (
+          <div key={item.label} className="stat-cell">
+            <div style={{ display: "flex", alignItems: "center", gap: 8, color: "var(--accent-primary)" }}>
+              {item.icon}
+              <span className="label-text" style={{ fontSize: "0.65rem", color: "var(--text-muted)" }}>
+                {item.label}
+              </span>
+            </div>
+            <span className="stat-value">
+              <Counter to={item.value} suffix={item.suffix} />
+            </span>
+          </div>
+        ))}
+      </div>
+    </section>
+  );
+}
 
 /* ──────────────────────────────────────────────
-   EXPERIENCE
+   EXPERIENCE & EDUCATION (TRAYECTORIA)
 ────────────────────────────────────────────── */
-function Experience() {
+function Trayectoria() {
   return (
-    <section
-      id="experiencia"
-      className="brutalist-section"
-      style={{ borderBottom: "none", paddingBottom: "40px" }}
-    >
+    <section id="experiencia" className="brutalist-section">
       <div style={{ maxWidth: 1100, margin: "0 auto" }}>
-      <AnimSection>
-        <motion.div variants={fadeUp} style={{ marginBottom: 64, textAlign: "center" }}>
-          <p className="label-text" style={{ color: "var(--accent-primary)", marginBottom: 12 }}>
-            Trayectoria
-          </p>
-          <h2 className="brutalist-heading">
-            Experiencia Profesional
-          </h2>
-          <p style={{ color: "var(--text-secondary)", maxWidth: 480, margin: "0 auto" }}>
-            Construyendo sistemas escalables y soluciones de datos inteligentes en entornos de producción reales.
-          </p>
-        </motion.div>
+        <AnimSection>
+          <motion.div variants={fadeUp} style={{ marginBottom: 56, textAlign: "center" }}>
+            <p className="label-text" style={{ color: "var(--accent-primary)", marginBottom: 12 }}>
+              Trayectoria
+            </p>
+            <h2 className="brutalist-heading">Experiencia &amp; Formación</h2>
+            <p style={{ color: "var(--text-secondary)", maxWidth: 520, margin: "0 auto" }}>
+              Construyendo sistemas escalables y soluciones de datos inteligentes en entornos de producción reales.
+            </p>
+          </motion.div>
 
-        {/* Experience card */}
-        {CV_DATA.experience.map((exp, i) => (
-          <motion.div key={i} variants={fadeUp}>
-            <div
-              className="brutalist-grid-box"
-              style={{ padding: 40, position: "relative", overflow: "hidden" }}
-            >
-              {/* Top glow accent */}
-              <div
-                style={{
-                  position: "absolute",
-                  top: 0,
-                  left: 0,
-                  right: 0,
-                  height: 2,
-                  background: "var(--border-main)",
-                }}
-              />
-
-              <div
-                style={{
-                  display: "flex",
-                  alignItems: "flex-start",
-                  justifyContent: "space-between",
-                  gap: 16,
-                  flexWrap: "wrap",
-                  marginBottom: 28,
-                }}
+          <div>
+            {CV_DATA.experience.map((exp) => (
+              <motion.div
+                key={exp.company}
+                variants={fadeUp}
+                className="timeline-item"
+                style={{ paddingBottom: 44 }}
               >
-                <div style={{ display: "flex", alignItems: "flex-start", gap: 16 }}>
+                <span className="timeline-dot timeline-dot--active" />
+                <div className="brutalist-grid-box" style={{ padding: 36, position: "relative", overflow: "hidden" }}>
                   <div
                     style={{
-                      width: 52,
-                      height: 52,
-                      borderRadius: 12,
-                      background: "var(--bg-secondary)",
-                      border: "2px solid var(--border-main)",
                       display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      flexShrink: 0,
+                      alignItems: "flex-start",
+                      justifyContent: "space-between",
+                      gap: 16,
+                      flexWrap: "wrap",
+                      marginBottom: 24,
                     }}
                   >
-                    <Building2 size={22} color="#6366f1" />
-                  </div>
-                  <div>
-                    <h3
-                      style={{ fontSize: "1.2rem", fontWeight: 700, letterSpacing: "-0.02em", marginBottom: 4 }}
-                    >
-                      {exp.role}
-                    </h3>
-                    <p style={{ color: "#a5b4fc", fontWeight: 600, marginBottom: 4 }}>{exp.company}</p>
-                    <div style={{ display: "flex", alignItems: "center", gap: 12, color: "var(--text-muted)", fontSize: "0.82rem" }}>
-                      <span style={{ display: "flex", alignItems: "center", gap: 4 }}>
-                        <MapPin size={12} />
-                        {exp.location}
-                      </span>
-                      <span>·</span>
-                      <span style={{ display: "flex", alignItems: "center", gap: 4 }}>
-                        <Calendar size={12} />
-                        {exp.period}
-                      </span>
-                    </div>
-                  </div>
-                </div>
-
-                <span
-                  style={{
-                    padding: "4px 12px",
-                    borderRadius: 999,
-                    fontSize: "0.75rem",
-                    fontWeight: 600,
-                    background: "rgba(16,185,129,0.1)",
-                    border: "1px solid rgba(16,185,129,0.2)",
-                    color: "#34d399",
-                    display: "flex",
-                    alignItems: "center",
-                    gap: 6,
-                  }}
-                >
-                  <div className="dot-glow" style={{ width: 6, height: 6 }} />
-                  Activo
-                </span>
-              </div>
-
-              <p style={{ color: "var(--text-secondary)", lineHeight: 1.7, marginBottom: 28, fontSize: "0.95rem" }}>
-                {exp.description}
-              </p>
-
-              <div style={{ marginBottom: 24 }}>
-                <p style={{ fontSize: "0.8rem", fontWeight: 600, color: "var(--text-muted)", textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: 12 }}>
-                  Responsabilidades
-                </p>
-                <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(260px, 1fr))", gap: 8 }}>
-                  {exp.highlights.map((h, j) => (
-                    <div
-                      key={j}
-                      style={{
-                        display: "flex",
-                        alignItems: "center",
-                        gap: 8,
-                        color: "var(--text-secondary)",
-                        fontSize: "0.875rem",
-                      }}
-                    >
+                    <div style={{ display: "flex", alignItems: "flex-start", gap: 16 }}>
                       <div
                         style={{
-                          width: 20,
-                          height: 20,
-                          borderRadius: 6,
-                          background: "rgba(99,102,241,0.15)",
+                          width: 52,
+                          height: 52,
+                          background: "var(--bg-secondary)",
+                          border: "2px solid var(--border-main)",
                           display: "flex",
                           alignItems: "center",
                           justifyContent: "center",
                           flexShrink: 0,
                         }}
                       >
-                        <Zap size={10} color="#6366f1" />
+                        <Building2 size={22} color="var(--accent-primary)" />
                       </div>
-                      {h}
+                      <div>
+                        <p className="label-text" style={{ fontSize: "0.6rem", color: "var(--text-muted)", marginBottom: 6 }}>
+                          Experiencia profesional
+                        </p>
+                        <h3 style={{ fontSize: "1.2rem", fontWeight: 700, letterSpacing: "-0.02em", marginBottom: 4 }}>
+                          {exp.role}
+                        </h3>
+                        <p style={{ color: "var(--accent-primary)", fontWeight: 600, marginBottom: 4 }}>{exp.company}</p>
+                        <div style={{ display: "flex", alignItems: "center", gap: 12, color: "var(--text-muted)", fontSize: "0.82rem" }}>
+                          <span style={{ display: "flex", alignItems: "center", gap: 4 }}>
+                            <MapPin size={12} />
+                            {exp.location}
+                          </span>
+                          <span>·</span>
+                          <span style={{ display: "flex", alignItems: "center", gap: 4 }}>
+                            <Calendar size={12} />
+                            {exp.period}
+                          </span>
+                        </div>
+                      </div>
                     </div>
-                  ))}
-                </div>
-              </div>
 
-              <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
-                {exp.stack.map((s) => (
-                  <span key={s} className="tag-chip">
-                    {s}
-                  </span>
-                ))}
-              </div>
-            </div>
-          </motion.div>
-        ))}
-
-        {/* Education row */}
-        <motion.div variants={fadeUp} style={{ marginTop: 32 }}>
-          <p style={{ color: "var(--text-muted)", fontSize: "0.8rem", fontWeight: 600, letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: 16 }}>
-            Formación Académica
-          </p>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(360px, 1fr))", gap: 16 }}>
-            {CV_DATA.education.map((edu, i) => (
-              <div
-                key={i}
-                className="brutalist-grid-box"
-                style={{ padding: 24 }}
-              >
-                <div style={{ display: "flex", alignItems: "flex-start", gap: 12 }}>
-                  <div
-                    style={{
-                      width: 40,
-                      height: 40,
-                      borderRadius: 10,
-                      background: "rgba(16,185,129,0.1)",
-                      border: "1px solid rgba(16,185,129,0.2)",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      flexShrink: 0,
-                    }}
-                  >
-                    <GraduationCap size={18} color="#10b981" />
-                  </div>
-                  <div>
-                    <h4 style={{ fontWeight: 700, fontSize: "0.9rem", marginBottom: 4, letterSpacing: "-0.01em" }}>{edu.title}</h4>
-                    <p style={{ color: "var(--text-muted)", fontSize: "0.8rem", marginBottom: 10 }}>{edu.period}</p>
-                    <div style={{ display: "flex", flexWrap: "wrap", gap: 4 }}>
-                      {edu.highlights.map((h) => (
-                        <span
-                          key={h}
-                          style={{
-                            padding: "2px 8px",
-                            borderRadius: 6,
-                            fontSize: "0.7rem",
-                            fontWeight: 500,
-                            background: "rgba(16,185,129,0.1)",
-                            border: "1px solid rgba(16,185,129,0.15)",
-                            color: "#34d399",
-                          }}
-                        >
-                          {h}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </motion.div>
-      </AnimSection>
-      </div>
-    </section>
-  );
-}
-
-/* ──────────────────────────────────────────────
-   SKILLS BENTO GRID
-────────────────────────────────────────────── */
-const SKILL_ICONS: Record<string, React.ReactNode> = {
-  brain: <Brain size={20} />,
-  globe: <Globe size={20} />,
-  server: <Server size={20} />,
-  database: <Database size={20} />,
-  cloud: <Cloud size={20} />,
-};
-
-function Skills() {
-  const skills = Object.values(CV_DATA.skills);
-
-  return (
-    <section
-      id="skills"
-      className="brutalist-section"
-    >
-      <div style={{ maxWidth: 1100, margin: "0 auto" }}>
-        <AnimSection>
-          <motion.div variants={fadeUp} style={{ marginBottom: 64, textAlign: "center" }}>
-            <p className="label-text" style={{ color: "var(--accent-primary)", marginBottom: 12 }}>
-              Competencias
-            </p>
-            <h2 className="brutalist-heading">
-              Stack Técnico
-            </h2>
-            <p style={{ color: "var(--text-secondary)", maxWidth: 480, margin: "0 auto" }}>
-              Desde la capa de datos hasta el frontend, full-cycle engineering con enfoque en IA.
-            </p>
-          </motion.div>
-
-          {/* Compact skills grid */}
-          <div
-            className="skills-grid"
-            style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
-              gap: 16,
-            }}
-          >
-            {/* AI */}
-            <motion.div
-              variants={fadeUp}
-              className="brutalist-grid-box"
-              style={{
-                padding: 20,
-                position: "relative",
-                overflow: "hidden",
-              }}
-            >
-              {/* Blob removed */}
-              <div
-                style={{
-                  width: 44,
-                  height: 44,
-                  borderRadius: 0,
-                  background: `${CV_DATA.skills.ai.color}15`,
-                  border: `2px solid ${CV_DATA.skills.ai.color}`,
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  marginBottom: 16,
-                  color: CV_DATA.skills.ai.color,
-                }}
-              >
-                {SKILL_ICONS[CV_DATA.skills.ai.icon]}
-              </div>
-              <h3 style={{ fontWeight: 700, marginBottom: 16, fontSize: "1.05rem" }}>
-                {CV_DATA.skills.ai.label}
-              </h3>
-              <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
-                {CV_DATA.skills.ai.items.map((item) => (
-                  <span
-                    key={item}
-                    className="tag-chip"
-                    style={{
-                      background: `${CV_DATA.skills.ai.color}10 !important`,
-                      color: `${CV_DATA.skills.ai.color} !important`,
-                      borderColor: `${CV_DATA.skills.ai.color}40 !important`
-                    }}
-                  >
-                    {item}
-                  </span>
-                ))}
-              </div>
-            </motion.div>
-
-            {/* Web */}
-            <motion.div
-              variants={fadeUp}
-              className="brutalist-grid-box"
-              style={{ padding: 20, position: "relative", overflow: "hidden" }}
-            >
-              {/* Blob removed */}
-              <div
-                style={{
-                  width: 40,
-                  height: 40,
-                  borderRadius: 0,
-                  background: `${CV_DATA.skills.web.color}15`,
-                  border: `2px solid ${CV_DATA.skills.web.color}`,
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  marginBottom: 14,
-                  color: CV_DATA.skills.web.color,
-                }}
-              >
-                {SKILL_ICONS[CV_DATA.skills.web.icon]}
-              </div>
-              <h3 style={{ fontWeight: 700, marginBottom: 14, fontSize: "0.95rem" }}>
-                {CV_DATA.skills.web.label}
-              </h3>
-              <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
-                {CV_DATA.skills.web.items.map((item) => (
-                  <span
-                    key={item}
-                    className="tag-chip"
-                    style={{
-                      background: `${CV_DATA.skills.web.color}10 !important`,
-                      color: `${CV_DATA.skills.web.color} !important`,
-                      borderColor: `${CV_DATA.skills.web.color}40 !important`
-                    }}
-                  >
-                    {item}
-                  </span>
-                ))}
-              </div>
-            </motion.div>
-
-            {/* Backend */}
-            <motion.div
-              variants={fadeUp}
-              className="brutalist-grid-box"
-              style={{ padding: 20, position: "relative", overflow: "hidden" }}
-            >
-              <div
-                style={{
-                  width: 40, height: 40, borderRadius: 0,
-                  background: `${CV_DATA.skills.backend.color}15`,
-                  border: `2px solid ${CV_DATA.skills.backend.color}`,
-                  display: "flex", alignItems: "center", justifyContent: "center",
-                  marginBottom: 14, color: CV_DATA.skills.backend.color,
-                }}
-              >
-                {SKILL_ICONS[CV_DATA.skills.backend.icon]}
-              </div>
-              <h3 style={{ fontWeight: 700, marginBottom: 14, fontSize: "0.95rem" }}>
-                {CV_DATA.skills.backend.label}
-              </h3>
-              <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
-                {CV_DATA.skills.backend.items.map((item) => (
-                  <span key={item} className="tag-chip" style={{ background: `${CV_DATA.skills.backend.color}10 !important`, color: `${CV_DATA.skills.backend.color} !important`, borderColor: `${CV_DATA.skills.backend.color}40 !important` }}>
-                    {item}
-                  </span>
-                ))}
-              </div>
-            </motion.div>
-
-            {/* Data */}
-            <motion.div
-              variants={fadeUp}
-              className="brutalist-grid-box"
-              style={{ padding: 20, position: "relative", overflow: "hidden" }}
-            >
-              <div
-                style={{
-                  width: 40, height: 40, borderRadius: 0,
-                  background: `${CV_DATA.skills.data.color}15`,
-                  border: `2px solid ${CV_DATA.skills.data.color}`,
-                  display: "flex", alignItems: "center", justifyContent: "center",
-                  marginBottom: 14, color: CV_DATA.skills.data.color,
-                }}
-              >
-                {SKILL_ICONS[CV_DATA.skills.data.icon]}
-              </div>
-              <h3 style={{ fontWeight: 700, marginBottom: 14, fontSize: "0.95rem" }}>
-                {CV_DATA.skills.data.label}
-              </h3>
-              <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
-                {CV_DATA.skills.data.items.map((item) => (
-                  <span key={item} className="tag-chip" style={{ background: `${CV_DATA.skills.data.color}10 !important`, color: `${CV_DATA.skills.data.color} !important`, borderColor: `${CV_DATA.skills.data.color}40 !important` }}>
-                    {item}
-                  </span>
-                ))}
-              </div>
-            </motion.div>
-
-            {/* DevOps */}
-            <motion.div
-              variants={fadeUp}
-              className="brutalist-grid-box"
-              style={{ padding: 20, position: "relative", overflow: "hidden" }}
-            >
-              <div
-                style={{
-                  width: 40, height: 40, borderRadius: 0,
-                  background: `${CV_DATA.skills.devops.color}15`,
-                  border: `2px solid ${CV_DATA.skills.devops.color}`,
-                  display: "flex", alignItems: "center", justifyContent: "center",
-                  marginBottom: 14, color: CV_DATA.skills.devops.color,
-                }}
-              >
-                {SKILL_ICONS[CV_DATA.skills.devops.icon]}
-              </div>
-              <h3 style={{ fontWeight: 700, marginBottom: 14, fontSize: "0.95rem" }}>
-                {CV_DATA.skills.devops.label}
-              </h3>
-              <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
-                {CV_DATA.skills.devops.items.map((item) => (
-                  <span key={item} className="tag-chip" style={{ background: `${CV_DATA.skills.devops.color}10 !important`, color: `${CV_DATA.skills.devops.color} !important`, borderColor: `${CV_DATA.skills.devops.color}40 !important` }}>
-                    {item}
-                  </span>
-                ))}
-              </div>
-            </motion.div>
-
-            {/* Small merged Languages & Availability at the bottom */}
-            <motion.div
-              variants={fadeUp}
-              style={{
-                gridColumn: "1 / -1",
-                display: "flex",
-                flexWrap: "wrap",
-                alignItems: "center",
-                justifyContent: "center",
-                gap: 24,
-                marginTop: 16,
-                padding: "16px",
-                border: "2px dashed var(--border-main)",
-                background: "var(--bg-card)",
-                fontFamily: "var(--font-mono)",
-                fontSize: "0.85rem",
-                color: "var(--text-secondary)",
-              }}
-            >
-              <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                <Languages size={16} color="var(--text-primary)" />
-                <strong>IDIOMAS:</strong> 🇪🇸 ES (Nativo) · 🇬🇧 EN (B2)
-              </div>
-              <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                <MapPin size={16} color="var(--text-primary)" />
-                <strong>DISPONIBILIDAD:</strong> Madrid · Remoto / Híbrido · Inmediata
-              </div>
-            </motion.div>
-          </div>
-        </AnimSection>
-      </div>
-    </section>
-  );
-}
-
-/* ──────────────────────────────────────────────
-   PROJECTS
-────────────────────────────────────────────── */
-function Projects() {
-  return (
-    <section id="proyectos" className="brutalist-section">
-      <div style={{ maxWidth: 1100, margin: "0 auto" }}>
-        <AnimSection>
-          <motion.div variants={fadeUp} style={{ marginBottom: 64, textAlign: "center" }}>
-            <p className="label-text" style={{ color: "var(--accent-primary)", marginBottom: 12 }}>
-              Portafolio
-            </p>
-            <h2 className="brutalist-heading">
-              Proyectos Destacados
-            </h2>
-            <p style={{ color: "var(--text-secondary)", maxWidth: 480, margin: "0 auto" }}>
-              Soluciones que combinan ingeniería robusta con inteligencia artificial aplicada.
-            </p>
-          </motion.div>
-
-          <div className="projects-grid">
-            {CV_DATA.projects.map((project, i) => (
-              <motion.div key={i} variants={fadeUp}>
-                <article
-                  className="project-card"
-                  style={{ "--card-accent": project.color } as React.CSSProperties}
-                >
-                  <span className="project-accent" aria-hidden="true" />
-
-                  <div className="project-top">
-                    <div
-                      className="project-icon"
-                      style={{ background: `${project.color}15`, borderColor: project.color, color: project.color }}
+                    <span
+                      style={{
+                        padding: "4px 12px",
+                        borderRadius: 999,
+                        fontSize: "0.75rem",
+                        fontWeight: 600,
+                        background: "rgba(16,185,129,0.1)",
+                        border: "1px solid rgba(16,185,129,0.2)",
+                        color: "#34d399",
+                        display: "flex",
+                        alignItems: "center",
+                        gap: 6,
+                      }}
                     >
-                      <GitBranch size={20} />
-                    </div>
-                    <span className="tag-chip"
-                      style={{ background: `${project.color}15 !important`, color: `${project.color} !important`, borderColor: `${project.color}40 !important` }}
-                    >
-                      {project.type}
+                      <div className="dot-glow" style={{ width: 6, height: 6 }} />
+                      Activo
                     </span>
                   </div>
 
-                  <h3 className="project-title">{project.name}</h3>
-                  <p className="project-desc">{project.description}</p>
+                  <p style={{ color: "var(--text-secondary)", lineHeight: 1.7, marginBottom: 28, fontSize: "0.95rem" }}>
+                    {exp.description}
+                  </p>
 
-                  <div className="project-foot">
-                    <div className="project-stack">
-                      {project.stack.map((s) => (
-                        <span key={s} className="tag-chip">{s}</span>
+                  <div style={{ marginBottom: 24 }}>
+                    <p style={{ fontSize: "0.8rem", fontWeight: 600, color: "var(--text-muted)", textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: 12 }}>
+                      Responsabilidades
+                    </p>
+                    <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(260px, 1fr))", gap: 8 }}>
+                      {exp.highlights.map((h) => (
+                        <div
+                          key={h}
+                          style={{
+                            display: "flex",
+                            alignItems: "center",
+                            gap: 8,
+                            color: "var(--text-secondary)",
+                            fontSize: "0.875rem",
+                          }}
+                        >
+                          <div
+                            style={{
+                              width: 20,
+                              height: 20,
+                              background: "rgba(255,62,0,0.12)",
+                              display: "flex",
+                              alignItems: "center",
+                              justifyContent: "center",
+                              flexShrink: 0,
+                            }}
+                          >
+                            <Zap size={10} color="var(--accent-primary)" />
+                          </div>
+                          {h}
+                        </div>
                       ))}
-                    </div>
-                    <div className="project-actions">
-                      {project.url && (
-                        <a className="project-enter" href={project.url} aria-label={`Abrir ${project.name}`}>
-                          Entrar
-                          <ExternalLink size={14} />
-                        </a>
-                      )}
-                      <a
-                        href={project.github}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        title="Ver en GitHub"
-                        aria-label={`${project.name} en GitHub`}
-                      >
-                        <BrandIcon name="github" size={15} />
-                      </a>
                     </div>
                   </div>
 
-                </article>
+                  <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
+                    {exp.stack.map((s) => (
+                      <span key={s} className="tag-chip">
+                        {s}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+
+            {CV_DATA.education.map((edu, i) => (
+              <motion.div
+                key={edu.title}
+                variants={fadeUp}
+                className="timeline-item"
+                style={{ paddingBottom: i === CV_DATA.education.length - 1 ? 0 : 44 }}
+              >
+                <span className="timeline-dot" />
+                <div className="brutalist-grid-box" style={{ padding: 28 }}>
+                  <div style={{ display: "flex", alignItems: "flex-start", gap: 14 }}>
+                    <div
+                      style={{
+                        width: 44,
+                        height: 44,
+                        background: "rgba(16,185,129,0.1)",
+                        border: "2px solid var(--border-main)",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        flexShrink: 0,
+                      }}
+                    >
+                      <GraduationCap size={18} color="#10b981" />
+                    </div>
+                    <div>
+                      <p className="label-text" style={{ fontSize: "0.6rem", color: "var(--text-muted)", marginBottom: 6 }}>
+                        Formación académica · {edu.institution}
+                      </p>
+                      <h4 style={{ fontWeight: 700, fontSize: "0.95rem", marginBottom: 4, letterSpacing: "-0.01em" }}>{edu.title}</h4>
+                      <p style={{ color: "var(--text-muted)", fontSize: "0.8rem", marginBottom: 12 }}>{edu.period}</p>
+                      <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
+                        {edu.highlights.map((h) => (
+                          <span
+                            key={h}
+                            style={{
+                              padding: "3px 10px",
+                              fontSize: "0.7rem",
+                              fontWeight: 500,
+                              background: "rgba(16,185,129,0.1)",
+                              border: "1px solid rgba(16,185,129,0.2)",
+                              color: "#0f9d58",
+                            }}
+                          >
+                            {h}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </motion.div>
             ))}
           </div>
@@ -1243,35 +1097,399 @@ function Projects() {
 }
 
 /* ──────────────────────────────────────────────
-   MINI FOOTER — copyright bar only
+   SKILLS BENTO
+────────────────────────────────────────────── */
+const SKILL_ICONS: Record<string, React.ReactNode> = {
+  brain: <Brain size={20} />,
+  globe: <Globe size={20} />,
+  server: <Server size={20} />,
+  database: <Database size={20} />,
+  cloud: <Cloud size={20} />,
+};
+
+const SKILL_BLURB: Record<string, string> = {
+  ai: "Modelos de Machine Learning, Deep Learning y agentes LLM con arquitecturas RAG en producción.",
+  web: "Interfaces modernas y aplicaciones full-stack con foco en rendimiento y accesibilidad.",
+  backend: "APIs REST y microservicios escalables, seguros y listos para producción.",
+  data: "Modelado, ETL y bases de datos relacionales y no relacionales.",
+  devops: "Cloud, contenedores y entrega continua end-to-end.",
+};
+
+const ALL_TECH = Array.from(new Set(Object.values(CV_DATA.skills).flatMap((s) => s.items)));
+
+function Skills() {
+  const entries = Object.entries(CV_DATA.skills);
+
+  return (
+    <section id="skills" className="brutalist-section">
+      <div style={{ maxWidth: 1100, margin: "0 auto" }}>
+        <AnimSection>
+          <motion.div variants={fadeUp} style={{ marginBottom: 56, textAlign: "center" }}>
+            <p className="label-text" style={{ color: "var(--accent-primary)", marginBottom: 12 }}>
+              Competencias
+            </p>
+            <h2 className="brutalist-heading">Stack Técnico</h2>
+            <p style={{ color: "var(--text-secondary)", maxWidth: 520, margin: "0 auto" }}>
+              Desde la capa de datos hasta el frontend, full-cycle engineering con enfoque en IA.
+            </p>
+          </motion.div>
+
+          <div className="skills-bento">
+            {entries.map(([key, skill]) => (
+              <motion.div
+                key={key}
+                variants={fadeUp}
+                className={`brutalist-grid-box skill-${key}`}
+                style={{ padding: key === "ai" ? 30 : 22, display: "flex", flexDirection: "column" }}
+              >
+                <div
+                  style={{
+                    width: 44,
+                    height: 44,
+                    background: `${skill.color}15`,
+                    border: `2px solid ${skill.color}`,
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    marginBottom: 18,
+                    color: skill.color,
+                    flexShrink: 0,
+                  }}
+                >
+                  {SKILL_ICONS[skill.icon]}
+                </div>
+
+                <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", gap: 12, marginBottom: 12 }}>
+                  <h3 style={{ fontWeight: 700, fontSize: key === "ai" ? "1.15rem" : "1rem", letterSpacing: "-0.01em" }}>
+                    {skill.label}
+                  </h3>
+                  <span className="label-text" style={{ fontSize: "0.62rem", color: "var(--text-muted)", flexShrink: 0 }}>
+                    {skill.items.length} tech
+                  </span>
+                </div>
+
+                <p style={{ color: "var(--text-secondary)", fontSize: "0.85rem", lineHeight: 1.6, marginBottom: 18 }}>
+                  {SKILL_BLURB[key]}
+                </p>
+
+                <div style={{ display: "flex", flexWrap: "wrap", gap: 6, marginTop: "auto" }}>
+                  {skill.items.map((item) => (
+                    <span
+                      key={item}
+                      className="tag-chip"
+                      style={{
+                        background: `${skill.color}12 !important`,
+                        color: `color-mix(in srgb, ${skill.color} 68%, #111111) !important`,
+                        borderColor: `${skill.color}55 !important`,
+                      }}
+                    >
+                      {item}
+                    </span>
+                  ))}
+                </div>
+              </motion.div>
+            ))}
+          </div>
+
+          <motion.div variants={fadeUp} style={{ marginTop: 28 }}>
+            <Marquee duration={40} gap="0.75rem">
+              {ALL_TECH.map((tech, i) => (
+                <span key={`${tech}-${i}`} className="tag-chip" style={{ fontSize: "0.7rem" }}>
+                  {tech}
+                </span>
+              ))}
+            </Marquee>
+          </motion.div>
+        </AnimSection>
+      </div>
+    </section>
+  );
+}
+
+/* ──────────────────────────────────────────────
+   PROJECTS
+────────────────────────────────────────────── */
+const PROJECT_ICONS: Record<string, React.ReactNode> = {
+  "Applied AI Solutions": <BrainCircuit size={20} />,
+  "Madrid Transit Pulse": <Network size={20} />,
+  "SQLSense AI": <Terminal size={20} />,
+  "ImpactDB MCP": <Workflow size={20} />,
+  FitCity: <Gauge size={20} />,
+  "Barber Books Template": <Layers size={20} />,
+  "Spotify Voice Assistant": <Cpu size={20} />,
+};
+
+function Projects() {
+  const types = ["Todos", ...Array.from(new Set(CV_DATA.projects.map((p) => p.type)))];
+  const [filter, setFilter] = useState("Todos");
+  const filtered = filter === "Todos" ? CV_DATA.projects : CV_DATA.projects.filter((p) => p.type === filter);
+
+  return (
+    <section id="proyectos" className="brutalist-section">
+      <div style={{ maxWidth: 1100, margin: "0 auto" }}>
+        <AnimSection>
+          <motion.div variants={fadeUp} style={{ marginBottom: 40, textAlign: "center" }}>
+            <p className="label-text" style={{ color: "var(--accent-primary)", marginBottom: 12 }}>
+              Portafolio
+            </p>
+            <h2 className="brutalist-heading">Proyectos Destacados</h2>
+            <p style={{ color: "var(--text-secondary)", maxWidth: 480, margin: "0 auto" }}>
+              Soluciones que combinan ingeniería robusta con inteligencia artificial aplicada.
+            </p>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 12 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-40px" }}
+            transition={{ duration: 0.5, ease: EASE }}
+            style={{ display: "flex", flexWrap: "wrap", gap: 10, justifyContent: "center", marginBottom: 36 }}
+          >
+            {types.map((type) => (
+              <button
+                key={type}
+                type="button"
+                className="filter-btn"
+                data-active={filter === type}
+                onClick={() => setFilter(type)}
+              >
+                {type}
+                {type !== "Todos" && (
+                  <span style={{ opacity: 0.65 }}>
+                    {CV_DATA.projects.filter((p) => p.type === type).length}
+                  </span>
+                )}
+              </button>
+            ))}
+          </motion.div>
+
+          <div className="projects-grid">
+            <AnimatePresence mode="popLayout">
+              {filtered.map((project) => (
+                <motion.div
+                  key={project.name}
+                  layout
+                  initial={{ opacity: 0, y: 24 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: "-40px" }}
+                  exit={{ opacity: 0, scale: 0.96 }}
+                  transition={{ duration: 0.35, ease: EASE }}
+                >
+                  <article
+                    className="project-card"
+                    style={{ "--card-accent": project.color } as React.CSSProperties}
+                  >
+                    <span className="project-accent" aria-hidden="true" />
+
+                    <div className="project-top">
+                      <div
+                        className="project-icon"
+                        style={{ background: `${project.color}15`, borderColor: project.color, color: project.color }}
+                      >
+                        {PROJECT_ICONS[project.name] ?? <GitBranch size={20} />}
+                      </div>
+                      <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", gap: 8 }}>
+                        <span
+                          className="tag-chip"
+                          style={{
+                            background: `${project.color}15 !important`,
+                            color: `${project.color} !important`,
+                            borderColor: `${project.color}40 !important`,
+                          }}
+                        >
+                          {project.type}
+                        </span>
+                        <span className="label-text" style={{ fontSize: "0.6rem", color: "var(--text-muted)" }}>
+                          {String(CV_DATA.projects.indexOf(project) + 1).padStart(2, "0")}
+                        </span>
+                      </div>
+                    </div>
+
+                    <h3 className="project-title">{project.name}</h3>
+                    <p className="project-desc">{project.description}</p>
+
+                    <div className="project-foot">
+                      <div className="project-stack">
+                        {project.stack.map((s) => (
+                          <span key={s} className="tag-chip">{s}</span>
+                        ))}
+                      </div>
+                      <div className="project-actions">
+                        {project.url && (
+                          <a className="project-enter" href={project.url} aria-label={`Abrir ${project.name}`}>
+                            Entrar
+                            <ExternalLink size={14} />
+                          </a>
+                        )}
+                        <a
+                          href={project.github}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          title="Ver en GitHub"
+                          aria-label={`${project.name} en GitHub`}
+                        >
+                          <BrandIcon name="github" size={15} />
+                        </a>
+                      </div>
+                    </div>
+                  </article>
+                </motion.div>
+              ))}
+            </AnimatePresence>
+          </div>
+        </AnimSection>
+      </div>
+    </section>
+  );
+}
+
+/* ──────────────────────────────────────────────
+   CONTACT
+────────────────────────────────────────────── */
+function Contact() {
+  return (
+    <section id="contacto" className="brutalist-section" style={{ borderBottom: "none" }}>
+      <div style={{ maxWidth: 860, margin: "0 auto" }}>
+        <AnimSection>
+          <motion.div variants={fadeUp} style={{ textAlign: "center" }}>
+            <p className="label-text" style={{ color: "var(--accent-primary)", marginBottom: 12 }}>
+              Contacto
+            </p>
+            <h2 className="brutalist-heading">¿Construimos algo juntos?</h2>
+            <p style={{ color: "var(--text-secondary)", maxWidth: 540, margin: "0 auto 36px", lineHeight: 1.7 }}>
+              Disponible para nuevas oportunidades en remoto, híbrido o presencial desde Madrid.
+              Cuéntame tu proyecto o tu oferta y te respondo lo antes posible.
+            </p>
+
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 14, flexWrap: "wrap", marginBottom: 40 }}>
+              <a href={`mailto:${CV_DATA.email}`} className="btn-primary" style={{ padding: "16px 32px", fontSize: "1rem" }}>
+                <Mail size={18} />
+                Escríbeme
+              </a>
+              <a href={CV_DATA.linkedin} target="_blank" rel="noopener noreferrer" className="btn-secondary" style={{ padding: "16px 32px", fontSize: "1rem" }}>
+                <BrandIcon name="linkedin" size={18} />
+                LinkedIn
+              </a>
+              <a href={CV_DATA.github} target="_blank" rel="noopener noreferrer" className="btn-secondary" style={{ padding: "16px 32px", fontSize: "1rem" }}>
+                <BrandIcon name="github" size={18} />
+                GitHub
+              </a>
+            </div>
+
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                flexWrap: "wrap",
+                gap: 20,
+                padding: "18px 24px",
+                border: "2px dashed var(--border-main)",
+                background: "var(--bg-card)",
+                fontFamily: "var(--font-mono)",
+                fontSize: "0.82rem",
+                color: "var(--text-secondary)",
+              }}
+            >
+              <span style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                <MapPin size={15} color="var(--accent-primary)" />
+                {CV_DATA.location}
+              </span>
+              <span style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                <Phone size={15} color="var(--accent-primary)" />
+                {CV_DATA.phone}
+              </span>
+              <span style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                <Mail size={15} color="var(--accent-primary)" />
+                {CV_DATA.email}
+              </span>
+            </div>
+          </motion.div>
+        </AnimSection>
+      </div>
+    </section>
+  );
+}
+
+/* ──────────────────────────────────────────────
+   FOOTER
 ────────────────────────────────────────────── */
 function Footer() {
   return (
-    <footer
-      style={{
-        borderTop: "4px solid var(--border-main)",
-        background: "var(--bg-primary)",
-        padding: "20px 40px",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "space-between",
-        flexWrap: "wrap",
-        gap: 12,
-      }}
-    >
-      <p className="label-text" style={{ fontSize: "0.65rem", color: "var(--text-muted)" }}>
-        © 2026 MIGUEL ANGEL CALZADA MARTÍN — +34 665 17 88 25
-      </p>
-      <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-        <div className="dot-glow" style={{ width: 7, height: 7, background: "var(--success)" }} />
-        <span className="label-text" style={{ fontSize: "0.65rem", color: "var(--text-muted)" }}>OPEN TO OPPORTUNITIES</span>
+    <footer style={{ borderTop: "4px solid var(--border-main)", background: "var(--bg-primary)" }}>
+      <div style={{ borderBottom: "2px solid var(--border-main)", padding: "26px 0" }}>
+        <Marquee duration={24} gap="2.5rem">
+          {Array.from({ length: 6 }).map((_, i) => (
+            <span
+              key={i}
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                gap: "2.5rem",
+                fontFamily: "var(--font-heading)",
+                fontSize: "clamp(1.4rem, 4vw, 2.75rem)",
+                textTransform: "uppercase",
+                color: "var(--text-primary)",
+                whiteSpace: "nowrap",
+              }}
+            >
+              Open to opportunities
+              <span style={{ color: "var(--accent-primary)" }}>✦</span>
+            </span>
+          ))}
+        </Marquee>
+      </div>
+
+      <div
+        style={{
+          maxWidth: 1100,
+          margin: "0 auto",
+          padding: "20px 40px",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          flexWrap: "wrap",
+          gap: 16,
+        }}
+      >
+        <p className="label-text" style={{ fontSize: "0.65rem", color: "var(--text-muted)" }}>
+          © 2026 MIGUEL ANGEL CALZADA MARTÍN
+        </p>
+
+        <nav style={{ display: "flex", alignItems: "center", gap: 18, flexWrap: "wrap" }}>
+          {NAV_ITEMS.map((item) => (
+            <a key={item.id} href={`#${item.id}`} className="nav-link" style={{ fontSize: "0.72rem" }}>
+              {item.label}
+            </a>
+          ))}
+        </nav>
+
+        <a
+          href="#hero"
+          aria-label="Volver arriba"
+          title="Volver arriba"
+          style={{
+            width: 42,
+            height: 42,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            background: "var(--bg-card)",
+            border: "2px solid var(--border-main)",
+            boxShadow: "2px 2px 0 var(--border-main)",
+            color: "var(--text-primary)",
+            textDecoration: "none",
+          }}
+        >
+          <ArrowUp size={18} />
+        </a>
       </div>
     </footer>
   );
 }
 
 /* ──────────────────────────────────────────────
-   AI CHATBOT
+   AI CHATBOT + SPEED DIAL
 ────────────────────────────────────────────── */
 interface Message {
   role: "user" | "bot";
@@ -1281,6 +1499,7 @@ interface Message {
 
 function AIChatbot() {
   const [open, setOpen] = useState(false);
+  const [dialOpen, setDialOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>([
     {
       id: 0,
@@ -1341,40 +1560,135 @@ function AIChatbot() {
 
   const suggestions = ["¿Cuál es tu experiencia?", "¿Qué tecnologías usas?", "¿Estás disponible?"];
 
+  const quickActions: {
+    key: string;
+    label: string;
+    icon: React.ReactNode;
+    href?: string;
+    external?: boolean;
+    onClick?: () => void;
+  }[] = [
+    { key: "github", label: "GitHub", href: CV_DATA.github, external: true, icon: <BrandIcon name="github" size={19} /> },
+    { key: "linkedin", label: "LinkedIn", href: CV_DATA.linkedin, external: true, icon: <BrandIcon name="linkedin" size={19} /> },
+    { key: "email", label: "Email", href: `mailto:${CV_DATA.email}`, icon: <Mail size={20} /> },
+    {
+      key: "chat",
+      label: "Pregúntale a mi IA",
+      icon: <Sparkles size={19} />,
+      onClick: () => {
+        setOpen(true);
+        setDialOpen(false);
+      },
+    },
+  ];
+
+  const fabButtonStyle: React.CSSProperties = {
+    width: 50,
+    height: 50,
+    background: "var(--bg-card)",
+    border: "3px solid var(--border-main)",
+    boxShadow: "3px 3px 0 var(--border-main)",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    cursor: "pointer",
+    color: "var(--text-primary)",
+    textDecoration: "none",
+    flexShrink: 0,
+  };
+
   return (
     <>
-      {/* Floating button */}
-      <motion.button
-        id="ai-chat-button"
-        initial={{ scale: 0, opacity: 0 }}
-        animate={{ scale: 1, opacity: 1 }}
-        transition={{ delay: 2, type: "spring", stiffness: 300 }}
-        onClick={() => setOpen(true)}
-        aria-label="Abrir chat IA"
-        style={{
-          position: "fixed",
-          bottom: 28,
-          right: 28,
-          zIndex: 100,
-          width: 60,
-          height: 60,
-          borderRadius: 0,
-          background: "var(--accent-primary)",
-          border: "4px solid var(--border-main)",
-          cursor: "pointer",
-          display: open ? "none" : "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          boxShadow: "4px 4px 0px var(--border-main)",
-          color: "var(--bg-card)",
-        }}
-        whileHover={{ scale: 1.1, boxShadow: "8px 8px 0px var(--border-main)" }}
-        whileTap={{ scale: 0.95 }}
-      >
-        <Bot size={26} />
-      </motion.button>
+      {!open && (
+        <div
+          style={{
+            position: "fixed",
+            bottom: 28,
+            right: 28,
+            zIndex: 100,
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "flex-end",
+            gap: 12,
+          }}
+        >
+          <AnimatePresence>
+            {dialOpen &&
+              quickActions.map((action, i) =>
+                action.href ? (
+                  <motion.a
+                    key={action.key}
+                    href={action.href}
+                    {...(action.external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+                    aria-label={action.label}
+                    title={action.label}
+                    initial={{ opacity: 0, y: 14, scale: 0.8 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, y: 14, scale: 0.8 }}
+                    transition={{ delay: (quickActions.length - 1 - i) * 0.05, type: "spring", stiffness: 420, damping: 26 }}
+                    whileHover={{ x: -2, y: -2 }}
+                    style={fabButtonStyle}
+                  >
+                    {action.icon}
+                  </motion.a>
+                ) : (
+                  <motion.button
+                    key={action.key}
+                    type="button"
+                    onClick={action.onClick}
+                    aria-label={action.label}
+                    title={action.label}
+                    initial={{ opacity: 0, y: 14, scale: 0.8 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, y: 14, scale: 0.8 }}
+                    transition={{ delay: (quickActions.length - 1 - i) * 0.05, type: "spring", stiffness: 420, damping: 26 }}
+                    whileHover={{ x: -2, y: -2 }}
+                    style={fabButtonStyle}
+                  >
+                    {action.icon}
+                  </motion.button>
+                ),
+              )}
+          </AnimatePresence>
 
-      {/* Chat window */}
+          <motion.button
+            id="ai-chat-button"
+            initial={{ scale: 0, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ delay: 2, type: "spring", stiffness: 300 }}
+            onClick={() => setDialOpen((v) => !v)}
+            aria-label="Abrir acciones de contacto"
+            aria-expanded={dialOpen}
+            style={{
+              width: 60,
+              height: 60,
+              background: "var(--accent-primary)",
+              border: "4px solid var(--border-main)",
+              cursor: "pointer",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              boxShadow: "4px 4px 0px var(--border-main)",
+              color: "var(--bg-card)",
+            }}
+            whileHover={{ scale: 1.08, boxShadow: "8px 8px 0px var(--border-main)" }}
+            whileTap={{ scale: 0.95 }}
+          >
+            <AnimatePresence mode="wait" initial={false}>
+              {dialOpen ? (
+                <motion.span key="close" initial={{ rotate: -90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: 90, opacity: 0 }} transition={{ duration: 0.15 }}>
+                  <X size={26} />
+                </motion.span>
+              ) : (
+                <motion.span key="open" initial={{ rotate: 90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: -90, opacity: 0 }} transition={{ duration: 0.15 }}>
+                  <Bot size={26} />
+                </motion.span>
+              )}
+            </AnimatePresence>
+          </motion.button>
+        </div>
+      )}
+
       <AnimatePresence>
         {open && (
           <motion.div
@@ -1391,10 +1705,8 @@ function AIChatbot() {
               zIndex: 100,
               width: 380,
               maxWidth: "calc(100vw - 48px)",
-              borderRadius: 0,
               overflow: "hidden",
               background: "var(--bg-card)",
-              backdropFilter: "none",
               border: "4px solid var(--border-main)",
               boxShadow: "8px 8px 0px var(--border-main)",
               display: "flex",
@@ -1402,7 +1714,6 @@ function AIChatbot() {
               maxHeight: "75vh",
             }}
           >
-            {/* Header */}
             <div
               style={{
                 padding: "16px 20px",
@@ -1418,7 +1729,6 @@ function AIChatbot() {
                   style={{
                     width: 36,
                     height: 36,
-                    borderRadius: 0,
                     background: "var(--accent-primary)",
                     display: "flex",
                     alignItems: "center",
@@ -1431,7 +1741,7 @@ function AIChatbot() {
                   <p style={{ fontWeight: 700, fontSize: "0.9rem", lineHeight: 1 }}>
                     Pregúntale a mi IA
                   </p>
-                  <p style={{ color: "#a5b4fc", fontSize: "0.72rem", marginTop: 2 }}>
+                  <p style={{ color: "var(--accent-primary)", fontSize: "0.72rem", marginTop: 2, fontWeight: 600 }}>
                     Asistente de Miguel Angel · Online
                   </p>
                 </div>
@@ -1440,23 +1750,21 @@ function AIChatbot() {
                 onClick={() => setOpen(false)}
                 aria-label="Cerrar chat"
                 style={{
-                  background: "rgba(255,255,255,0.06)",
-                  border: "1px solid rgba(255,255,255,0.08)",
-                  borderRadius: 8,
+                  background: "var(--bg-secondary)",
+                  border: "2px solid var(--border-main)",
                   width: 32,
                   height: 32,
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
                   cursor: "pointer",
-                  color: "var(--text-secondary)",
+                  color: "var(--text-primary)",
                 }}
               >
                 <X size={15} />
               </button>
             </div>
 
-            {/* Messages */}
             <div
               style={{
                 flex: 1,
@@ -1480,7 +1788,6 @@ function AIChatbot() {
                       style={{
                         width: 24,
                         height: 24,
-                        borderRadius: 0,
                         background: "var(--accent-primary)",
                         border: "2px solid var(--border-main)",
                         display: "flex",
@@ -1504,7 +1811,7 @@ function AIChatbot() {
                 <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
                   <div
                     style={{
-                      width: 24, height: 24, borderRadius: 0,
+                      width: 24, height: 24,
                       background: "var(--accent-primary)",
                       border: "2px solid var(--border-main)",
                       display: "flex", alignItems: "center", justifyContent: "center",
@@ -1526,13 +1833,12 @@ function AIChatbot() {
               <div ref={endRef} />
             </div>
 
-            {/* Suggestion pills */}
             {messages.length === 1 && (
               <div style={{ padding: "0 16px 12px", display: "flex", flexWrap: "wrap", gap: 6 }}>
                 {suggestions.map((s) => (
                   <button
                     key={s}
-                  onClick={() => {
+                    onClick={() => {
                       const trimmed = s.trim();
                       const userMsg: Message = { id: Date.now(), role: "user", text: trimmed };
                       setMessages((m) => [...m, userMsg]);
@@ -1545,7 +1851,6 @@ function AIChatbot() {
                     }}
                     style={{
                       padding: "6px 12px",
-                      borderRadius: 0,
                       fontSize: "0.75rem",
                       fontWeight: 700,
                       background: "var(--bg-secondary)",
@@ -1570,7 +1875,6 @@ function AIChatbot() {
               </div>
             )}
 
-            {/* Input */}
             <div
               style={{
                 padding: "12px 16px",
@@ -1591,7 +1895,6 @@ function AIChatbot() {
                   flex: 1,
                   background: "var(--bg-primary)",
                   border: "2px solid var(--border-main)",
-                  borderRadius: 0,
                   padding: "10px 14px",
                   fontSize: "0.875rem",
                   color: "var(--text-primary)",
@@ -1613,10 +1916,7 @@ function AIChatbot() {
                 style={{
                   width: 40,
                   height: 40,
-                  borderRadius: 0,
-                  background: input.trim()
-                    ? "var(--accent-primary)"
-                    : "var(--bg-secondary)",
+                  background: input.trim() ? "var(--accent-primary)" : "var(--bg-secondary)",
                   border: "2px solid var(--border-main)",
                   cursor: input.trim() ? "pointer" : "default",
                   display: "flex",
@@ -1643,11 +1943,14 @@ function AIChatbot() {
 export default function Portfolio() {
   return (
     <main style={{ overflowX: "hidden", maxWidth: "100vw", width: "100%" }}>
+      <ScrollProgress />
       <Navbar />
       <Hero />
-      <Experience />
+      <Stats />
+      <Trayectoria />
       <Skills />
       <Projects />
+      <Contact />
       <Footer />
       <AIChatbot />
     </main>

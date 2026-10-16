@@ -590,3 +590,198 @@ h2.brutalist-heading {
     transition: opacity 0.2s linear;
   }
 }
+
+/* ============================================================
+   REDESIGN — marquee, filtros, timeline y utilidades
+   ============================================================ */
+
+/* --- Marquee infinito (dos pistas idénticas) --- */
+@keyframes marquee-x {
+  to {
+    transform: translateX(calc(-100% - var(--marquee-gap, 2rem)));
+  }
+}
+
+.marquee {
+  display: flex;
+  width: 100%;
+  overflow: hidden;
+  gap: var(--marquee-gap, 2rem);
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 6%, #000 94%, transparent);
+  mask-image: linear-gradient(to right, transparent, #000 6%, #000 94%, transparent);
+}
+
+.marquee__track {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: var(--marquee-gap, 2rem);
+  min-width: max-content;
+  animation: marquee-x var(--marquee-duration, 34s) linear infinite;
+  will-change: transform;
+}
+
+.marquee:hover .marquee__track {
+  animation-play-state: paused;
+}
+
+.marquee--reverse .marquee__track {
+  animation-direction: reverse;
+}
+
+/* --- Filtros de proyectos --- */
+.filter-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  font-family: var(--font-mono);
+  font-weight: 700;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  background: var(--bg-card);
+  color: var(--text-primary);
+  border: 2px solid var(--border-main);
+  cursor: pointer;
+  box-shadow: 2px 2px 0 var(--border-main);
+  transition: transform 0.12s ease, box-shadow 0.12s ease, background 0.12s ease,
+    color 0.12s ease;
+}
+
+.filter-btn:hover {
+  transform: translate(-1px, -1px);
+  box-shadow: 3px 3px 0 var(--border-main);
+}
+
+.filter-btn[data-active="true"] {
+  background: var(--accent-primary);
+  color: var(--bg-card);
+  transform: translate(-1px, -1px);
+  box-shadow: 3px 3px 0 var(--border-main);
+}
+
+/* --- Timeline (trayectoria) --- */
+.timeline-item {
+  position: relative;
+  padding-left: 44px;
+}
+
+.timeline-item::before {
+  content: "";
+  position: absolute;
+  left: 8px;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: var(--border-main);
+}
+
+.timeline-item:last-child::before {
+  display: none;
+}
+
+.timeline-dot {
+  position: absolute;
+  left: 0;
+  top: 4px;
+  width: 18px;
+  height: 18px;
+  background: var(--bg-card);
+  border: 3px solid var(--border-main);
+  transition: transform 0.2s var(--ease-smooth), background 0.2s ease;
+}
+
+.timeline-dot--active {
+  background: var(--accent-primary);
+  transform: scale(1.25);
+}
+
+/* --- Barra de progreso de scroll --- */
+.scroll-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: var(--accent-primary);
+  transform-origin: 0% 50%;
+  z-index: 200;
+  pointer-events: none;
+}
+
+/* --- Aparición sutil --- */
+.reveal-line {
+  display: block;
+  overflow: hidden;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .marquee__track {
+    animation: none;
+  }
+}
+
+/* --- Anclas: evitar que el navbar fijo tape los títulos --- */
+section[id] {
+  scroll-margin-top: 84px;
+}
+
+/* --- Bento grid de skills --- */
+.skills-bento {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  grid-template-areas:
+    "ai ai ai web web web"
+    "ai ai ai backend backend backend"
+    "data data data devops devops devops";
+  gap: 20px;
+}
+
+.skills-bento > .skill-ai { grid-area: ai; }
+.skills-bento > .skill-web { grid-area: web; }
+.skills-bento > .skill-backend { grid-area: backend; }
+.skills-bento > .skill-data { grid-area: data; }
+.skills-bento > .skill-devops { grid-area: devops; }
+
+.skills-bento > * {
+  transition: transform 0.14s ease, box-shadow 0.14s ease, border-color 0.14s ease;
+}
+
+.skills-bento > *:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 8px 8px 0 var(--border-main);
+}
+
+@media (max-width: 900px) {
+  .skills-bento {
+    grid-template-columns: 1fr 1fr;
+    grid-template-areas:
+      "ai ai"
+      "web backend"
+      "data devops";
+  }
+}
+
+@media (max-width: 560px) {
+  .skills-bento {
+    grid-template-columns: 1fr;
+    grid-template-areas: "ai" "web" "backend" "data" "devops";
+  }
+}
+
+/* --- Fila de estadísticas --- */
+.stat-cell {
+  background: var(--bg-card);
+  padding: 28px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.stat-cell .stat-value {
+  font-family: var(--font-heading);
+  font-size: clamp(2rem, 4vw, 2.75rem);
+  line-height: 1;
+  color: var(--text-primary);
+}
