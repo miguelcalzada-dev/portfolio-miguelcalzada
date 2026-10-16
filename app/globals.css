@@ -239,53 +239,6 @@ section[id],
 }
 
 /* ============================================================
-   RAIL - la calzada / el linaje (barra gruesa de acento)
-   ============================================================ */
-.rail {
-  position: fixed;
-  top: 0;
-  bottom: 0;
-  left: 12px;
-  width: 4px;
-  background: color-mix(in srgb, var(--ink) 12%, transparent);
-  z-index: 40;
-  display: none;
-}
-.rail__fill {
-  position: absolute;
-  inset: 0;
-  background: var(--accent);
-  transform-origin: 50% 0%;
-}
-.rail__node {
-  position: absolute;
-  left: 50%;
-  width: 9px;
-  height: 9px;
-  margin-left: -4.5px;
-  margin-top: -4.5px;
-  background: var(--bg);
-  border: 2px solid color-mix(in srgb, var(--ink) 45%, transparent);
-  transition: background var(--t-ui) ease, border-color var(--t-ui) ease,
-    transform var(--t-ui) var(--ease-out);
-}
-.rail__node.is-past {
-  background: var(--accent);
-  border-color: var(--accent);
-  transform: scale(1.25);
-}
-@media (min-width: 64em) {
-  .rail {
-    display: block;
-  }
-}
-@media (prefers-reduced-motion: reduce) {
-  .rail {
-    display: none;
-  }
-}
-
-/* ============================================================
    HERO - una palabra, recortada
    ============================================================ */
 .hero {
@@ -334,6 +287,28 @@ section[id],
   font-size: var(--step-small);
 }
 
+.hero__rule {
+  display: block;
+  width: clamp(64px, 14vw, 220px);
+  height: 4px;
+  background: var(--accent);
+  transform-origin: left center;
+  margin-bottom: 1.75rem;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .js .hero__rule {
+    animation: rule-in 700ms var(--ease-out) both 150ms;
+  }
+}
+@keyframes rule-in {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
 .hero__body {
   margin-top: auto;
   padding-inline: var(--margin);
@@ -355,7 +330,7 @@ section[id],
 .hero__word {
   font-family: var(--font-display);
   font-weight: 800;
-  font-size: clamp(4rem, 18vw, 20rem);
+  font-size: clamp(4rem, 19.5vw, 20rem);
   line-height: 0.82;
   letter-spacing: -0.04em;
   white-space: nowrap;
@@ -363,6 +338,12 @@ section[id],
   margin-bottom: 0.04em;
   will-change: transform;
   transform-origin: left bottom;
+  transition: color var(--t-ui) ease;
+}
+@media (hover: hover) and (pointer: fine) {
+  .hero__word:hover {
+    color: var(--accent);
+  }
 }
 
 @media (max-width: 43.75em) {
@@ -434,11 +415,14 @@ section[id],
 }
 
 .work__row {
+  display: block;
+  padding: clamp(1.1rem, 2.6vw, 1.9rem) 0;
+}
+.work__row-in {
   display: flex;
   justify-content: space-between;
   align-items: baseline;
   gap: 1.5rem;
-  padding: clamp(1.1rem, 2.6vw, 1.9rem) 0;
 }
 .work__name {
   font-family: var(--font-display);
@@ -490,17 +474,19 @@ section[id],
     object-fit: cover;
     object-position: center;
     opacity: 0;
-    transition: opacity var(--t-ui) ease;
+    transform: scale(1.04);
+    transition: opacity var(--t-ui) ease, transform 700ms var(--ease-soft);
   }
   .work__preview img.is-on {
     opacity: 1;
+    transform: none;
   }
 }
 @media (max-width: 63.99em) {
   .work__preview {
     display: none;
   }
-  .work__row {
+  .work__row-in {
     flex-direction: column;
     align-items: flex-start;
     gap: 0.4rem;
@@ -803,7 +789,16 @@ section[id],
   justify-content: center;
   background: var(--accent);
   color: var(--accent-ink);
-  transition: transform var(--t-press) var(--ease-out);
+  opacity: 0;
+  transform: translateY(10px) scale(0.94);
+  pointer-events: none;
+  transition: opacity var(--t-ui) ease, transform var(--t-ui) var(--ease-out),
+    background-color var(--t-hover) ease;
+}
+.bot-launch.is-show {
+  opacity: 1;
+  transform: none;
+  pointer-events: auto;
 }
 .bot-launch:active {
   transform: scale(0.94);

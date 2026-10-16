@@ -22,16 +22,24 @@ export default function Hero() {
     target: ref,
     offset: ["start start", "end start"],
   });
-  const scale = useTransform(scrollYProgress, [0, 1], [1, 0.9]);
-  const y = useTransform(scrollYProgress, [0, 1], ["0%", "-3%"]);
+  const scale = useTransform(scrollYProgress, [0, 1], [1, 0.93]);
 
   return (
     <section className="hero" id="top" ref={ref}>
       <div className="hero__top">
-        <a href="#top" className="hero__brand">
+        <a
+          href="#top"
+          className="hero__brand"
+          data-rise
+          style={{ "--i": 0 } as React.CSSProperties}
+        >
           {SITE.brand}
         </a>
-        <div className="hero__nav">
+        <div
+          className="hero__nav"
+          data-rise
+          style={{ "--i": 1 } as React.CSSProperties}
+        >
           <nav className="hero__links" aria-label="Secciones">
             {LINKS.map((l) => (
               <a key={l.href} href={l.href}>
@@ -46,13 +54,24 @@ export default function Hero() {
       </div>
 
       <div className="hero__body">
-        <p className="hero__intro" data-rise style={{ "--i": 0 } as React.CSSProperties}>
+        <span className="hero__rule" aria-hidden="true" />
+        <p
+          className="hero__intro"
+          data-rise
+          style={{ "--i": 2 } as React.CSSProperties}
+        >
           {SITE.intro}
         </p>
       </div>
 
       <div className="hero__word-wrap">
-        <motion.h1 className="hero__word" style={{ scale, y: reduce ? 0 : y }}>
+        <motion.h1
+          className="hero__word"
+          style={{ scale }}
+          initial={reduce ? false : { opacity: 0, y: 56 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1], delay: 0.15 }}
+        >
           {SITE.word}
         </motion.h1>
       </div>

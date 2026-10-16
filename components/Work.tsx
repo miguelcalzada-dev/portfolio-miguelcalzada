@@ -43,9 +43,15 @@ export default function Work() {
                   loading="lazy"
                 />
               )}
-              <span className="work__name">{p.name}</span>
-              <span className="work__meta">
-                {p.kind} · {p.year}
+              <span
+                className="work__row-in"
+                data-reveal
+                style={{ transitionDelay: `${i * 45}ms` }}
+              >
+                <span className="work__name">{p.name}</span>
+                <span className="work__meta">
+                  {p.kind} · {p.year}
+                </span>
               </span>
             </a>
           );

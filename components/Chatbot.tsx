@@ -72,6 +72,7 @@ const SUGGESTIONS = [
 
 export default function Chatbot() {
   const [open, setOpen] = useState(false);
+  const [show, setShow] = useState(false);
   const [messages, setMessages] = useState<Message[]>([
     {
       id: 0,
@@ -82,6 +83,14 @@ export default function Chatbot() {
   const [input, setInput] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
   const endRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const onScroll = () =>
+      setShow(window.scrollY > window.innerHeight * 0.7);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   useEffect(() => {
     if (open) endRef.current?.scrollIntoView({ block: "end" });
@@ -108,10 +117,11 @@ export default function Chatbot() {
     <>
       <button
         type="button"
-        className="bot-launch"
+        className={`bot-launch${show && !open ? " is-show" : ""}`}
         aria-label="Abrir asistente"
+        aria-hidden={!show}
+        tabIndex={show ? 0 : -1}
         onClick={() => setOpen(true)}
-        style={{ display: open ? "none" : "flex" }}
       >
         <MessageSquare size={22} aria-hidden="true" />
       </button>
