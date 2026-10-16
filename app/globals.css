@@ -521,194 +521,219 @@ section[id],
 }
 
 /* ============================================================
-   STACK - campo de superficie, grafo de linaje + especificacion
+   STACK - selector de capas interactivo (campo de superficie)
    ============================================================ */
 .stack {
   background: var(--surface);
 }
-.stack__grid {
+.stacktabs {
   display: grid;
-  gap: clamp(2.5rem, 6vw, 5rem);
+  gap: clamp(2rem, 5vw, 3.5rem);
 }
-@media (min-width: 60em) {
-  .stack__grid {
-    grid-template-columns: 1fr 1fr;
-    align-items: start;
-    gap: clamp(3rem, 6vw, 6rem);
-  }
-}
-.stack__visual {
-  margin: 0;
-}
-.stack__visual .lineage {
-  width: 100%;
-  height: auto;
-  max-width: 560px;
-}
-.lineage__edges line {
-  stroke: var(--muted);
-  stroke-width: 2;
-  opacity: 0.5;
-}
-.lineage__node rect {
-  fill: var(--surface-2);
-  stroke: color-mix(in srgb, var(--ink) 22%, transparent);
-  stroke-width: 1.5;
-}
-.lineage__node text {
-  fill: var(--ink);
-  font-family: var(--font-text);
-  font-size: 14px;
-  text-anchor: middle;
-}
-.lineage__node--hit rect {
-  fill: var(--accent);
-  stroke: var(--accent);
-}
-.lineage__node--hit text {
-  fill: var(--accent-ink);
-}
-.stack__visual figcaption {
-  margin-top: 1.5rem;
-  font-size: var(--step-small);
-  color: var(--muted);
-  max-width: 48ch;
-}
-.stack__groups {
+.stacktabs__tabs {
   display: flex;
-  flex-direction: column;
-  gap: clamp(1.5rem, 3vw, 2.25rem);
+  flex-wrap: wrap;
+  gap: 0.25rem clamp(1.25rem, 3vw, 2.5rem);
+  border-bottom: 4px solid color-mix(in srgb, var(--ink) 12%, transparent);
 }
-.stack__group h3 {
+.stacktabs__tab {
+  position: relative;
+  padding: 0.5rem 0.1rem 1rem;
   font-family: var(--font-display);
   font-weight: 600;
-  font-size: clamp(1.4rem, 2.8vw, 2rem);
-  letter-spacing: -0.03em;
-  line-height: 1.05;
-  margin-bottom: 0.5rem;
-}
-.stack__group p {
-  font-size: var(--step-body);
+  font-size: var(--step-lead);
+  letter-spacing: -0.02em;
   color: var(--muted);
-  max-width: 60ch;
+  text-align: left;
+  transition: color var(--t-hover) ease;
+}
+.stacktabs__tab::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -4px;
+  height: 4px;
+  background: var(--accent);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform var(--t-ui) var(--ease-out);
+}
+.stacktabs__tab:hover {
+  color: var(--ink);
+}
+.stacktabs__tab.is-active {
+  color: var(--ink);
+}
+.stacktabs__tab.is-active::after {
+  transform: scaleX(1);
+}
+.stacktabs__panel {
+  min-height: clamp(7rem, 16vw, 11rem);
+}
+.stacktabs__tools {
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 210px), 1fr));
+  gap: 0.7rem clamp(1.5rem, 4vw, 3rem);
+}
+.stacktabs__tools li {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: var(--step-lead);
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  color: var(--ink);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .stacktabs__tools li {
+    opacity: 0;
+    transform: translateY(14px);
+    animation: ad-rise 520ms var(--ease-out) both;
+    animation-delay: calc(var(--i) * 55ms);
+  }
 }
 
 /* ============================================================
-   EXPERIENCIA - la calzada: linea de tiempo con hitos
+   EXPERIENCIA - titulo fijo + linea que se dibuja al hacer scroll
    ============================================================ */
-.tl {
-  list-style: none;
-  max-width: 1100px;
-}
-.tl__item {
-  position: relative;
+.exp2 {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 0.5rem 2.5rem;
-  padding-left: 2.5rem;
-  padding-bottom: clamp(2.5rem, 6vw, 4.5rem);
+  gap: clamp(2.5rem, 6vw, 5rem);
 }
-.tl__item::before {
-  content: "";
+@media (min-width: 60em) {
+  .exp2 {
+    grid-template-columns: minmax(220px, 30%) 1fr;
+    align-items: start;
+  }
+  .exp2__side {
+    position: sticky;
+    top: clamp(4rem, 12vh, 7rem);
+  }
+}
+.exp2__side h2 {
+  font-size: var(--step-head);
+  margin-bottom: 1rem;
+}
+.exp2__side p {
+  font-size: var(--step-body);
+  color: var(--muted);
+  max-width: 30ch;
+}
+.exp2__main {
+  position: relative;
+  padding-left: 2.75rem;
+}
+.exp2__rail {
   position: absolute;
   left: 0.45rem;
-  top: 0.9rem;
-  bottom: 0;
+  top: 0.65rem;
+  bottom: 0.65rem;
   width: 4px;
-  background: color-mix(in srgb, var(--ink) 14%, transparent);
+  background: color-mix(in srgb, var(--ink) 12%, transparent);
 }
-.tl__item:last-child {
+.exp2__rail-fill {
+  display: block;
+  position: absolute;
+  inset: 0;
+  background: var(--accent);
+  transform-origin: 50% 0%;
+}
+.exp2__list {
+  list-style: none;
+}
+.exp2__item {
+  position: relative;
+  padding-bottom: clamp(2.5rem, 6vw, 4.5rem);
+}
+.exp2__item:last-child {
   padding-bottom: 0;
 }
-.tl__item:last-child::before {
-  display: none;
-}
-.tl__node {
+.exp2__node {
   position: absolute;
-  left: 0;
-  top: 0.5rem;
-  width: 1.05rem;
-  height: 1.05rem;
+  left: -2.75rem;
+  top: 0.35rem;
+  width: 1.15rem;
+  height: 1.15rem;
   background: var(--accent);
+  transition: transform var(--t-ui) var(--ease-out);
 }
-.tl__node--edu {
-  background: var(--surface-2);
-  outline: 2px solid color-mix(in srgb, var(--ink) 30%, transparent);
-  outline-offset: -2px;
+.exp2__node--edu {
+  background: var(--bg);
+  border: 3px solid color-mix(in srgb, var(--ink) 35%, transparent);
 }
-.tl__year {
-  font-size: var(--step-small);
-  color: var(--muted);
-  font-variant-numeric: tabular-nums;
+.exp2__item:hover .exp2__node {
+  transform: scale(1.3);
 }
-.tl__body h3 {
+.exp2__body h3 {
   font-size: clamp(1.4rem, 2.8vw, 2rem);
   letter-spacing: -0.03em;
   line-height: 1.05;
   margin-bottom: 0.4rem;
 }
-.tl__meta {
+.exp2__meta {
   font-size: var(--step-small);
   color: var(--muted);
   margin-bottom: 0.9rem;
 }
-.tl__lead {
+.exp2__lead {
   font-size: var(--step-body);
   line-height: 1.5;
   color: var(--ink);
   max-width: 62ch;
 }
-@media (min-width: 52em) {
-  .tl__item {
-    grid-template-columns: minmax(140px, 200px) 1fr;
-  }
-}
 
 /* ============================================================
-   CONTACTO - filas a tamano display en bandas alternas
+   CONTACTO - filas a tamano display; hover invierte la fila
    ============================================================ */
-.contact {
+.contact2 {
   background: var(--bone);
+  padding-block: clamp(3rem, 8vw, 6rem) 0;
+}
+.contact2__head {
+  padding-inline: var(--margin);
+  margin-bottom: clamp(2rem, 5vw, 3.5rem);
+}
+.contact2__head h2 {
+  font-size: var(--step-head);
   color: var(--bone-ink);
+  margin-bottom: 1rem;
 }
-.contact__head {
-  padding: clamp(3rem, 8vw, 6rem) var(--margin) clamp(2rem, 5vw, 3.5rem);
-}
-.contact__head p {
+.contact2__head p {
   font-size: var(--step-lead);
   line-height: 1.3;
-  max-width: 30ch;
-  color: var(--bone-ink);
+  max-width: 34ch;
+  color: var(--bone-muted);
 }
-.contact__rows {
+.contact2__rows {
   display: flex;
   flex-direction: column;
 }
-.contact__row {
-  display: block;
-  padding: clamp(1.4rem, 3.5vw, 2.4rem) var(--margin);
-  transition: background var(--t-hover) ease;
-}
-.contact__row:nth-child(even) {
+.contact2__row {
+  display: flex;
+  align-items: center;
+  padding: clamp(1.5rem, 3.5vw, 2.3rem) var(--margin);
+  color: var(--bone-ink);
   background: color-mix(in srgb, var(--bone-ink) 5%, transparent);
+  transition: background 320ms var(--ease-out), color 320ms var(--ease-out);
 }
-.contact__value {
-  display: block;
+.contact2__row:nth-child(even) {
+  background: transparent;
+}
+.contact2__value {
   font-family: var(--font-display);
   font-weight: 700;
-  font-size: clamp(1.4rem, 5vw, 3.6rem);
+  font-size: clamp(1.35rem, 4.6vw, 3.4rem);
   letter-spacing: -0.035em;
   line-height: 1.05;
-  color: var(--bone-ink);
-  transition: color var(--t-hover) ease;
+  color: inherit;
   overflow-wrap: anywhere;
 }
 @media (hover: hover) and (pointer: fine) {
-  .contact__row:hover .contact__value {
-    color: #a86a00;
-  }
-  .contact__row:hover {
-    background: color-mix(in srgb, var(--bone-ink) 9%, transparent);
+  .contact2__row:hover {
+    background: var(--bg);
+    color: var(--ink);
   }
 }
 

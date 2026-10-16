@@ -1,3 +1,7 @@
+"use client";
+
+import { useRef } from "react";
+import { motion, useScroll, useTransform, useReducedMotion } from "framer-motion";
 import { JOB, EXPERIENCE_LEAD, EDUCATION } from "./site-data";
 
 const FORMATION_DETAIL: Record<string, string> = {
@@ -8,44 +12,62 @@ const FORMATION_DETAIL: Record<string, string> = {
 };
 
 export default function Experience() {
+  const ref = useRef<HTMLDivElement>(null);
+  const reduce = useReducedMotion();
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ["start 70%", "end 65%"],
+  });
+  const scaleY = useTransform(scrollYProgress, [0, 1], [0, 1]);
+
   return (
-    <section id="experiencia" className="section">
-      <div className="section__head" data-reveal>
+    <section id="experiencia" className="section exp2">
+      <div className="exp2__side">
         <h2>Experiencia</h2>
         <p>Un puesto, en producción, con foco en backend, cloud e IA.</p>
       </div>
 
-      <ol className="tl">
-        <li className="tl__item" data-reveal>
-          <span className="tl__node" aria-hidden="true" />
-          <p className="tl__year">2024 – presente</p>
-          <div className="tl__body">
-            <h3>
-              {JOB.role} · {JOB.company}
-            </h3>
-            <p className="tl__meta">{JOB.location}</p>
-            <p className="tl__lead">{EXPERIENCE_LEAD}</p>
-          </div>
-        </li>
+      <div className="exp2__main" ref={ref}>
+        <span className="exp2__rail" aria-hidden="true">
+          <motion.span
+            className="exp2__rail-fill"
+            style={{ scaleY: reduce ? 1 : scaleY }}
+          />
+        </span>
 
-        {EDUCATION.map((e, i) => (
-          <li
-            className="tl__item"
-            key={e.label}
-            data-reveal
-            style={{ transitionDelay: `${(i + 1) * 70}ms` }}
-          >
-            <span className="tl__node tl__node--edu" aria-hidden="true" />
-            <p className="tl__year">{e.value}</p>
-            <div className="tl__body">
-              <h3>{e.label}</h3>
-              <p className="tl__lead">
-                {FORMATION_DETAIL[e.label] ?? "Formación técnica."}
+        <ol className="exp2__list">
+          <li className="exp2__item" data-reveal>
+            <span className="exp2__node" aria-hidden="true" />
+            <div className="exp2__body">
+              <h3>
+                {JOB.role} · {JOB.company}
+              </h3>
+              <p className="exp2__meta">
+                {JOB.location} · {JOB.period}
               </p>
+              <p className="exp2__lead">{EXPERIENCE_LEAD}</p>
             </div>
           </li>
-        ))}
-      </ol>
+
+          {EDUCATION.map((e, i) => (
+            <li
+              className="exp2__item"
+              key={e.label}
+              data-reveal
+              style={{ transitionDelay: `${(i + 1) * 70}ms` }}
+            >
+              <span className="exp2__node exp2__node--edu" aria-hidden="true" />
+              <div className="exp2__body">
+                <h3>{e.label}</h3>
+                <p className="exp2__meta">{e.value}</p>
+                <p className="exp2__lead">
+                  {FORMATION_DETAIL[e.label] ?? "Formación técnica."}
+                </p>
+              </div>
+            </li>
+          ))}
+        </ol>
+      </div>
     </section>
   );
 }
