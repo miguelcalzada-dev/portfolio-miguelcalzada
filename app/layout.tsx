@@ -27,7 +27,7 @@ export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
   themeColor: "#111111",
-  colorScheme: "light",
+  colorScheme: "dark",
 };
 
 const SITE_URL = "https://miguelcalzada.com";
