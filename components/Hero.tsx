@@ -10,7 +10,6 @@ import {
 import { SITE } from "./site-data";
 
 const LINKS = [
-  { href: "#trabajo", label: "Trabajo" },
   { href: "#stack", label: "Stack" },
   { href: "#experiencia", label: "Experiencia" },
   { href: "#contacto", label: "Contacto" },
@@ -23,8 +22,8 @@ export default function Hero() {
     target: ref,
     offset: ["start start", "end start"],
   });
-  const scale = useTransform(scrollYProgress, [0, 1], [1, 0.92]);
-  const y = useTransform(scrollYProgress, [0, 1], ["0%", "-4%"]);
+  const scale = useTransform(scrollYProgress, [0, 1], [1, 0.9]);
+  const y = useTransform(scrollYProgress, [0, 1], ["0%", "-3%"]);
 
   return (
     <section className="hero" id="top" ref={ref}>
@@ -32,34 +31,28 @@ export default function Hero() {
         <a href="#top" className="hero__brand">
           {SITE.brand}
         </a>
-        <nav className="hero__links" aria-label="Secciones">
-          {LINKS.map((l) => (
-            <a key={l.href} href={l.href}>
-              {l.label}
-            </a>
-          ))}
-        </nav>
+        <div className="hero__nav">
+          <nav className="hero__links" aria-label="Secciones">
+            {LINKS.map((l) => (
+              <a key={l.href} href={l.href}>
+                {l.label}
+              </a>
+            ))}
+          </nav>
+          <a href="#trabajo" className="button hero__cta">
+            Ver proyectos
+          </a>
+        </div>
       </div>
 
-      <div className="hero__intro">
-        <p data-rise style={{ "--i": 0 } as React.CSSProperties}>
+      <div className="hero__body">
+        <p className="hero__intro" data-rise style={{ "--i": 0 } as React.CSSProperties}>
           {SITE.intro}
         </p>
-        <a
-          href="#trabajo"
-          className="button"
-          data-rise
-          style={{ "--i": 1 } as React.CSSProperties}
-        >
-          Ver proyectos
-        </a>
       </div>
 
       <div className="hero__word-wrap">
-        <motion.h1
-          className="hero__word"
-          style={{ scale, y: reduce ? 0 : y }}
-        >
+        <motion.h1 className="hero__word" style={{ scale, y: reduce ? 0 : y }}>
           {SITE.word}
         </motion.h1>
       </div>

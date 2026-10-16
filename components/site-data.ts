@@ -22,7 +22,7 @@ export const SITE = {
   github: "https://github.com/miguelcalzada-dev",
   linkedin: "https://www.linkedin.com/in/miguel-calzada-04a19b24b",
   intro:
-    "Desarrollador Full-Stack e IA en Madrid. Diseño y despliego APIs, microservicios y productos de datos reales, de la base de datos al frontend.",
+    "Desarrollador Full-Stack e IA en Madrid. Construyo y despliego APIs, microservicios y productos de datos reales, de la base de datos al frontend.",
   contactLine:
     "¿Una oportunidad, una colaboración o una idea? Escríbeme directamente.",
 };
@@ -130,12 +130,12 @@ export const STACK: { group: string; items: string[] }[] = [
   },
 ];
 
-export const FACTS: { label: string; value: string }[] = [
-  { label: "Base", value: "Madrid, España" },
-  { label: "Disponibilidad", value: "Remoto · híbrido · inmediata" },
-  { label: "Idiomas", value: "Español nativo · Inglés B2" },
-  { label: "En activo desde", value: "2024" },
-];
+export const JOB = {
+  role: "Software Developer",
+  company: "Analisis Survey Unit",
+  location: "Madrid, España",
+  period: "Marzo 2024 – presente",
+};
 
 export const EXPERIENCE_LEAD =
   "Trabajo como Software Developer en Analisis Survey Unit (Madrid) desde marzo de 2024. Diseño, desarrollo y despliego APIs REST y microservicios con Java (Spring Boot), Node.js y Python (FastAPI) sobre AWS con Docker y Kubernetes, y construyo agentes de IA, arquitecturas RAG y pipelines de CI/CD que corren en producción.";
@@ -152,10 +152,3 @@ export const EDUCATION: { label: string; value: string }[] = [
   { label: "Especialización en IA y Big Data", value: "2025 – 2026" },
   { label: "Técnico Superior en DAM", value: "2022 – 2024" },
 ];
-
-export const FEATURED = {
-  name: "Applied AI Solutions",
-  caption: "Chat multi-turno, visión, RAG y NLP en una sola plataforma desplegada.",
-  media: "/work/ai-lab.jpg",
-  url: "/ai-lab",
-};

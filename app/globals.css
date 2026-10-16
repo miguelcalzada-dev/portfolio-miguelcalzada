@@ -323,26 +323,31 @@ section[id],
   color: var(--ink);
 }
 
-.hero__intro {
-  padding-inline: var(--margin);
-  margin-top: clamp(6rem, 15vh, 11rem);
-  max-width: 40ch;
+.hero__nav {
+  display: flex;
+  align-items: center;
+  gap: clamp(1rem, 2.4vw, 2rem);
 }
-.hero__intro p {
+.hero__cta {
+  min-height: 2.6rem;
+  padding: 0 1.15rem;
+  font-size: var(--step-small);
+}
+
+.hero__body {
+  margin-top: auto;
+  padding-inline: var(--margin);
+  padding-bottom: clamp(1.25rem, 3vh, 2.5rem);
+}
+.hero__intro {
   font-size: var(--step-lead);
   line-height: 1.35;
   color: var(--ink);
-  max-width: 34ch;
-}
-.hero__intro .button {
-  margin-top: 2rem;
+  max-width: 42ch;
 }
 
 .hero__word-wrap {
   position: relative;
-  flex: 1;
-  display: flex;
-  align-items: flex-end;
   overflow: hidden;
 }
 
@@ -374,12 +379,13 @@ section[id],
     gap: 1rem;
     font-size: 0.8125rem;
   }
-  .hero__intro {
-    margin-top: clamp(3rem, 10vh, 6rem);
+  .hero__nav {
+    flex-wrap: wrap;
+    gap: 1rem;
   }
-  .hero__intro p {
+  .hero__intro {
     font-size: var(--step-body);
-    max-width: 32ch;
+    max-width: 34ch;
   }
   .hero__word {
     font-size: 17.5vw;
@@ -475,7 +481,6 @@ section[id],
     width: 34%;
     aspect-ratio: 16 / 11;
     overflow: hidden;
-    background: var(--surface);
     pointer-events: none;
   }
   .work__preview img {
@@ -516,32 +521,6 @@ section[id],
   }
 }
 
-.work__featured {
-  position: relative;
-  margin-top: clamp(4rem, 9vw, 7rem);
-  overflow: hidden;
-}
-.work__featured img {
-  width: 100%;
-  aspect-ratio: 16 / 9;
-  object-fit: cover;
-  object-position: top center;
-  will-change: transform;
-}
-.work__caption {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  gap: 0.5rem 1.5rem;
-  margin-top: 1rem;
-  font-size: var(--step-small);
-  color: var(--muted);
-}
-.work__caption strong {
-  color: var(--ink);
-  font-weight: 500;
-}
-
 /* ============================================================
    STACK - capacidades a escala de cartel (solo tipo)
    ============================================================ */
@@ -552,7 +531,7 @@ section[id],
 }
 .stack__kicker {
   font-family: var(--font-display);
-  font-size: clamp(1.9rem, 5.2vw, 3.75rem);
+  font-size: var(--step-head);
   color: var(--muted);
   font-weight: 500;
   letter-spacing: -0.03em;
@@ -561,7 +540,7 @@ section[id],
 .stack__group h3 {
   font-family: var(--font-display);
   font-weight: 600;
-  font-size: clamp(1.9rem, 5.2vw, 3.75rem);
+  font-size: var(--step-head);
   letter-spacing: -0.035em;
   line-height: 1;
   margin-bottom: 0.6rem;
@@ -573,80 +552,59 @@ section[id],
 }
 
 /* ============================================================
-   EXPERIENCIA - hechos al lado, párrafo ancho, registro
+   EXPERIENCIA - entrada + listas legibles en columna
    ============================================================ */
-.exp__row {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: clamp(1.5rem, 4vw, 3rem);
-}
-@media (min-width: 52em) {
-  .exp__row {
-    grid-template-columns: minmax(180px, 26%) 1fr;
-  }
-}
-.exp__facts {
+.exp {
   display: flex;
   flex-direction: column;
-  gap: 1.25rem;
+  gap: clamp(2.5rem, 6vw, 4.5rem);
+  max-width: 1100px;
 }
-.exp__fact dt {
+.exp__job h3 {
+  font-size: clamp(1.6rem, 3.4vw, 2.5rem);
+  letter-spacing: -0.03em;
+  line-height: 1.05;
+  margin-bottom: 0.5rem;
+}
+.exp__period {
   font-size: var(--step-small);
   color: var(--muted);
-  margin-bottom: 0.2rem;
-}
-.exp__fact dd {
-  font-size: var(--step-body);
-  color: var(--ink);
+  margin-bottom: 1.5rem;
 }
 .exp__lead {
   font-size: var(--step-lead);
-  line-height: 1.32;
+  line-height: 1.35;
   color: var(--ink);
-  max-width: 60ch;
+  max-width: 64ch;
 }
-.exp__record {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: clamp(2rem, 5vw, 4rem);
-  margin-top: clamp(3rem, 7vw, 5.5rem);
-}
-@media (min-width: 52em) {
-  .exp__record {
-    grid-template-columns: minmax(180px, 26%) 1fr 1fr;
-  }
-  .exp__record-title {
-    grid-column: auto;
-  }
-}
-.exp__record-title {
+.exp__label {
+  font-family: var(--font-text);
   font-size: var(--step-small);
+  font-weight: 500;
   color: var(--muted);
+  letter-spacing: 0;
+  margin-bottom: 1.1rem;
 }
 .exp__list {
   list-style: none;
   display: flex;
   flex-direction: column;
-  gap: 0.7rem;
+  gap: 0.85rem;
+  max-width: 720px;
 }
 .exp__list li {
   display: flex;
   justify-content: space-between;
-  gap: 1rem;
+  gap: 2rem;
   font-size: var(--step-body);
   color: var(--ink);
-  padding-bottom: 0.6rem;
+  padding-bottom: 0.7rem;
 }
 .exp__list li span:last-child {
   color: var(--muted);
   font-variant-numeric: tabular-nums;
+  text-align: right;
   flex-shrink: 0;
-}
-.exp__note {
-  margin-top: 1.25rem;
-  font-size: var(--step-small);
-  color: var(--muted);
-  max-width: 60ch;
 }
 
 /* ============================================================
