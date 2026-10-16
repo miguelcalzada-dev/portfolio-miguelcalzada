@@ -2,47 +2,49 @@ import { SITE } from "./site-data";
 
 export default function Contact() {
   return (
-    <section id="contacto" className="section contact2">
-      <div className="contact2__head" data-reveal>
-        <h2>Contacto</h2>
-        <p>¿Una oportunidad, una colaboración o una idea? Escríbeme.</p>
-      </div>
+    <section id="contacto" className="contactv3">
+      <h2 className="contactv3__kicker" data-reveal>
+        Contacto
+      </h2>
 
-      <div className="contact2__rows">
-        <a className="contact2__row" href={`mailto:${SITE.email}`} data-reveal>
-          <span className="contact2__value">{SITE.email}</span>
-        </a>
+      <a
+        className="contactv3__mail"
+        href={`mailto:${SITE.email}`}
+        data-reveal
+        style={{ transitionDelay: "60ms" }}
+      >
+        {SITE.email.split("@")[0]}@<wbr />
+        {SITE.email.split("@")[1]}
+      </a>
 
-        <a
-          className="contact2__row"
-          href={`tel:${SITE.phoneHref}`}
-          data-reveal
-        >
-          <span className="contact2__value">{SITE.phone}</span>
-        </a>
+      <p
+        className="contactv3__lead"
+        data-reveal
+        style={{ transitionDelay: "120ms" }}
+      >
+        ¿Una oportunidad, una colaboración o una idea? Escríbeme directamente.
+      </p>
 
-        <a
-          className="contact2__row"
-          href={SITE.linkedin}
-          target="_blank"
-          rel="noopener noreferrer"
-          data-reveal
-        >
-          <span className="contact2__value">
-            linkedin.com/in/miguel-calzada-04a19b24b
-          </span>
-        </a>
-
-        <a
-          className="contact2__row"
-          href={SITE.github}
-          target="_blank"
-          rel="noopener noreferrer"
-          data-reveal
-        >
-          <span className="contact2__value">github.com/miguelcalzada-dev</span>
-        </a>
-      </div>
+      <ul
+        className="contactv3__links"
+        data-reveal
+        style={{ transitionDelay: "180ms" }}
+      >
+        <li>
+          <a href={`tel:${SITE.phoneHref}`}>{SITE.phone}</a>
+        </li>
+        <li>
+          <a href={SITE.linkedin} target="_blank" rel="noopener noreferrer">
+            LinkedIn
+          </a>
+        </li>
+        <li>
+          <a href={SITE.github} target="_blank" rel="noopener noreferrer">
+            GitHub
+          </a>
+        </li>
+        <li>Madrid · remoto o híbrido</li>
+      </ul>
     </section>
   );
 }
