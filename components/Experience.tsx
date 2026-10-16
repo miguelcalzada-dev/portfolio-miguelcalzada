@@ -1,4 +1,11 @@
-import { JOB, EXPERIENCE_LEAD, RESPONSIBILITIES, EDUCATION } from "./site-data";
+import { JOB, EXPERIENCE_LEAD, EDUCATION } from "./site-data";
+
+const FORMATION_DETAIL: Record<string, string> = {
+  "Especialización en IA y Big Data":
+    "Machine Learning, Deep Learning, NLP y Big Data Analytics.",
+  "Técnico Superior en DAM":
+    "Java, Android, diseño de bases de datos y programación orientada a objetos.",
+};
 
 export default function Experience() {
   return (
@@ -8,41 +15,37 @@ export default function Experience() {
         <p>Un puesto, en producción, con foco en backend, cloud e IA.</p>
       </div>
 
-      <div className="exp">
-        <div className="exp__job" data-reveal>
-          <h3>
-            {JOB.role} · {JOB.company}
-          </h3>
-          <p className="exp__period">
-            {JOB.location} · {JOB.period}
-          </p>
-          <p className="exp__lead">{EXPERIENCE_LEAD}</p>
-        </div>
+      <ol className="tl">
+        <li className="tl__item" data-reveal>
+          <span className="tl__node" aria-hidden="true" />
+          <p className="tl__year">2024 – presente</p>
+          <div className="tl__body">
+            <h3>
+              {JOB.role} · {JOB.company}
+            </h3>
+            <p className="tl__meta">{JOB.location}</p>
+            <p className="tl__lead">{EXPERIENCE_LEAD}</p>
+          </div>
+        </li>
 
-        <div className="exp__block" data-reveal>
-          <h3 className="exp__label">Responsabilidades</h3>
-          <ul className="exp__list">
-            {RESPONSIBILITIES.map((r) => (
-              <li key={r.label}>
-                <span>{r.label}</span>
-                <span>{r.value}</span>
-              </li>
-            ))}
-          </ul>
-        </div>
-
-        <div className="exp__block" data-reveal>
-          <h3 className="exp__label">Formación</h3>
-          <ul className="exp__list">
-            {EDUCATION.map((e) => (
-              <li key={e.label}>
-                <span>{e.label}</span>
-                <span>{e.value}</span>
-              </li>
-            ))}
-          </ul>
-        </div>
-      </div>
+        {EDUCATION.map((e, i) => (
+          <li
+            className="tl__item"
+            key={e.label}
+            data-reveal
+            style={{ transitionDelay: `${(i + 1) * 70}ms` }}
+          >
+            <span className="tl__node tl__node--edu" aria-hidden="true" />
+            <p className="tl__year">{e.value}</p>
+            <div className="tl__body">
+              <h3>{e.label}</h3>
+              <p className="tl__lead">
+                {FORMATION_DETAIL[e.label] ?? "Formación técnica."}
+              </p>
+            </div>
+          </li>
+        ))}
+      </ol>
     </section>
   );
 }
