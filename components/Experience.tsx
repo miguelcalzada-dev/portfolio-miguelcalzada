@@ -16,16 +16,15 @@ export default function Experience() {
   const reduce = useReducedMotion();
   const { scrollYProgress } = useScroll({
     target: ref,
-    offset: ["start 70%", "end 65%"],
+    offset: ["start 70%", "end 60%"],
   });
   const scaleY = useTransform(scrollYProgress, [0, 1], [0, 1]);
 
   return (
     <section id="experiencia" className="section exp2">
-      <div className="exp2__side">
-        <h2>Experiencia</h2>
-        <p>Un puesto, en producción, con foco en backend, cloud e IA.</p>
-      </div>
+      <h2 className="exp2__title" data-reveal>
+        Experiencia
+      </h2>
 
       <div className="exp2__main" ref={ref}>
         <span className="exp2__rail" aria-hidden="true">
@@ -38,13 +37,12 @@ export default function Experience() {
         <ol className="exp2__list">
           <li className="exp2__item" data-reveal>
             <span className="exp2__node" aria-hidden="true" />
+            <p className="exp2__year">2024 – presente</p>
             <div className="exp2__body">
               <h3>
                 {JOB.role} · {JOB.company}
               </h3>
-              <p className="exp2__meta">
-                {JOB.location} · {JOB.period}
-              </p>
+              <p className="exp2__meta">{JOB.location}</p>
               <p className="exp2__lead">{EXPERIENCE_LEAD}</p>
             </div>
           </li>
@@ -57,9 +55,9 @@ export default function Experience() {
               style={{ transitionDelay: `${(i + 1) * 70}ms` }}
             >
               <span className="exp2__node exp2__node--edu" aria-hidden="true" />
+              <p className="exp2__year">{e.value}</p>
               <div className="exp2__body">
                 <h3>{e.label}</h3>
-                <p className="exp2__meta">{e.value}</p>
                 <p className="exp2__lead">
                   {FORMATION_DETAIL[e.label] ?? "Formación técnica."}
                 </p>

@@ -12,7 +12,7 @@ export type Project = {
 export const SITE = {
   name: "Miguel Ángel Calzada Martín",
   shortName: "Miguel Ángel Calzada",
-  brand: "Miguel Ángel Calzada",
+  brand: "Miguel Ángel",
   role: "Desarrollador Full-Stack · IA & Big Data",
   word: "CALZADA",
   city: "Madrid, España",
@@ -23,8 +23,6 @@ export const SITE = {
   linkedin: "https://www.linkedin.com/in/miguel-calzada-04a19b24b",
   intro:
     "Desarrollador Full-Stack e IA en Madrid. Construyo y despliego APIs, microservicios y productos de datos reales, de la base de datos al frontend.",
-  contactLine:
-    "¿Una oportunidad, una colaboración o una idea? Escríbeme directamente.",
 };
 
 export const PROJECTS: Project[] = [
@@ -38,6 +36,17 @@ export const PROJECTS: Project[] = [
     url: "/impactdb",
     repo: "https://github.com/miguelcalzada-dev/data-lineage-mcp",
     media: "/work/impactdb.jpg",
+  },
+  {
+    name: "Applied AI Solutions",
+    kind: "Suite de IA aplicada",
+    year: "2026",
+    description:
+      "Suite de IA aplicada con FastAPI y Gemini: chat multi-turno con memoria, visión artificial, RAG sobre documentos, NLP, prompt engineering y voz, todo en una sola plataforma desplegada.",
+    stack: ["FastAPI", "Python", "Gemini API", "RAG", "NLP"],
+    url: "/ai-lab",
+    repo: "https://github.com/miguelcalzada-dev/applied-ai-engineering-showcase",
+    media: "/work/ai-lab.jpg",
   },
   {
     name: "SQLSense AI",
@@ -60,17 +69,6 @@ export const PROJECTS: Project[] = [
     url: "/madrid-transit",
     repo: "https://github.com/miguelcalzada-dev/madrid-transit-pulse",
     media: "/work/madrid-transit.jpg",
-  },
-  {
-    name: "Applied AI Solutions",
-    kind: "Suite de IA aplicada",
-    year: "2026",
-    description:
-      "Suite de IA aplicada con FastAPI y Gemini: chat multi-turno con memoria, visión artificial, RAG sobre documentos, NLP, prompt engineering y voz, todo en una sola plataforma desplegada.",
-    stack: ["FastAPI", "Python", "Gemini API", "RAG", "NLP"],
-    url: "/ai-lab",
-    repo: "https://github.com/miguelcalzada-dev/applied-ai-engineering-showcase",
-    media: "/work/ai-lab.jpg",
   },
   {
     name: "FitCity",

@@ -11,24 +11,15 @@ export default function Contact() {
         className="contactv3__mail"
         href={`mailto:${SITE.email}`}
         data-reveal
-        style={{ transitionDelay: "60ms" }}
       >
         {SITE.email.split("@")[0]}@<wbr />
         {SITE.email.split("@")[1]}
       </a>
 
-      <p
-        className="contactv3__lead"
-        data-reveal
-        style={{ transitionDelay: "120ms" }}
-      >
-        ¿Una oportunidad, una colaboración o una idea? Escríbeme directamente.
-      </p>
-
       <ul
         className="contactv3__links"
         data-reveal
-        style={{ transitionDelay: "180ms" }}
+        style={{ transitionDelay: "120ms" }}
       >
         <li>
           <a href={`tel:${SITE.phoneHref}`}>{SITE.phone}</a>

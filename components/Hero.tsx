@@ -47,7 +47,7 @@ export default function Hero() {
               </a>
             ))}
           </nav>
-          <a href="#trabajo" className="button hero__cta">
+          <a href="#proyectos" className="button hero__cta">
             Ver proyectos
           </a>
         </div>
@@ -70,7 +70,7 @@ export default function Hero() {
           style={{ scale }}
           initial={reduce ? false : { opacity: 0, y: 56 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1], delay: 0.15 }}
+          transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1], delay: 0.55 }}
         >
           {SITE.word}
         </motion.h1>

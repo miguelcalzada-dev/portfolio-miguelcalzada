@@ -7,9 +7,9 @@ export default function Work() {
   const [hover, setHover] = useState<number | null>(null);
 
   return (
-    <section id="trabajo" className="section work">
+    <section id="proyectos" className="section work">
       <div className="section__head" data-reveal>
-        <h2>Trabajo</h2>
+        <h2>Proyectos</h2>
         <p>
           Siete proyectos, cuatro desplegados y en producción. Pasa el cursor
           por el índice para ver cada interfaz real.

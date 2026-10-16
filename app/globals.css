@@ -165,6 +165,144 @@ section[id],
   scroll-margin-top: 4rem;
 }
 
+/* ============================================================
+   LOADER - la web se abre (cortina que sube)
+   ============================================================ */
+.loader {
+  display: none;
+}
+.js .loader {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+  inset: 0;
+  z-index: 300;
+  background: var(--bg);
+  pointer-events: none;
+  will-change: transform;
+}
+.loader__inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.1rem;
+}
+.loader__mark {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: var(--step-lead);
+  letter-spacing: -0.02em;
+  color: var(--muted);
+}
+.loader__bar {
+  display: block;
+  width: clamp(56px, 10vw, 140px);
+  height: 4px;
+  background: var(--accent);
+  transform-origin: left center;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .js .loader {
+    animation: loader-out 620ms var(--ease-in-out) 420ms forwards;
+  }
+  .js .loader__inner {
+    animation: mark-out 420ms var(--ease-out) 100ms forwards;
+  }
+  .js .loader__bar {
+    animation: rule-in 520ms var(--ease-out) 80ms both;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .loader {
+    display: none;
+  }
+}
+@keyframes loader-out {
+  to {
+    transform: translateY(-101%);
+  }
+}
+@keyframes mark-out {
+  to {
+    opacity: 0;
+  }
+}
+
+/* ============================================================
+   RAIL - navegacion vertical de secciones (izquierda)
+   ============================================================ */
+.rail {
+  display: none;
+}
+@media (min-width: 80em) {
+  .rail {
+    display: block;
+    position: fixed;
+    left: 0.75rem;
+    top: 0;
+    bottom: 0;
+    width: 2rem;
+    z-index: 60;
+  }
+}
+.rail__track {
+  position: absolute;
+  left: 1rem;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  margin-left: -2px;
+  background: color-mix(in srgb, var(--ink) 12%, transparent);
+}
+.rail__fill {
+  position: absolute;
+  inset: 0;
+  background: var(--accent);
+  transform-origin: 50% 0%;
+}
+.rail__item {
+  position: absolute;
+  left: 1rem;
+  transform: translate(-50%, -50%);
+  display: flex;
+  align-items: center;
+  height: 2rem;
+  padding-left: 0.55rem;
+  color: var(--muted);
+}
+.rail__dot {
+  width: 11px;
+  height: 11px;
+  flex: 0 0 auto;
+  background: var(--bg);
+  border: 2px solid color-mix(in srgb, var(--ink) 40%, transparent);
+  transition: background var(--t-ui) ease, border-color var(--t-ui) ease,
+    transform var(--t-ui) var(--ease-out);
+}
+.rail__item.is-past .rail__dot {
+  background: var(--accent);
+  border-color: var(--accent);
+}
+.rail__item:hover .rail__dot,
+.rail__item:focus-visible .rail__dot {
+  transform: scale(1.25);
+}
+.rail__label {
+  position: absolute;
+  left: 1.4rem;
+  white-space: nowrap;
+  font-size: var(--step-small);
+  color: var(--ink);
+  background: var(--bg);
+  padding: 0.2rem 0.5rem;
+  display: none;
+}
+.rail__item:hover .rail__label,
+.rail__item:focus-visible .rail__label {
+  display: block;
+}
+
 .page {
   width: 100%;
   max-width: 1800px;
@@ -269,11 +407,27 @@ section[id],
   font-size: var(--step-small);
 }
 .hero__links a {
+  position: relative;
   color: var(--muted);
   transition: color var(--t-hover) ease;
 }
+.hero__links a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -0.3rem;
+  height: 3px;
+  background: var(--accent);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform var(--t-hover) var(--ease-out);
+}
 .hero__links a:hover {
   color: var(--ink);
+}
+.hero__links a:hover::after {
+  transform: scaleX(1);
 }
 
 .hero__nav {
@@ -297,7 +451,7 @@ section[id],
 }
 @media (prefers-reduced-motion: no-preference) {
   .js .hero__rule {
-    animation: rule-in 700ms var(--ease-out) both 150ms;
+    animation: rule-in 700ms var(--ease-out) both 520ms;
   }
 }
 @keyframes rule-in {
@@ -509,17 +663,8 @@ section[id],
 /* ============================================================
    STACK - capitulos a sangre (masas de color + gran escala)
    ============================================================ */
-.stackv2__head {
-  padding: calc(var(--section) / 2) var(--margin) clamp(2.5rem, 6vw, 4rem);
-}
-.stackv2__head h2 {
-  font-size: var(--step-head);
-  margin-bottom: 1rem;
-}
-.stackv2__head p {
-  font-size: var(--step-lead);
-  color: var(--muted);
-  max-width: 42ch;
+.stackv2 {
+  padding-top: calc(var(--section) / 2);
 }
 .stackv2__field {
   display: grid;
@@ -586,33 +731,14 @@ section[id],
 /* ============================================================
    EXPERIENCIA - titulo fijo + linea que se dibuja al hacer scroll
    ============================================================ */
-.exp2 {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: clamp(2.5rem, 6vw, 5rem);
-}
-@media (min-width: 60em) {
-  .exp2 {
-    grid-template-columns: minmax(220px, 30%) 1fr;
-    align-items: start;
-  }
-  .exp2__side {
-    position: sticky;
-    top: clamp(4rem, 12vh, 7rem);
-  }
-}
-.exp2__side h2 {
+.exp2__title {
   font-size: var(--step-head);
-  margin-bottom: 1rem;
-}
-.exp2__side p {
-  font-size: var(--step-body);
-  color: var(--muted);
-  max-width: 30ch;
+  margin-bottom: clamp(2.5rem, 6vw, 4.5rem);
 }
 .exp2__main {
   position: relative;
   padding-left: 2.75rem;
+  max-width: 1100px;
 }
 .exp2__rail {
   position: absolute;
@@ -634,15 +760,23 @@ section[id],
 }
 .exp2__item {
   position: relative;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.6rem 2.5rem;
   padding-bottom: clamp(2.5rem, 6vw, 4.5rem);
 }
 .exp2__item:last-child {
   padding-bottom: 0;
 }
+@media (min-width: 52em) {
+  .exp2__item {
+    grid-template-columns: minmax(150px, 210px) 1fr;
+  }
+}
 .exp2__node {
   position: absolute;
   left: -2.75rem;
-  top: 0.35rem;
+  top: 0.4rem;
   width: 1.15rem;
   height: 1.15rem;
   background: var(--accent);
@@ -655,11 +789,23 @@ section[id],
 .exp2__item:hover .exp2__node {
   transform: scale(1.3);
 }
+.exp2__year {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: clamp(1.15rem, 2vw, 1.55rem);
+  letter-spacing: -0.02em;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
 .exp2__body h3 {
-  font-size: clamp(1.4rem, 2.8vw, 2rem);
+  font-size: clamp(1.5rem, 3vw, 2.15rem);
   letter-spacing: -0.03em;
   line-height: 1.05;
   margin-bottom: 0.4rem;
+  transition: color var(--t-hover) ease;
+}
+.exp2__item:hover .exp2__body h3 {
+  color: var(--accent);
 }
 .exp2__meta {
   font-size: var(--step-small);
@@ -706,13 +852,6 @@ section[id],
     color: var(--accent-ink);
   }
 }
-.contactv3__lead {
-  margin-top: clamp(1.75rem, 4vw, 2.75rem);
-  font-size: var(--step-lead);
-  line-height: 1.35;
-  color: var(--bone-muted);
-  max-width: 42ch;
-}
 .contactv3__links {
   list-style: none;
   display: flex;
@@ -735,22 +874,12 @@ section[id],
 }
 
 /* ============================================================
-   FOOTER - cierre: el nombre recortado por el borde superior
+   FOOTER - cierre
    ============================================================ */
 .footer {
   position: relative;
   overflow: hidden;
-  padding: clamp(3rem, 7vw, 5rem) var(--margin) 2rem;
-}
-.footer__wordmark {
-  display: block;
-  font-family: var(--font-display);
-  font-weight: 800;
-  font-size: clamp(2.2rem, 8.4vw, 12rem);
-  line-height: 0.9;
-  letter-spacing: -0.045em;
-  color: var(--ink);
-  white-space: nowrap;
+  padding: clamp(2.5rem, 6vw, 4rem) var(--margin) 2rem;
 }
 .footer__legal {
   display: flex;
@@ -918,7 +1047,7 @@ section[id],
     opacity: 0;
     transform: translateY(18px);
     animation: ad-rise var(--t-reveal) var(--ease-out) forwards;
-    animation-delay: calc(var(--i, 0) * 90ms + 120ms);
+    animation-delay: calc(var(--i, 0) * 90ms + 520ms);
   }
   .js .lines [data-line] {
     transform: translateY(105%);
