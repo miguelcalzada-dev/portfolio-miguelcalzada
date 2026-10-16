@@ -14,8 +14,8 @@ export default function OpengraphImage() {
           display: "flex",
           flexDirection: "column",
           justifyContent: "space-between",
-          background: "#111111",
-          color: "#f5f5f5",
+          background: "#0b0d0e",
+          color: "#f2f1ec",
           padding: "72px",
           fontFamily: "sans-serif",
         }}
@@ -25,7 +25,7 @@ export default function OpengraphImage() {
             style={{
               width: 22,
               height: 22,
-              background: "#FF3E00",
+              background: "#ffb300",
               display: "flex",
             }}
           />
@@ -34,7 +34,7 @@ export default function OpengraphImage() {
               fontSize: 26,
               letterSpacing: 4,
               textTransform: "uppercase",
-              color: "#a3a3a3",
+              color: "#9ba1a6",
             }}
           >
             miguelcalzada.com
@@ -53,16 +53,16 @@ export default function OpengraphImage() {
               letterSpacing: -2,
             }}
           >
-            <span>Miguel Angel</span>
-            <span style={{ color: "#FF3E00" }}>Calzada Martin</span>
+            <span>Miguel Ángel</span>
+            <span style={{ color: "#ffb300" }}>Calzada</span>
           </div>
-          <div style={{ fontSize: 34, color: "#d4d4d4" }}>
-            Software Developer · IA &amp; Big Data
+          <div style={{ fontSize: 34, color: "#c9c9c5" }}>
+            Full-Stack Developer · IA &amp; Big Data
           </div>
         </div>
 
-        <div style={{ display: "flex", gap: 14, fontSize: 24, color: "#8a8a8a" }}>
-          <span>Node.js</span>
+        <div style={{ display: "flex", gap: 14, fontSize: 24, color: "#9ba1a6" }}>
+          <span>Next.js</span>
           <span>·</span>
           <span>TypeScript</span>
           <span>·</span>
