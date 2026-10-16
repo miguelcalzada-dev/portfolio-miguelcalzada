@@ -234,21 +234,42 @@ label, .label-text, .metadata, .tag-chip, button, .nav-link, .uppercase-mono {
   box-shadow: 4px 4px 0px var(--border-main);
 }
 
-/* Original animation overrides */
-@keyframes pulse-glow {
-  0% { box-shadow: 0 0 0 0 var(--border-main); }
-  70% { box-shadow: 0 0 0 4px transparent; }
-  100% { box-shadow: 0 0 0 0 transparent; }
+/* Indicador "live": pulso con transform/opacity (compositor), no box-shadow */
+@keyframes dot-ping {
+  0% {
+    transform: scale(1);
+    opacity: 0.55;
+  }
+  100% {
+    transform: scale(2.6);
+    opacity: 0;
+  }
 }
 
 .dot-glow {
+  position: relative;
   width: 8px;
   height: 8px;
   border-radius: 0 !important;
   background: var(--accent-primary) !important;
   border: 2px solid var(--border-main) !important;
   box-shadow: 2px 2px 0px var(--border-main);
-  animation: pulse-glow 2s infinite;
+}
+
+.dot-glow::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-color: inherit;
+  animation: dot-ping 2s ease-out infinite;
+  will-change: transform, opacity;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dot-glow::after {
+    animation: none;
+    opacity: 0;
+  }
 }
 
 /* Grid & Layout Utilities */
@@ -504,7 +525,7 @@ h2.brutalist-heading {
   pointer-events: none;
   z-index: 99999;
   opacity: 0;
-  will-change: transform, width, height;
+  will-change: transform;
   transition:
     width 0.3s var(--ease-smooth),
     height 0.3s var(--ease-smooth),
@@ -544,7 +565,7 @@ h2.brutalist-heading {
   pointer-events: none;
   z-index: 99998;
   opacity: 0;
-  will-change: transform, width, height, background-color, border-color;
+  will-change: transform, opacity;
   transition:
     width 0.4s var(--ease-smooth),
     height 0.4s var(--ease-smooth),

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { motion, useInView, AnimatePresence, type Variants, useScroll, useMotionValueEvent } from "framer-motion";
+import { motion, useInView, AnimatePresence, type Variants, useScroll, useMotionValueEvent, useReducedMotion } from "framer-motion";
 import {
   Code2,
   Brain,
@@ -562,6 +562,7 @@ function Navbar() {
    HERO
 ────────────────────────────────────────────── */
 function Hero() {
+  const reduceMotion = useReducedMotion();
   return (
     <section
       id="hero"
@@ -683,7 +684,7 @@ function Hero() {
       >
         <span className="label-text" style={{ fontSize: "0.7rem" }}>SCROLL</span>
         <motion.div
-          animate={{ y: [0, 8, 0] }}
+          animate={reduceMotion ? undefined : { y: [0, 8, 0] }}
           transition={{ repeat: Infinity, duration: 2, ease: "easeInOut" }}
         >
           <ChevronDown size={24} />

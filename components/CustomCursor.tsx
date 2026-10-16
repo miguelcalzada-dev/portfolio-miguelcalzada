@@ -6,6 +6,8 @@ const HOVER_SELECTOR = "a, button, [role='button'], label, select, .cursor-hover
 const TEXT_SELECTOR = "input, textarea, [contenteditable='true']";
 const LERP = 0.14;
 const SCALE_LERP = 0.18;
+const POS_EPSILON = 0.1;
+const SCALE_EPSILON = 0.001;
 
 export default function CustomCursor() {
   const dotRef = useRef<HTMLDivElement>(null);
@@ -35,7 +37,38 @@ export default function CustomCursor() {
     let ringScale = 1;
     let ringScaleTarget = 1;
     let active = false;
-    let frame = 0;
+    let rafId: number | null = null;
+
+    const startLoop = () => {
+      // Solo animamos mientras el puntero esta activo y la pestana visible.
+      if (rafId === null && active && !document.hidden) {
+        rafId = requestAnimationFrame(render);
+      }
+    };
+
+    const stopLoop = () => {
+      if (rafId !== null) {
+        cancelAnimationFrame(rafId);
+        rafId = null;
+      }
+    };
+
+    const render = () => {
+      rafId = null;
+      ringX += (mouseX - ringX) * positionLerp;
+      ringY += (mouseY - ringY) * positionLerp;
+      ringScale += (ringScaleTarget - ringScale) * scaleLerp;
+      dot.style.transform = `translate3d(${mouseX}px, ${mouseY}px, 0) translate(-50%, -50%)`;
+      ring.style.transform = `translate3d(${ringX}px, ${ringY}px, 0) translate(-50%, -50%) scale(${ringScale})`;
+
+      const settled =
+        Math.abs(mouseX - ringX) < POS_EPSILON &&
+        Math.abs(mouseY - ringY) < POS_EPSILON &&
+        Math.abs(ringScaleTarget - ringScale) < SCALE_EPSILON;
+
+      // Si ya no hay nada que interpolar, paramos el bucle (0% CPU en reposo).
+      if (!settled) startLoop();
+    };
 
     const setMode = (mode: "hover" | "text" | null) => {
       ring.classList.toggle("is-hovering", mode === "hover");
@@ -55,6 +88,7 @@ export default function CustomCursor() {
       active = false;
       ring.classList.remove("is-active");
       dot.classList.remove("is-active");
+      stopLoop();
     };
 
     const onMove = (event: MouseEvent) => {
@@ -66,6 +100,7 @@ export default function CustomCursor() {
         ringY = mouseY;
       }
       show();
+      startLoop();
     };
 
     const onOver = (event: MouseEvent) => {
@@ -84,23 +119,19 @@ export default function CustomCursor() {
     const onDown = () => {
       ringScaleTarget = 0.82;
       ring.classList.add("is-down");
+      startLoop();
     };
 
     const onUp = () => {
       ringScaleTarget = 1;
       ring.classList.remove("is-down");
+      startLoop();
     };
 
-    const render = () => {
-      ringX += (mouseX - ringX) * positionLerp;
-      ringY += (mouseY - ringY) * positionLerp;
-      ringScale += (ringScaleTarget - ringScale) * scaleLerp;
-      dot.style.transform = `translate3d(${mouseX}px, ${mouseY}px, 0) translate(-50%, -50%)`;
-      ring.style.transform = `translate3d(${ringX}px, ${ringY}px, 0) translate(-50%, -50%) scale(${ringScale})`;
-      frame = requestAnimationFrame(render);
+    const onVisibility = () => {
+      if (document.hidden) stopLoop();
+      else if (active) startLoop();
     };
-
-    frame = requestAnimationFrame(render);
 
     window.addEventListener("mousemove", onMove, { passive: true });
     window.addEventListener("mouseover", onOver);
@@ -109,9 +140,10 @@ export default function CustomCursor() {
     window.addEventListener("mouseup", onUp);
     document.addEventListener("mouseleave", hide);
     window.addEventListener("blur", hide);
+    document.addEventListener("visibilitychange", onVisibility);
 
     return () => {
-      cancelAnimationFrame(frame);
+      stopLoop();
       document.documentElement.classList.remove("has-custom-cursor");
       window.removeEventListener("mousemove", onMove);
       window.removeEventListener("mouseover", onOver);
@@ -120,6 +152,7 @@ export default function CustomCursor() {
       window.removeEventListener("mouseup", onUp);
       document.removeEventListener("mouseleave", hide);
       window.removeEventListener("blur", hide);
+      document.removeEventListener("visibilitychange", onVisibility);
     };
   }, []);
 
