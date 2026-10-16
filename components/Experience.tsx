@@ -37,7 +37,6 @@ export default function Experience() {
         <ol className="exp2__list">
           <li className="exp2__item" data-reveal>
             <span className="exp2__node" aria-hidden="true" />
-            <p className="exp2__year">2024 – presente</p>
             <div className="exp2__body">
               <h3>
                 {JOB.role} · {JOB.company}
@@ -55,7 +54,6 @@ export default function Experience() {
               style={{ transitionDelay: `${(i + 1) * 70}ms` }}
             >
               <span className="exp2__node exp2__node--edu" aria-hidden="true" />
-              <p className="exp2__year">{e.value}</p>
               <div className="exp2__body">
                 <h3>{e.label}</h3>
                 <p className="exp2__lead">

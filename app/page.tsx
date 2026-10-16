@@ -1,5 +1,4 @@
 import Loader from "@/components/Loader";
-import Rail from "@/components/Rail";
 import Motion from "@/components/Motion";
 import Hero from "@/components/Hero";
 import Work from "@/components/Work";
@@ -16,7 +15,6 @@ export default function Portfolio() {
       <a className="skip" href="#contenido">
         Saltar al contenido
       </a>
-      <Rail />
       <Motion />
       <main className="page" id="contenido">
         <Hero />

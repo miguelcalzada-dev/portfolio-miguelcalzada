@@ -229,80 +229,6 @@ section[id],
   }
 }
 
-/* ============================================================
-   RAIL - navegacion vertical de secciones (izquierda)
-   ============================================================ */
-.rail {
-  display: none;
-}
-@media (min-width: 80em) {
-  .rail {
-    display: block;
-    position: fixed;
-    left: 0.75rem;
-    top: 0;
-    bottom: 0;
-    width: 2rem;
-    z-index: 60;
-  }
-}
-.rail__track {
-  position: absolute;
-  left: 1rem;
-  top: 0;
-  bottom: 0;
-  width: 4px;
-  margin-left: -2px;
-  background: color-mix(in srgb, var(--ink) 12%, transparent);
-}
-.rail__fill {
-  position: absolute;
-  inset: 0;
-  background: var(--accent);
-  transform-origin: 50% 0%;
-}
-.rail__item {
-  position: absolute;
-  left: 1rem;
-  transform: translate(-50%, -50%);
-  display: flex;
-  align-items: center;
-  height: 2rem;
-  padding-left: 0.55rem;
-  color: var(--muted);
-}
-.rail__dot {
-  width: 11px;
-  height: 11px;
-  flex: 0 0 auto;
-  background: var(--bg);
-  border: 2px solid color-mix(in srgb, var(--ink) 40%, transparent);
-  transition: background var(--t-ui) ease, border-color var(--t-ui) ease,
-    transform var(--t-ui) var(--ease-out);
-}
-.rail__item.is-past .rail__dot {
-  background: var(--accent);
-  border-color: var(--accent);
-}
-.rail__item:hover .rail__dot,
-.rail__item:focus-visible .rail__dot {
-  transform: scale(1.25);
-}
-.rail__label {
-  position: absolute;
-  left: 1.4rem;
-  white-space: nowrap;
-  font-size: var(--step-small);
-  color: var(--ink);
-  background: var(--bg);
-  padding: 0.2rem 0.5rem;
-  display: none;
-}
-.rail__item:hover .rail__label,
-.rail__item:focus-visible .rail__label {
-  display: block;
-}
-
 .page {
   width: 100%;
   max-width: 1800px;
@@ -729,20 +655,22 @@ section[id],
 }
 
 /* ============================================================
-   EXPERIENCIA - titulo fijo + linea que se dibuja al hacer scroll
+   EXPERIENCIA - a la derecha, con linea que se dibuja al hacer scroll
    ============================================================ */
 .exp2__title {
   font-size: var(--step-head);
+  text-align: right;
   margin-bottom: clamp(2.5rem, 6vw, 4.5rem);
 }
 .exp2__main {
   position: relative;
-  padding-left: 2.75rem;
+  padding-right: 2.75rem;
   max-width: 1100px;
+  margin-left: auto;
 }
 .exp2__rail {
   position: absolute;
-  left: 0.45rem;
+  right: 0.45rem;
   top: 0.65rem;
   bottom: 0.65rem;
   width: 4px;
@@ -760,22 +688,15 @@ section[id],
 }
 .exp2__item {
   position: relative;
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 0.6rem 2.5rem;
   padding-bottom: clamp(2.5rem, 6vw, 4.5rem);
+  text-align: right;
 }
 .exp2__item:last-child {
   padding-bottom: 0;
 }
-@media (min-width: 52em) {
-  .exp2__item {
-    grid-template-columns: minmax(150px, 210px) 1fr;
-  }
-}
 .exp2__node {
   position: absolute;
-  left: -2.75rem;
+  right: -2.75rem;
   top: 0.4rem;
   width: 1.15rem;
   height: 1.15rem;
@@ -788,14 +709,6 @@ section[id],
 }
 .exp2__item:hover .exp2__node {
   transform: scale(1.3);
-}
-.exp2__year {
-  font-family: var(--font-display);
-  font-weight: 500;
-  font-size: clamp(1.15rem, 2vw, 1.55rem);
-  letter-spacing: -0.02em;
-  color: var(--muted);
-  font-variant-numeric: tabular-nums;
 }
 .exp2__body h3 {
   font-size: clamp(1.5rem, 3vw, 2.15rem);
@@ -817,6 +730,7 @@ section[id],
   line-height: 1.5;
   color: var(--ink);
   max-width: 62ch;
+  margin-left: auto;
 }
 
 /* ============================================================

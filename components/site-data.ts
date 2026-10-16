@@ -22,7 +22,7 @@ export const SITE = {
   github: "https://github.com/miguelcalzada-dev",
   linkedin: "https://www.linkedin.com/in/miguel-calzada-04a19b24b",
   intro:
-    "Desarrollador Full-Stack e IA en Madrid. Construyo y despliego APIs, microservicios y productos de datos reales, de la base de datos al frontend.",
+    "Desarrollador Full-Stack e IA en Madrid. Construyo y despliego APIs, microservicios y productos de datos reales.",
 };
 
 export const PROJECTS: Project[] = [
