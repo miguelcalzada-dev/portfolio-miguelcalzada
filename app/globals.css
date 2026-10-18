@@ -1234,14 +1234,19 @@ section[id] {
    MÓVIL · todo alineado al centro (solo <= 700px; escritorio intacto)
    ============================================================ */
 @media (max-width: 43.75em) {
-  /* HERO · CALZADA arriba y centrado; el menú (Stack/Experiencia/Ver proyectos) justo debajo */
+  /* HERO · CALZADA en el centro (en medio en medio); descripción y menú justo debajo */
+  .hero {
+    justify-content: center;
+    padding-block: 1.5rem;
+  }
   .hero__top {
     display: contents;
   }
   .hero__brand {
     order: 1;
     justify-content: center;
-    padding: var(--margin) var(--margin) 0.85rem;
+    text-align: center;
+    padding: 0 var(--margin) 1.25rem;
   }
   .hero__word-wrap {
     order: 2;
@@ -1249,39 +1254,45 @@ section[id] {
   }
   .hero__word-row {
     justify-content: center;
-    gap: 0.55rem;
+  }
+  .hero__arrow {
+    display: none;
   }
   .hero__word {
-    font-size: 18vw;
-    letter-spacing: -0.03em;
+    font-size: 20vw;
+    letter-spacing: -0.035em;
+  }
+  .hero__body {
+    order: 3;
+    margin-top: 1.5rem;
+    text-align: center;
+    padding-inline: var(--margin);
+  }
+  .hero__rule {
+    margin-inline: auto;
+    width: clamp(60px, 22vw, 120px);
+    transform-origin: center center;
+  }
+  .hero__intro {
+    font-size: var(--step-body);
+    max-width: 30ch;
+    margin-inline: auto;
   }
   .hero__nav {
-    order: 3;
+    order: 4;
     flex-direction: column;
     align-items: center;
-    gap: 1.15rem;
+    gap: 1.25rem;
     padding: var(--margin) var(--margin) 0;
   }
   .hero__links {
     flex-wrap: wrap;
     justify-content: center;
-    gap: 1.1rem 1.4rem;
+    gap: 1rem 1.4rem;
   }
-  .hero__body {
-    order: 4;
-    margin-top: 1.75rem;
-    text-align: center;
-    padding-inline: var(--margin);
-    padding-bottom: var(--margin);
-  }
-  .hero__rule {
-    margin-inline: auto;
-    transform-origin: center center;
-  }
-  .hero__intro {
-    font-size: var(--step-body);
-    max-width: 32ch;
-    margin-inline: auto;
+  .hero__cta {
+    min-height: 3rem;
+    padding: 0 1.6rem;
   }
 
   /* CABECERAS de sección centradas */
