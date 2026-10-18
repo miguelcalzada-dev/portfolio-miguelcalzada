@@ -36,12 +36,12 @@ const KB: { test: RegExp; reply: string }[] = [
   {
     test: /proyecto|portafolio|portfolio|repositori|qué ha construido|qué has hecho/,
     reply:
-      "Cuatro proyectos desplegados: AI Lab (suite de IA con Gemini), SQL MCP (linaje de datos para PostgreSQL con herramientas MCP), SQL Sense (SQL con IA y SQLite WASM en el navegador) y Madrid Transit (Big Data de movilidad en tiempo real). Los tienes en la sección Proyectos.",
+      "Cuatro proyectos desplegados: ImpactDB MCP (linaje de datos para PostgreSQL con herramientas MCP), Applied AI Solutions (suite de IA con Gemini), SQLSense AI (SQL con IA y SQLite WASM en el navegador) y Madrid Transit Pulse (Big Data de movilidad en tiempo real). Los tienes en la sección Proyectos.",
   },
   {
     test: /impactdb|linaje|lineage|\bmcp\b/,
     reply:
-      "SQL MCP es un analizador de linaje e impacto de cambios para PostgreSQL: preguntas qué se rompería antes de un ALTER, DROP o RENAME y lo ves en un grafo interactivo. Expone 4 herramientas del estándar Model Context Protocol.",
+      "ImpactDB MCP es un analizador de linaje e impacto de cambios para PostgreSQL: preguntas qué se rompería antes de un ALTER, DROP o RENAME y lo ves en un grafo interactivo. Expone 4 herramientas del estándar Model Context Protocol.",
   },
   {
     test: /ubicaci|dónde|donde|madrid|remoto|híbrido|hibrido|disponib|contrat/,

@@ -24,28 +24,28 @@ export const SITE = {
 
 export const PROJECTS: Project[] = [
   {
-    name: "AI Lab",
-    kind: "Suite de IA aplicada",
-    url: "/ai-lab",
-    repo: "https://github.com/miguelcalzada-dev/applied-ai-engineering-showcase",
-    media: "/work/ai-lab.jpg",
-  },
-  {
-    name: "SQL MCP",
+    name: "ImpactDB MCP",
     kind: "Linaje de datos · MCP",
     url: "/impactdb",
     repo: "https://github.com/miguelcalzada-dev/data-lineage-mcp",
     media: "/work/impactdb.jpg",
   },
   {
-    name: "SQL Sense",
+    name: "Applied AI Solutions",
+    kind: "Suite de IA aplicada",
+    url: "/ai-lab",
+    repo: "https://github.com/miguelcalzada-dev/applied-ai-engineering-showcase",
+    media: "/work/ai-lab.jpg",
+  },
+  {
+    name: "SQLSense AI",
     kind: "SQL con IA · WebAssembly",
     url: "/sqlsense",
     repo: "https://github.com/miguelcalzada-dev/sqlsense-ai",
     media: "/work/sqlsense.jpg",
   },
   {
-    name: "Madrid Transit",
+    name: "Madrid Transit Pulse",
     kind: "Big Data · movilidad",
     url: "/madrid-transit",
     repo: "https://github.com/miguelcalzada-dev/madrid-transit-pulse",
