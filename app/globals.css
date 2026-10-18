@@ -1234,29 +1234,45 @@ section[id] {
    MÓVIL · todo alineado al centro (solo <= 700px; escritorio intacto)
    ============================================================ */
 @media (max-width: 43.75em) {
-  /* HERO · CALZADA en medio y la nav (Stack / Experiencia / Ver proyectos) centrada */
+  /* HERO · CALZADA arriba y centrado; el menú (Stack/Experiencia/Ver proyectos) justo debajo */
   .hero__top {
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    gap: 1.1rem;
+    display: contents;
   }
   .hero__brand {
+    order: 1;
     justify-content: center;
+    padding: var(--margin) var(--margin) 0.85rem;
+  }
+  .hero__word-wrap {
+    order: 2;
+    padding-inline: var(--margin);
+  }
+  .hero__word-row {
+    justify-content: center;
+    gap: 0.55rem;
+  }
+  .hero__word {
+    font-size: 18vw;
+    letter-spacing: -0.03em;
   }
   .hero__nav {
+    order: 3;
     flex-direction: column;
     align-items: center;
-    gap: 1.1rem;
-    width: 100%;
+    gap: 1.15rem;
+    padding: var(--margin) var(--margin) 0;
   }
   .hero__links {
     flex-wrap: wrap;
     justify-content: center;
-    gap: 1.1rem 1.35rem;
+    gap: 1.1rem 1.4rem;
   }
   .hero__body {
+    order: 4;
+    margin-top: 1.75rem;
     text-align: center;
+    padding-inline: var(--margin);
+    padding-bottom: var(--margin);
   }
   .hero__rule {
     margin-inline: auto;
@@ -1266,17 +1282,6 @@ section[id] {
     font-size: var(--step-body);
     max-width: 32ch;
     margin-inline: auto;
-  }
-  .hero__word-row {
-    justify-content: center;
-    gap: 0.55rem;
-  }
-  .hero__arrow {
-    margin-bottom: clamp(0.4rem, 3vw, 1rem);
-  }
-  .hero__word {
-    font-size: 16.5vw;
-    letter-spacing: -0.03em;
   }
 
   /* CABECERAS de sección centradas */
