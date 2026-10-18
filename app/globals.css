@@ -1251,6 +1251,7 @@ section[id] {
   .hero__word-wrap {
     order: 2;
     padding-inline: var(--margin);
+    margin-top: clamp(1.5rem, 10vh, 4rem);
   }
   .hero__word-row {
     justify-content: center;
