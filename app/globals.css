@@ -1229,3 +1229,111 @@ section[id] {
     padding-inline: 1.15rem;
   }
 }
+
+/* ============================================================
+   MÓVIL · todo alineado al centro (solo <= 700px; escritorio intacto)
+   ============================================================ */
+@media (max-width: 43.75em) {
+  /* HERO · CALZADA en medio y la nav (Stack / Experiencia / Ver proyectos) centrada */
+  .hero__top {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 1.1rem;
+  }
+  .hero__brand {
+    justify-content: center;
+  }
+  .hero__nav {
+    flex-direction: column;
+    align-items: center;
+    gap: 1.1rem;
+    width: 100%;
+  }
+  .hero__links {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1.1rem 1.35rem;
+  }
+  .hero__body {
+    text-align: center;
+  }
+  .hero__rule {
+    margin-inline: auto;
+    transform-origin: center center;
+  }
+  .hero__intro {
+    font-size: var(--step-body);
+    max-width: 32ch;
+    margin-inline: auto;
+  }
+  .hero__word-row {
+    justify-content: center;
+    gap: 0.55rem;
+  }
+  .hero__arrow {
+    margin-bottom: clamp(0.4rem, 3vw, 1rem);
+  }
+  .hero__word {
+    font-size: 16.5vw;
+    letter-spacing: -0.03em;
+  }
+
+  /* CABECERAS de sección centradas */
+  .section__head {
+    text-align: center;
+  }
+  .section__head p {
+    margin-inline: auto;
+  }
+
+  /* TRABAJO centrado */
+  .work__row-in {
+    align-items: center;
+    text-align: center;
+  }
+  .work__meta {
+    text-align: center;
+  }
+
+  /* STACK centrado */
+  .chapter {
+    text-align: center;
+    justify-items: center;
+  }
+  .chapter__tools {
+    justify-items: center;
+  }
+
+  /* EXPERIENCIA centrada (sin riel lateral) */
+  .exp__title {
+    text-align: center;
+  }
+  .exp__main {
+    padding-right: 0;
+    margin-inline: auto;
+  }
+  .exp__item {
+    text-align: center;
+    padding-bottom: clamp(1.75rem, 7vw, 2.75rem);
+  }
+  .exp__rail,
+  .exp__node {
+    display: none;
+  }
+  .exp__lead {
+    margin-inline: auto;
+  }
+  .exp__tags {
+    align-items: center;
+  }
+  .exp__tags-row {
+    justify-content: center;
+  }
+
+  /* PIE centrado */
+  .footer__legal {
+    justify-content: center;
+    text-align: center;
+  }
+}
