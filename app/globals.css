@@ -1283,15 +1283,20 @@ section[id] {
     order: 4;
     flex-direction: column;
     align-items: center;
-    gap: 1.25rem;
+    text-align: center;
+    gap: 1.35rem;
+    width: 100%;
     padding: var(--margin) var(--margin) 0;
   }
   .hero__links {
+    width: 100%;
     flex-wrap: wrap;
     justify-content: center;
-    gap: 1rem 1.4rem;
+    text-align: center;
+    gap: 0.85rem 1.5rem;
   }
   .hero__cta {
+    align-self: center;
     min-height: 3rem;
     padding: 0 1.6rem;
   }
@@ -1322,30 +1327,52 @@ section[id] {
     justify-items: center;
   }
 
-  /* EXPERIENCIA centrada (sin riel lateral) */
+  /* EXPERIENCIA · móvil: más clara y ligera (sin riel lateral) */
   .exp__title {
     text-align: center;
+    font-size: clamp(1.6rem, 7vw, 2.1rem);
+    border-bottom-width: 3px;
+    padding-bottom: 0.6rem;
+    margin-bottom: clamp(1.75rem, 6vw, 2.5rem);
   }
   .exp__main {
     padding-right: 0;
     margin-inline: auto;
   }
-  .exp__item {
-    text-align: center;
-    padding-bottom: clamp(1.75rem, 7vw, 2.75rem);
-  }
   .exp__rail,
   .exp__node {
     display: none;
   }
+  .exp__item {
+    text-align: center;
+    padding-bottom: clamp(2rem, 9vw, 2.75rem);
+  }
+  .exp__body h3 {
+    font-size: clamp(1.05rem, 4.6vw, 1.35rem);
+    line-height: 1.2;
+    margin-bottom: 0.5rem;
+  }
+  .exp__meta {
+    margin-bottom: 0.7rem;
+  }
   .exp__lead {
+    font-size: var(--step-body);
+    line-height: 1.65;
+    max-width: 34ch;
     margin-inline: auto;
   }
   .exp__tags {
     align-items: center;
+    margin-top: 0.9rem;
+    gap: 0.35rem;
   }
   .exp__tags-row {
     justify-content: center;
+    gap: 0.35rem;
+  }
+  .chip {
+    font-size: 0.6rem;
+    padding: 0.22rem 0.5rem;
   }
 
   /* PIE centrado */
