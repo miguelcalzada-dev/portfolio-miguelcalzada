@@ -36,7 +36,7 @@ const KB: { test: RegExp; reply: string }[] = [
   {
     test: /proyecto|portafolio|portfolio|repositori|qué ha construido|qué has hecho/,
     reply:
-      "Cuatro proyectos desplegados: ImpactDB MCP (linaje de datos), SQLSense AI (SQL con IA en el navegador), Madrid Transit Pulse (Big Data de movilidad) y Applied AI Solutions (suite de IA). Además FitCity, Barber Books Template y Spotify Voice Assistant. Los tienes en la sección Trabajo.",
+      "Cuatro proyectos desplegados: ImpactDB MCP (linaje de datos para PostgreSQL con herramientas MCP), Applied AI Solutions (suite de IA con Gemini), SQLSense AI (SQL con IA y SQLite WASM en el navegador) y Madrid Transit Pulse (Big Data de movilidad en tiempo real). Los tienes en la sección Proyectos.",
   },
   {
     test: /impactdb|linaje|lineage|\bmcp\b/,
@@ -54,7 +54,7 @@ const KB: { test: RegExp; reply: string }[] = [
   },
   {
     test: /contact|email|correo|hablar|llam|teléfono|telefono|linkedin|github|escrib/,
-    reply: `Contacto: ${SITE.email} · ${SITE.phone} · linkedin.com/in/miguel-calzada-04a19b24b · github.com/miguelcalzada-dev.`,
+    reply: `Contacto: ${SITE.email} · linkedin.com/in/miguel-calzada-04a19b24b · github.com/miguelcalzada-dev.`,
   },
 ];
 
@@ -85,8 +85,7 @@ export default function Chatbot() {
   const endRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const onScroll = () =>
-      setShow(window.scrollY > window.innerHeight * 0.7);
+    const onScroll = () => setShow(window.scrollY > window.innerHeight * 0.7);
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);

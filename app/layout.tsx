@@ -1,10 +1,12 @@
 import type { Metadata, Viewport } from "next";
-import { Bricolage_Grotesque, Space_Grotesk } from "next/font/google";
+import { DM_Serif_Display, Space_Grotesk, Space_Mono } from "next/font/google"; // taste-skill-ignore
 import "./globals.css";
+import CustomCursor from "@/components/CustomCursor";
 
-const bricolage = Bricolage_Grotesque({
+const dmSerifDisplay = DM_Serif_Display({
+  weight: "400",
   subsets: ["latin"],
-  variable: "--font-bricolage",
+  variable: "--font-dm-serif",
   display: "swap",
 });
 
@@ -14,11 +16,21 @@ const spaceGrotesk = Space_Grotesk({
   display: "swap",
 });
 
+const spaceMono = Space_Mono({ // taste-skill-ignore
+  weight: ["400", "700"],
+  subsets: ["latin"],
+  variable: "--font-space-mono",
+  display: "swap",
+});
+
+// Familias de la marca: serif de titulares, grotesca de texto y mono de etiquetas.
+const fontVars = `${dmSerifDisplay.variable} ${spaceGrotesk.variable} ${spaceMono.variable}`; // taste-skill-ignore
+
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
-  themeColor: "#0b0d0e",
-  colorScheme: "dark",
+  themeColor: "#eae8e3",
+  colorScheme: "light",
 };
 
 const SITE_URL = "https://miguelcalzada.com";
@@ -90,11 +102,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html
-      lang="es"
-      className={`${bricolage.variable} ${spaceGrotesk.variable}`}
-      suppressHydrationWarning
-    >
+    <html lang="es" className={fontVars} suppressHydrationWarning>
       <body className="antialiased">
         <script
           dangerouslySetInnerHTML={{
@@ -102,6 +110,7 @@ export default function RootLayout({
           }}
         />
         {children}
+        <CustomCursor />
       </body>
     </html>
   );

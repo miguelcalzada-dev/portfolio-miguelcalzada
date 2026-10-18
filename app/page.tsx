@@ -1,5 +1,6 @@
 import Loader from "@/components/Loader";
 import Motion from "@/components/Motion";
+import ScrollProgress from "@/components/ScrollProgress";
 import Hero from "@/components/Hero";
 import Work from "@/components/Work";
 import Stack from "@/components/Stack";
@@ -16,6 +17,7 @@ export default function Portfolio() {
         Saltar al contenido
       </a>
       <Motion />
+      <ScrollProgress />
       <main className="page" id="contenido">
         <Hero />
         <Work />

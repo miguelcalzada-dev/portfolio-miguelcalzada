@@ -1,64 +1,121 @@
 "use client";
 
-import { useRef } from "react";
-import { motion, useScroll, useTransform, useReducedMotion } from "framer-motion";
-import { JOB, EXPERIENCE_LEAD, EDUCATION } from "./site-data";
+import { useEffect, useRef, useState } from "react";
+import {
+  motion,
+  useScroll,
+  useTransform,
+  useReducedMotion,
+  useMotionValueEvent,
+} from "framer-motion";
+import { JOB, JOB_TAGS, EXPERIENCE_LEAD, EDUCATION } from "./site-data";
 
-const FORMATION_DETAIL: Record<string, string> = {
-  "Especialización en IA y Big Data":
-    "Machine Learning, Deep Learning, NLP y Big Data Analytics.",
-  "Técnico Superior en DAM":
-    "Java, Android, diseño de bases de datos y programación orientada a objetos.",
-};
+const ENTRIES = [
+  {
+    node: "exp__node--now",
+    title: `${JOB.role} · ${JOB.company}`,
+    meta: `${JOB.location} · ${JOB.period}`,
+    lead: EXPERIENCE_LEAD,
+    tags: JOB_TAGS as string[] | null,
+  },
+  ...EDUCATION.map((e) => ({
+    node: "exp__node--edu",
+    title: e.label,
+    meta: e.value,
+    lead: e.detail,
+    tags: null,
+  })),
+];
 
 export default function Experience() {
-  const ref = useRef<HTMLDivElement>(null);
+  const mainRef = useRef<HTMLDivElement>(null);
+  const railRef = useRef<HTMLSpanElement>(null);
   const reduce = useReducedMotion();
+
   const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ["start 70%", "end 60%"],
+    target: mainRef,
+    offset: ["start 78%", "end 35%"],
   });
   const scaleY = useTransform(scrollYProgress, [0, 1], [0, 1]);
 
+  const [marks, setMarks] = useState<number[]>([]);
+  const [filled, setFilled] = useState(0);
+
+  /* Posición vertical de cada cuadrado sobre el riel, en fracción 0–1. */
+  useEffect(() => {
+    const main = mainRef.current;
+    const rail = railRef.current;
+    if (!main || !rail) return;
+    const measure = () => {
+      const rr = rail.getBoundingClientRect();
+      if (!rr.height) return;
+      const nodes = Array.from(main.querySelectorAll<HTMLElement>(".exp__node"));
+      const next = nodes.map((n) => {
+        const r = n.getBoundingClientRect();
+        const f = (r.top + r.height / 2 - rr.top) / rr.height;
+        return Math.min(1, Math.max(0, f));
+      });
+      setMarks(next);
+      setFilled(next.filter((m) => scaleY.get() >= m).length);
+    };
+    measure();
+    const t = setTimeout(measure, 500);
+    window.addEventListener("resize", measure);
+    return () => {
+      window.removeEventListener("resize", measure);
+      clearTimeout(t);
+    };
+  }, [scaleY]);
+
+  useMotionValueEvent(scaleY, "change", (v) => {
+    if (reduce || marks.length === 0) return;
+    const f = marks.filter((m) => v >= m).length;
+    setFilled((p) => (p === f ? p : f));
+  });
+
+  const filledCount = reduce ? marks.length : filled;
+
   return (
-    <section id="experiencia" className="section exp2">
-      <h2 className="exp2__title" data-reveal>
+    <section id="experiencia" className="section exp">
+      <h2 className="exp__title" data-reveal>
         Experiencia
       </h2>
 
-      <div className="exp2__main" ref={ref}>
-        <span className="exp2__rail" aria-hidden="true">
+      <div className="exp__main" ref={mainRef}>
+        <span className="exp__rail" ref={railRef} aria-hidden="true">
           <motion.span
-            className="exp2__rail-fill"
+            className="exp__rail-fill"
             style={{ scaleY: reduce ? 1 : scaleY }}
           />
         </span>
 
-        <ol className="exp2__list">
-          <li className="exp2__item" data-reveal>
-            <span className="exp2__node" aria-hidden="true" />
-            <div className="exp2__body">
-              <h3>
-                {JOB.role} · {JOB.company}
-              </h3>
-              <p className="exp2__meta">{JOB.location}</p>
-              <p className="exp2__lead">{EXPERIENCE_LEAD}</p>
-            </div>
-          </li>
-
-          {EDUCATION.map((e, i) => (
-            <li
-              className="exp2__item"
-              key={e.label}
-              data-reveal
-              style={{ transitionDelay: `${(i + 1) * 70}ms` }}
-            >
-              <span className="exp2__node exp2__node--edu" aria-hidden="true" />
-              <div className="exp2__body">
-                <h3>{e.label}</h3>
-                <p className="exp2__lead">
-                  {FORMATION_DETAIL[e.label] ?? "Formación técnica."}
-                </p>
+        <ol className="exp__list">
+          {ENTRIES.map((e, i) => (
+            <li className="exp__item" key={e.title} data-reveal>
+              <span
+                className={`exp__node ${e.node}${i < filledCount ? " is-filled" : ""}`}
+                aria-hidden="true"
+              />
+              <div className="exp__body">
+                <h3>{e.title}</h3>
+                <p className="exp__meta">{e.meta}</p>
+                <p className="exp__lead">{e.lead}</p>
+                {e.tags && (
+                  <div className="exp__tags">
+                    {[
+                      e.tags.slice(0, Math.ceil(e.tags.length / 2)),
+                      e.tags.slice(Math.ceil(e.tags.length / 2)),
+                    ].map((row, ri) => (
+                      <div className="exp__tags-row" key={ri}>
+                        {row.map((t) => (
+                          <span key={t} className="chip">
+                            {t}
+                          </span>
+                        ))}
+                      </div>
+                    ))}
+                  </div>
+                )}
               </div>
             </li>
           ))}

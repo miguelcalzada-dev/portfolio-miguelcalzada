@@ -1,13 +1,9 @@
 "use client";
 
 import { useRef } from "react";
-import {
-  motion,
-  useScroll,
-  useTransform,
-  useReducedMotion,
-} from "framer-motion";
+import { motion, useScroll, useTransform, useReducedMotion } from "framer-motion";
 import { SITE } from "./site-data";
+import ArrowIndicator from "./ArrowIndicator";
 
 const LINKS = [
   { href: "#stack", label: "Stack" },
@@ -65,15 +61,18 @@ export default function Hero() {
       </div>
 
       <div className="hero__word-wrap">
-        <motion.h1
-          className="hero__word"
-          style={{ scale }}
-          initial={reduce ? false : { opacity: 0, y: 56 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1], delay: 0.55 }}
-        >
-          {SITE.word}
-        </motion.h1>
+        <div className="hero__word-row">
+          <motion.h1
+            className="hero__word"
+            style={{ scale }}
+            initial={reduce ? false : { opacity: 0, y: 56 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1], delay: 1.15 }}
+          >
+            {SITE.word}
+          </motion.h1>
+          <ArrowIndicator className="hero__arrow" />
+        </div>
       </div>
     </section>
   );

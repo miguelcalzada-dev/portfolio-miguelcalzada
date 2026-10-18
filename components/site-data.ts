@@ -1,9 +1,6 @@
 export type Project = {
   name: string;
   kind: string;
-  year: string;
-  description: string;
-  stack: string[];
   url: string | null;
   repo: string;
   media: string | null;
@@ -29,10 +26,6 @@ export const PROJECTS: Project[] = [
   {
     name: "ImpactDB MCP",
     kind: "Linaje de datos · MCP",
-    year: "2026",
-    description:
-      "Analizador de linaje e impacto de cambios para PostgreSQL. Preguntas en lenguaje natural qué se rompería antes de un ALTER, DROP o RENAME, y lo ves en un grafo interactivo de dependencias. Expone 4 herramientas del estándar Model Context Protocol para agentes externos.",
-    stack: ["Next.js", "TypeScript", "PostgreSQL", "MCP", "Groq", "React Flow"],
     url: "/impactdb",
     repo: "https://github.com/miguelcalzada-dev/data-lineage-mcp",
     media: "/work/impactdb.jpg",
@@ -40,10 +33,6 @@ export const PROJECTS: Project[] = [
   {
     name: "Applied AI Solutions",
     kind: "Suite de IA aplicada",
-    year: "2026",
-    description:
-      "Suite de IA aplicada con FastAPI y Gemini: chat multi-turno con memoria, visión artificial, RAG sobre documentos, NLP, prompt engineering y voz, todo en una sola plataforma desplegada.",
-    stack: ["FastAPI", "Python", "Gemini API", "RAG", "NLP"],
     url: "/ai-lab",
     repo: "https://github.com/miguelcalzada-dev/applied-ai-engineering-showcase",
     media: "/work/ai-lab.jpg",
@@ -51,10 +40,6 @@ export const PROJECTS: Project[] = [
   {
     name: "SQLSense AI",
     kind: "SQL con IA · WebAssembly",
-    year: "2026",
-    description:
-      "Aprende SQL hablando con IA. Traduce lenguaje natural a SQL y viceversa contra una base real, con un laboratorio efímero de SQLite que vive en el navegador gracias a WebAssembly. Editor libre, retos guiados y modo dual IA con fallback local.",
-    stack: ["Next.js", "TypeScript", "SQLite WASM", "OpenAI", "Tailwind CSS"],
     url: "/sqlsense",
     repo: "https://github.com/miguelcalzada-dev/sqlsense-ai",
     media: "/work/sqlsense.jpg",
@@ -62,53 +47,23 @@ export const PROJECTS: Project[] = [
   {
     name: "Madrid Transit Pulse",
     kind: "Big Data · movilidad",
-    year: "2026",
-    description:
-      "Plataforma de analítica y visualización en tiempo real de Cercanías Madrid: mapa en vivo, estado de la flota, incidencias y alertas sobre datos abiertos de movilidad.",
-    stack: ["Next.js", "Express", "Socket.io", "Datos abiertos"],
     url: "/madrid-transit",
     repo: "https://github.com/miguelcalzada-dev/madrid-transit-pulse",
     media: "/work/madrid-transit.jpg",
-  },
-  {
-    name: "FitCity",
-    kind: "Plataforma fitness",
-    year: "En desarrollo",
-    description:
-      "Plataforma Full-Stack para gimnasios: gestión de usuarios, check-in, validación de PRs de powerlifting con IA y rankings de comunidad. Angular 19 y TailwindCSS en el frontend, FastAPI y Supabase en el backend.",
-    stack: ["Angular 19", "TailwindCSS", "FastAPI", "Supabase", "PostgreSQL"],
-    url: null,
-    repo: "https://github.com/FitCity-Team/FitCity",
-    media: null,
-  },
-  {
-    name: "Barber Books Template",
-    kind: "Plantilla web · reservas",
-    year: "2026",
-    description:
-      "Plantilla web para barberías y peluquerías premium: servicios, portafolio, equipo y un sistema integrado para agendar y gestionar citas.",
-    stack: ["HTML", "CSS", "JavaScript"],
-    url: null,
-    repo: "https://github.com/miguelcalzada-dev/barber-books-template",
-    media: null,
-  },
-  {
-    name: "Spotify Voice Assistant",
-    kind: "Voz · escritorio",
-    year: "2025",
-    description:
-      "Asistente de voz offline para Windows que controla Spotify por comandos de voz, sin cortar el flujo de trabajo y sin conexión a internet.",
-    stack: ["Python", "SpeechRecognition", "Spotipy", "Windows"],
-    url: null,
-    repo: "https://github.com/miguelcalzada-dev/spotify_voice_assistant",
-    media: null,
   },
 ];
 
 export const STACK: { group: string; items: string[] }[] = [
   {
     group: "IA & Machine Learning",
-    items: ["Machine Learning", "Deep Learning", "NLP", "TensorFlow", "PyTorch", "Scikit-learn"],
+    items: [
+      "Machine Learning",
+      "Deep Learning",
+      "NLP",
+      "TensorFlow",
+      "PyTorch",
+      "Scikit-learn",
+    ],
   },
   {
     group: "Frontend & Web",
@@ -138,15 +93,29 @@ export const JOB = {
 export const EXPERIENCE_LEAD =
   "Trabajo como Software Developer en Analisis Survey Unit (Madrid) desde marzo de 2024. Diseño, desarrollo y despliego APIs REST y microservicios con Java (Spring Boot), Node.js y Python (FastAPI) sobre AWS con Docker y Kubernetes, y construyo agentes de IA, arquitecturas RAG y pipelines de CI/CD que corren en producción.";
 
-export const RESPONSIBILITIES: { label: string; value: string }[] = [
-  { label: "APIs REST y microservicios", value: "Java · Node.js · Python" },
-  { label: "Cloud y contenedores", value: "AWS · Docker · K8s" },
-  { label: "Agentes de IA y LLMs", value: "Gemini · Claude · RAG" },
-  { label: "CI/CD y despliegue", value: "GitHub Actions" },
-  { label: "Seguridad y accesos", value: "Producción" },
+export const JOB_TAGS = [
+  "Java",
+  "Spring Boot",
+  "Node.js",
+  "Python",
+  "FastAPI",
+  "AWS",
+  "Docker",
+  "Kubernetes",
+  "LLMs",
+  "RAG",
+  "CI/CD",
 ];
 
-export const EDUCATION: { label: string; value: string }[] = [
-  { label: "Especialización en IA y Big Data", value: "2025 – 2026" },
-  { label: "Técnico Superior en DAM", value: "2022 – 2024" },
+export const EDUCATION: { label: string; value: string; detail: string }[] = [
+  {
+    label: "Especialización en IA y Big Data",
+    value: "2025 – 2026",
+    detail: "Machine Learning, Deep Learning, NLP y Big Data Analytics.",
+  },
+  {
+    label: "Técnico Superior en DAM",
+    value: "2022 – 2024",
+    detail: "Java, Android, diseño de bases de datos y programación orientada a objetos.",
+  },
 ];

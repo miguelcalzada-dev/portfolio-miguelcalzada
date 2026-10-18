@@ -10,10 +10,6 @@ export default function Work() {
     <section id="proyectos" className="section work">
       <div className="section__head" data-reveal>
         <h2>Proyectos</h2>
-        <p>
-          Siete proyectos, cuatro desplegados y en producción. Pasa el cursor
-          por el índice para ver cada interfaz real.
-        </p>
       </div>
 
       <div className={`work__ledger${hover !== null ? " is-dimmed" : ""}`}>
@@ -49,9 +45,7 @@ export default function Work() {
                 style={{ transitionDelay: `${i * 45}ms` }}
               >
                 <span className="work__name">{p.name}</span>
-                <span className="work__meta">
-                  {p.kind} · {p.year}
-                </span>
+                <span className="work__meta">{p.kind}</span>
               </span>
             </a>
           );

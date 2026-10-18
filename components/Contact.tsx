@@ -2,25 +2,13 @@ import { SITE } from "./site-data";
 
 export default function Contact() {
   return (
-    <section id="contacto" className="contactv3">
-      <h2 className="contactv3__kicker" data-reveal>
-        Contacto
-      </h2>
-
-      <a
-        className="contactv3__mail"
-        href={`mailto:${SITE.email}`}
-        data-reveal
-      >
+    <section id="contacto" className="contact">
+      <a className="contact__mail" href={`mailto:${SITE.email}`}>
         {SITE.email.split("@")[0]}@<wbr />
         {SITE.email.split("@")[1]}
       </a>
 
-      <ul
-        className="contactv3__links"
-        data-reveal
-        style={{ transitionDelay: "120ms" }}
-      >
+      <ul className="contact__links">
         <li>
           <a href={`tel:${SITE.phoneHref}`}>{SITE.phone}</a>
         </li>
@@ -34,7 +22,6 @@ export default function Contact() {
             GitHub
           </a>
         </li>
-        <li>Madrid · remoto o híbrido</li>
       </ul>
     </section>
   );
