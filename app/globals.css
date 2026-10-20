@@ -625,7 +625,7 @@ h2.brutalist-heading {
 
 .work .section__head h2 {
   padding-bottom: 1rem;
-  border-bottom: 4px solid var(--accent-primary);
+  border-bottom: 4px solid var(--border-main);
 }
 
 .work__ledger {
@@ -645,7 +645,7 @@ h2.brutalist-heading {
 .work__row {
   display: block;
   padding-block: clamp(1.4rem, 3vw, 2.4rem);
-  transition: opacity 240ms ease, padding-left 180ms var(--ease-smooth);
+  transition: opacity 240ms ease;
 }
 
 .work__row-in {
@@ -684,11 +684,6 @@ h2.brutalist-heading {
 }
 
 @media (hover: hover) and (pointer: fine) {
-  .work__row:hover,
-  .work__row.is-active {
-    padding-left: clamp(0.75rem, 2vw, 1.5rem);
-  }
-
   .work__row:hover .work__name,
   .work__row.is-active .work__name {
     color: var(--accent-primary);

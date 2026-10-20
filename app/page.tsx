@@ -97,31 +97,31 @@ const CV_DATA = {
     ai: {
       label: "IA & Machine Learning",
       icon: "brain",
-      color: "#8b5cf6",
+      color: "#5B21B6",
       items: ["Machine Learning", "Deep Learning", "NLP", "TensorFlow", "PyTorch", "Scikit-learn"],
     },
     web: {
       label: "Frontend & Web",
       icon: "globe",
-      color: "#22d3ee",
+      color: "#155E75",
       items: ["React", "Next.js", "TypeScript", "HTML/CSS", "Tailwind CSS", "GraphQL"],
     },
     backend: {
       label: "Backend & APIs",
       icon: "server",
-      color: "#6366f1",
+      color: "#1E40AF",
       items: ["Node.js", "Java / Spring Boot", ".NET Core", "Flask", "REST APIs", "RabbitMQ"],
     },
     data: {
       label: "Bases de Datos",
       icon: "database",
-      color: "#10b981",
+      color: "#065F46",
       items: ["PostgreSQL", "MongoDB", "Redis", "SQL", "ETL Pipelines", "Data Engineering"],
     },
     devops: {
       label: "DevOps & Cloud",
       icon: "cloud",
-      color: "#f59e0b",
+      color: "#92400E",
       items: ["Docker", "Kubernetes", "CI/CD", "Git", "Linux", "Microservicios"],
     },
   },
@@ -376,7 +376,7 @@ function Navbar() {
             style={{ display: "flex", alignItems: "center", gap: 10, textDecoration: "none", flexShrink: 0 }}
           >
             <img
-              src="/icon.svg"
+              src="/mc-logo.svg"
               alt=""
               width={32}
               height={32}
@@ -716,7 +716,7 @@ function Experience() {
                       flexShrink: 0,
                     }}
                   >
-                    <Building2 size={22} color="#6366f1" />
+                    <Building2 size={22} color="#3730A3" />
                   </div>
                   <div>
                     <h3
@@ -724,7 +724,7 @@ function Experience() {
                     >
                       {exp.role}
                     </h3>
-                    <p style={{ color: "#a5b4fc", fontWeight: 600, marginBottom: 4 }}>{exp.company}</p>
+                    <p style={{ color: "#3730A3", fontWeight: 600, marginBottom: 4 }}>{exp.company}</p>
                     <div style={{ display: "flex", alignItems: "center", gap: 12, color: "var(--text-muted)", fontSize: "0.82rem" }}>
                       <span style={{ display: "flex", alignItems: "center", gap: 4 }}>
                         <MapPin size={12} />
@@ -745,9 +745,9 @@ function Experience() {
                     borderRadius: 999,
                     fontSize: "0.75rem",
                     fontWeight: 600,
-                    background: "rgba(16,185,129,0.1)",
-                    border: "1px solid rgba(16,185,129,0.2)",
-                    color: "#34d399",
+                    background: "rgba(6,95,70,0.1)",
+                    border: "1px solid rgba(6,95,70,0.2)",
+                    color: "#065F46",
                     display: "flex",
                     alignItems: "center",
                     gap: 6,
@@ -783,14 +783,14 @@ function Experience() {
                           width: 20,
                           height: 20,
                           borderRadius: 6,
-                          background: "rgba(99,102,241,0.15)",
+                          background: "rgba(55,48,163,0.15)",
                           display: "flex",
                           alignItems: "center",
                           justifyContent: "center",
                           flexShrink: 0,
                         }}
                       >
-                        <Zap size={10} color="#6366f1" />
+                        <Zap size={10} color="#3730A3" />
                       </div>
                       {h}
                     </div>
@@ -827,15 +827,15 @@ function Experience() {
                       width: 40,
                       height: 40,
                       borderRadius: 10,
-                      background: "rgba(16,185,129,0.1)",
-                      border: "1px solid rgba(16,185,129,0.2)",
+                      background: "rgba(6,95,70,0.1)",
+                      border: "1px solid rgba(6,95,70,0.2)",
                       display: "flex",
                       alignItems: "center",
                       justifyContent: "center",
                       flexShrink: 0,
                     }}
                   >
-                    <GraduationCap size={18} color="#10b981" />
+                    <GraduationCap size={18} color="#065F46" />
                   </div>
                   <div>
                     <h4 style={{ fontWeight: 700, fontSize: "0.9rem", marginBottom: 4, letterSpacing: "-0.01em" }}>{edu.title}</h4>
@@ -849,9 +849,9 @@ function Experience() {
                             borderRadius: 6,
                             fontSize: "0.7rem",
                             fontWeight: 500,
-                            background: "rgba(16,185,129,0.1)",
-                            border: "1px solid rgba(16,185,129,0.15)",
-                            color: "#34d399",
+                            background: "rgba(6,95,70,0.1)",
+                            border: "1px solid rgba(6,95,70,0.15)",
+                            color: "#065F46",
                           }}
                         >
                           {h}
