@@ -134,7 +134,7 @@ const CV_DATA = {
       media: "/work/impactdb.jpg",
     },
     {
-      name: "Applied AI Solutions",
+      name: "Applied IA",
       kind: "Suite de IA aplicada",
       url: "/ai-lab",
       repo: "https://github.com/miguelcalzada-dev/applied-ai-engineering-showcase",
@@ -148,7 +148,7 @@ const CV_DATA = {
       media: "/work/sqlsense.jpg",
     },
     {
-      name: "Madrid Transit Pulse",
+      name: "Madrid Transit",
       kind: "Big Data · movilidad",
       url: "/madrid-transit",
       repo: "https://github.com/miguelcalzada-dev/madrid-transit-pulse",
@@ -184,7 +184,7 @@ const BOT_KB: { test: RegExp; reply: string }[] = [
   {
     test: /madrid transit|transit|movilidad|cercanías|cercanias|gtfs|flota/,
     reply:
-      "🚆 **Madrid Transit Pulse**: plataforma de visualización y análisis de Big Data sobre el tránsito y la movilidad en Madrid, con mapas en vivo, alertas y analítica. Está desplegada y puedes abrirla desde la sección de proyectos.",
+      "🚆 **Madrid Transit**: plataforma de visualización y análisis de Big Data sobre el tránsito y la movilidad en Madrid, con mapas en vivo, alertas y analítica. Está desplegada y puedes abrirla desde la sección de proyectos.",
   },
   {
     test: /sqlsense|\bsql\b|sqlite/,
@@ -194,7 +194,7 @@ const BOT_KB: { test: RegExp; reply: string }[] = [
   {
     test: /ai lab|ai-lab|applied ai|showcase|visión por computador|prompt engineering/,
     reply:
-      "🤖 **Applied AI Solutions (AI Project Showcase)**: portfolio interactivo de IA con chat con Gemini, visión por computador, RAG, NLP y prompt engineering, todo desplegado en producción.",
+      "🤖 **Applied IA**: portfolio interactivo de IA con chat con Gemini, visión por computador, RAG, NLP y prompt engineering, todo desplegado en producción.",
   },
   {
     test: /impactdb|impact db|linaje|lineage|\bmcp\b|model context protocol/,
@@ -209,7 +209,7 @@ const BOT_KB: { test: RegExp; reply: string }[] = [
   {
     test: /proyecto|project|portafolio|portfolio|repositori|\brepo\b|qué ha construido|qué has hecho/,
     reply:
-      "🚀 Proyectos destacados:\n• **Applied AI Solutions** — IA con Gemini, visión, RAG y NLP (desplegado)\n• **Madrid Transit Pulse** — Big Data y visualización de la movilidad en Madrid\n• **SQLSense AI** — aprende SQL con IA y SQLite WASM en el navegador\n• **ImpactDB MCP** — linaje de datos e impacto de cambios en PostgreSQL con herramientas MCP (desplegado)\n• **FitCity** — plataforma fitness Full Stack (Angular + FastAPI + Supabase)\n• **Barber Books Template** — plantilla web para barberías con reservas\n• **Spotify Voice Assistant** — asistente de voz offline para Windows\nEn la sección de proyectos tienes el detalle y los enlaces a cada uno.",
+      "🚀 Proyectos destacados:\n• **Applied IA** — IA con Gemini, visión, RAG y NLP (desplegado)\n• **Madrid Transit** — Big Data y visualización de la movilidad en Madrid\n• **SQLSense AI** — aprende SQL con IA y SQLite WASM en el navegador\n• **ImpactDB MCP** — linaje de datos e impacto de cambios en PostgreSQL con herramientas MCP (desplegado)\n• **FitCity** — plataforma fitness Full Stack (Angular + FastAPI + Supabase)\n• **Barber Books Template** — plantilla web para barberías con reservas\n• **Spotify Voice Assistant** — asistente de voz offline para Windows\nEn la sección de proyectos tienes el detalle y los enlaces a cada uno.",
   },
   {
     test: /cloud|\baws\b|\bec2\b|\bs3\b|\blambda\b|infraestructura|\brailway\b|\brender\b|serverless/,
