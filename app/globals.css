@@ -613,9 +613,23 @@ h2.brutalist-heading {
   background: var(--bg-primary);
 }
 
+.work__inner {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.work .section__head {
+  margin-bottom: clamp(1.5rem, 3vw, 2.5rem);
+  text-align: center;
+}
+
+.work .section__head h2 {
+  padding-bottom: 1rem;
+  border-bottom: 4px solid var(--accent-primary);
+}
+
 .work__ledger {
   position: relative;
-  border-top: 6px solid var(--accent-primary);
   padding-top: clamp(0.35rem, 1vw, 0.75rem);
 }
 

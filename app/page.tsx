@@ -1132,56 +1132,58 @@ function Projects() {
 
   return (
     <section id="proyectos" className="section work">
-      <div className="section__head">
-        <h2>Proyectos</h2>
-      </div>
+      <div className="work__inner">
+        <div className="section__head">
+          <h2>Proyectos</h2>
+        </div>
 
-      <div className={`work__ledger${hover !== null ? " is-dimmed" : ""}`}>
-        {CV_DATA.projects.map((project, i) => {
-          const external = !project.url;
-          const href = project.url ?? project.repo;
+        <div className={`work__ledger${hover !== null ? " is-dimmed" : ""}`}>
+          {CV_DATA.projects.map((project, i) => {
+            const external = !project.url;
+            const href = project.url ?? project.repo;
 
-          return (
-            <a
-              key={project.name}
-              className={`work__row${hover === i ? " is-active" : ""}`}
-              href={href}
-              {...(external
-                ? { target: "_blank", rel: "noopener noreferrer" }
-                : {})}
-              onMouseEnter={() => setHover(i)}
-              onMouseLeave={() => setHover(null)}
-              onFocus={() => setHover(i)}
-              onBlur={() => setHover(null)}
-            >
+            return (
+              <a
+                key={project.name}
+                className={`work__row${hover === i ? " is-active" : ""}`}
+                href={href}
+                {...(external
+                  ? { target: "_blank", rel: "noopener noreferrer" }
+                  : {})}
+                onMouseEnter={() => setHover(i)}
+                onMouseLeave={() => setHover(null)}
+                onFocus={() => setHover(i)}
+                onBlur={() => setHover(null)}
+              >
+                <img
+                  className="work__thumb"
+                  src={project.media}
+                  alt={`Interfaz de ${project.name}`}
+                  width={1600}
+                  height={1000}
+                  loading="lazy"
+                />
+                <span className="work__row-in">
+                  <span className="work__name">{project.name}</span>
+                  <span className="work__meta">{project.kind}</span>
+                </span>
+              </a>
+            );
+          })}
+
+          <div className="work__preview" aria-hidden="true">
+            {CV_DATA.projects.map((project, i) => (
               <img
-                className="work__thumb"
+                key={project.name}
                 src={project.media}
-                alt={`Interfaz de ${project.name}`}
+                alt=""
                 width={1600}
                 height={1000}
+                className={hover === i ? "is-on" : ""}
                 loading="lazy"
               />
-              <span className="work__row-in">
-                <span className="work__name">{project.name}</span>
-                <span className="work__meta">{project.kind}</span>
-              </span>
-            </a>
-          );
-        })}
-
-        <div className="work__preview" aria-hidden="true">
-          {CV_DATA.projects.map((project, i) => (
-            <img
-              key={project.name}
-              src={project.media}
-              alt=""
-              width={1600}
-              height={1000}
-              className={hover === i ? "is-on" : ""}
-              loading="lazy"
-            />
-          ))}
+            ))}
+          </div>
         </div>
       </div>
     </section>
