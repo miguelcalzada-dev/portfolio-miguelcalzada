@@ -378,7 +378,7 @@ function Navbar() {
             <img
               src="/mc-logo.svg"
               alt=""
-              width={32}
+              width={100}
               height={32}
               style={{ display: "block", border: "2px solid var(--border-main)" }}
             />
