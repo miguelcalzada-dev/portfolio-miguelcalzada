@@ -274,6 +274,27 @@ label, .label-text, .metadata, .tag-chip, button, .nav-link, .uppercase-mono {
   box-shadow: 4px 4px 0px var(--border-main);
 }
 
+.education-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 360px), 1fr));
+  gap: 16px;
+}
+
+.education-card {
+  min-width: 0;
+  max-width: 100%;
+}
+
+@media (max-width: 600px) {
+  .education-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .education-card {
+    padding: 20px !important;
+  }
+}
+
 .skills-grid, .projects-grid {
   display: grid !important;
   gap: 24px !important;

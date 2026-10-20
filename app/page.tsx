@@ -164,22 +164,22 @@ const BOT_KB: { test: RegExp; reply: string }[] = [
   {
     test: /\b(hola|buenas|hey|hello|hi|saludos)\b|qué tal|que tal|cómo est|como est/,
     reply:
-      "¡Hola! 👋 Soy el asistente de **Miguel Angel**. Puedo contarte sobre su perfil, experiencia, formación, stack técnico, proyectos, disponibilidad, idiomas o cómo contactarle. ¿Qué quieres saber?",
+      "¡Hola! 👋 Soy el asistente de **Miguel Ángel**. Puedo contarte sobre su perfil, experiencia, formación, stack técnico, proyectos, disponibilidad, idiomas o cómo contactarle. ¿Qué quieres saber?",
   },
   {
     test: /quién es|quien es|quién eres|quien eres|cuéntame|cuentame|sobre miguel|sobre ti|preséntate|presentate|perfil|resumen|quién es él/,
     reply:
-      "👨‍💻 **Miguel Angel Calzada Martín** es un desarrollador **Backend & Cloud** con sede en Madrid. Diseña e implementa APIs REST y microservicios, despliega soluciones en **AWS** y trabaja con **agentes de IA basados en LLMs**, arquitecturas **RAG** y pipelines de **CI/CD**. Está especializado en Inteligencia Artificial y Big Data, con varios proyectos desplegados en producción.",
+      "👨‍💻 **Miguel Ángel Calzada Martín** es un desarrollador **Full-Stack e IA** en Madrid. Diseña APIs REST y microservicios, despliega en **AWS** con Docker y Kubernetes, y construye agentes de IA, arquitecturas **RAG** y pipelines de **CI/CD** en producción. Mantiene cuatro proyectos públicos con demo y código.",
   },
   {
     test: /experiencia|trabaj|empleo|empresa|analisis survey|trayectoria|actualidad|puesto|cargo|curro/,
     reply:
-      "💼 Trabaja en **Analisis Survey Unit** (Madrid) desde marzo de 2024, como **Software Developer** especializado en **Backend & Cloud**:\n• **APIs REST y microservicios** con Java (Spring Boot), Node.js y Python (FastAPI)\n• **AWS y cloud**: Docker, Kubernetes, despliegue y operación de servicios\n• **Agentes de IA y LLMs** (Gemini, Claude): orquestación, memoria conversacional y RAG\n• **CI/CD**: GitHub Actions y despliegue automatizado (AWS, Railway, Render)\n• **Seguridad**: autenticación, control de accesos y buenas prácticas en entornos exigentes",
+      "💼 Trabaja en **Analisis Survey Unit** (Madrid) desde marzo de 2024 como **Software Developer**:\n• **APIs REST y microservicios** con Java (Spring Boot), Node.js y Python (FastAPI)\n• **AWS y cloud**: Docker, Kubernetes, despliegue y operación de servicios\n• **Agentes de IA y LLMs** (Gemini, Claude): orquestación, memoria conversacional y RAG\n• **CI/CD**: GitHub Actions y despliegue automatizado (AWS, Railway, Render)\n• **Seguridad**: autenticación, control de accesos y buenas prácticas en entornos exigentes",
   },
   {
     test: /formaci|estudi|educaci|título|titulo|universidad|instituto|\bdam\b|curso|especializaci|teide|académic|academic|titulaci/,
     reply:
-      "🎓 Formación:\n• **Curso de Especialización en Inteligencia Artificial y Big Data** (Sep 2025 – May 2026): Machine Learning, Deep Learning, NLP, agentes de IA y gestión de datos masivos.\n• **Técnico Superior en Desarrollo de Aplicaciones Multiplataforma (DAM)** (2022 – 2024, Teide IV): desarrollo de software, arquitecturas backend, bases de datos y programación orientada a objetos.",
+      "🎓 Formación:\n• **Curso de Especialización en Inteligencia Artificial y Big Data** (Sep 2025 – May 2026): Machine Learning, Deep Learning, NLP, agentes de IA y gestión de datos masivos.\n• **Técnico Superior en Desarrollo de Aplicaciones Multiplataforma (DAM)** (2022 – 2024): desarrollo de software, arquitecturas backend, bases de datos y programación orientada a objetos.",
   },
   {
     test: /madrid transit|transit|movilidad|cercanías|cercanias|gtfs|flota/,
@@ -192,7 +192,7 @@ const BOT_KB: { test: RegExp; reply: string }[] = [
       "🧮 **SQLSense AI**: aprende SQL conversando con IA. Traduce lenguaje natural a SQL y viceversa, con un laboratorio efímero de SQLite que vive en el navegador gracias a WebAssembly. Incluye editor SQL, retos guiados y modo dual IA.",
   },
   {
-    test: /ai lab|ai-lab|applied ai|showcase|visión por computador|prompt engineering/,
+    test: /ai lab|ai-lab|applied ai|applied ia|showcase|visión por computador|prompt engineering/,
     reply:
       "🤖 **Applied IA**: portfolio interactivo de IA con chat con Gemini, visión por computador, RAG, NLP y prompt engineering, todo desplegado en producción.",
   },
@@ -202,14 +202,9 @@ const BOT_KB: { test: RegExp; reply: string }[] = [
       "🧬 **ImpactDB MCP**: analizador de linaje de datos e impacto de cambios para PostgreSQL. Pregunta en lenguaje natural qué se rompería antes de un `ALTER` / `DROP` / `RENAME` y lo ves en un grafo interactivo de dependencias. Expone 4 herramientas del estándar **Model Context Protocol (MCP)** para agentes externos. Está desplegado y puedes abrirlo desde la sección de proyectos.",
   },
   {
-    test: /fitcity|fitness|\bgym\b|barber|spotify|asistente de voz/,
-    reply:
-      "📦 Otros proyectos: **FitCity** (plataforma fitness Full Stack con Angular 19, FastAPI y Supabase), **Barber Books Template** (plantilla web para barberías con sistema de reservas) y **Spotify Voice Assistant** (asistente de voz offline para Windows). Están listados en la sección de proyectos.",
-  },
-  {
     test: /proyecto|project|portafolio|portfolio|repositori|\brepo\b|qué ha construido|qué has hecho/,
     reply:
-      "🚀 Proyectos destacados:\n• **Applied IA** — IA con Gemini, visión, RAG y NLP (desplegado)\n• **Madrid Transit** — Big Data y visualización de la movilidad en Madrid\n• **SQLSense AI** — aprende SQL con IA y SQLite WASM en el navegador\n• **ImpactDB MCP** — linaje de datos e impacto de cambios en PostgreSQL con herramientas MCP (desplegado)\n• **FitCity** — plataforma fitness Full Stack (Angular + FastAPI + Supabase)\n• **Barber Books Template** — plantilla web para barberías con reservas\n• **Spotify Voice Assistant** — asistente de voz offline para Windows\nEn la sección de proyectos tienes el detalle y los enlaces a cada uno.",
+      "🚀 Proyectos destacados:\n• **Applied IA** — IA con Gemini, visión, RAG y NLP (desplegado)\n• **Madrid Transit** — Big Data y visualización de la movilidad en Madrid\n• **SQLSense AI** — aprende SQL con IA y SQLite WASM en el navegador\n• **ImpactDB MCP** — linaje de datos e impacto de cambios en PostgreSQL con herramientas MCP (desplegado)\nEn la sección de proyectos tienes el detalle y los enlaces a cada uno.",
   },
   {
     test: /cloud|\baws\b|\bec2\b|\bs3\b|\blambda\b|infraestructura|\brailway\b|\brender\b|serverless/,
@@ -224,7 +219,7 @@ const BOT_KB: { test: RegExp; reply: string }[] = [
   {
     test: /inteligencia artificial|\bia\b|\bml\b|machine learning|deep learning|\bnlp\b|llm|gemini|claude|\brag\b|agente|embedding|vectorial|tensorflow|pytorch|visión|vision|big data/,
     reply:
-      "🧠 **IA & Agentes**: agentes de IA y **LLMs (Gemini, Claude)**, arquitecturas **RAG**, orquestación de flujos, memoria conversacional, **NLP**, **embeddings** y bases de datos vectoriales, además de Machine Learning y Deep Learning (especialización en IA y Big Data). Puedes probar varios de estos proyectos en el **AI Project Showcase**.",
+      "🧠 **IA & Agentes**: agentes de IA y **LLMs (Gemini, Claude)**, arquitecturas **RAG**, orquestación de flujos, memoria conversacional, **NLP**, **embeddings** y bases de datos vectoriales, además de Machine Learning y Deep Learning (especialización en IA y Big Data). Puedes probar varios de estos proyectos en **Applied IA**.",
   },
   {
     test: /base de datos|postgres|mongo|mysql|sql server|firebase|redis|bbdd/,
@@ -600,7 +595,6 @@ function Hero() {
             style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 16, flexWrap: "wrap" }}
           >
             <a href="#proyectos" className="btn-primary" style={{ padding: "16px 32px", fontSize: "1rem" }}>
-              <Sparkles size={18} />
               Ver Proyectos
             </a>
             <a href="mailto:miguelcalzada2004@gmail.com" className="btn-secondary" style={{ padding: "16px 32px", fontSize: "1rem" }}>
@@ -814,11 +808,11 @@ function Experience() {
           <p style={{ color: "var(--text-muted)", fontSize: "0.8rem", fontWeight: 600, letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: 16 }}>
             Formación Académica
           </p>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(360px, 1fr))", gap: 16 }}>
+          <div className="education-grid">
             {CV_DATA.education.map((edu, i) => (
               <div
                 key={i}
-                className="brutalist-grid-box"
+                className="brutalist-grid-box education-card"
                 style={{ padding: 24 }}
               >
                 <div style={{ display: "flex", alignItems: "flex-start", gap: 12 }}>
@@ -837,7 +831,7 @@ function Experience() {
                   >
                     <GraduationCap size={18} color="#065F46" />
                   </div>
-                  <div>
+                  <div style={{ minWidth: 0 }}>
                     <h4 style={{ fontWeight: 700, fontSize: "0.9rem", marginBottom: 4, letterSpacing: "-0.01em" }}>{edu.title}</h4>
                     <p style={{ color: "var(--text-muted)", fontSize: "0.8rem", marginBottom: 10 }}>{edu.period}</p>
                     <div style={{ display: "flex", flexWrap: "wrap", gap: 4 }}>
@@ -1233,7 +1227,7 @@ function AIChatbot() {
     {
       id: 0,
       role: "bot",
-      text: "¡Hola! 👋 Soy el asistente IA de **Miguel Angel**. Pregúntame sobre su experiencia, stack técnico, formación, proyectos o disponibilidad. ¿En qué puedo ayudarte?",
+      text: "¡Hola! 👋 Soy el asistente IA de **Miguel Ángel**. Pregúntame sobre su experiencia, stack técnico, formación, proyectos o disponibilidad. ¿En qué puedo ayudarte?",
     },
   ]);
   const [input, setInput] = useState("");
@@ -1380,7 +1374,7 @@ function AIChatbot() {
                     Pregúntale a mi IA
                   </p>
                   <p style={{ color: "#a5b4fc", fontSize: "0.72rem", marginTop: 2 }}>
-                    Asistente de Miguel Angel · Online
+                    Asistente de Miguel Ángel · Online
                   </p>
                 </div>
               </div>
