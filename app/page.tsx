@@ -1129,7 +1129,7 @@ function Projects() {
       <div className="work__inner">
         <div className="section__head">
           <p className="label-text" style={{ color: "var(--accent-primary)", marginBottom: 12 }}>
-            Portafolio
+            En producción
           </p>
           <h2>Proyectos</h2>
         </div>
