@@ -10,11 +10,9 @@ import {
   Mail,
   MapPin,
   ChevronDown,
-  ExternalLink,
   Send,
   X,
   Sparkles,
-  GitBranch,
   Calendar,
   Building2,
   GraduationCap,
@@ -130,74 +128,32 @@ const CV_DATA = {
   },
   projects: [
     {
-      name: "Applied AI Solutions",
-      description:
-        "Portfolio interactivo de proyectos de IA aplicada: chat con Gemini, visión artificial, RAG, NLP y prompt engineering, todo integrado en una sola plataforma desplegada en producción.",
-      stack: ["FastAPI", "Python", "Gemini API", "HTML", "CSS", "JavaScript"],
-      type: "Desplegado",
-      color: "#6366f1",
-      github: "https://github.com/miguelcalzada-dev/applied-ai-engineering-showcase",
-      url: "/ai-lab",
+      name: "ImpactDB MCP",
+      kind: "Linaje de datos · MCP",
+      url: "/impactdb",
+      repo: "https://github.com/miguelcalzada-dev/data-lineage-mcp",
+      media: "/work/impactdb.jpg",
     },
     {
-      name: "Madrid Transit Pulse",
-      description:
-        "Plataforma de visualización y análisis de Big Data sobre el tránsito y movilidad en Madrid.",
-      stack: ["Next.js", "React", "Big Data", "Data Visualization"],
-      type: "Desplegado",
-      color: "#3b82f6",
-      github: "https://github.com/miguelcalzada-dev/madrid-transit-pulse",
-      url: "/madrid-transit",
+      name: "Applied AI Solutions",
+      kind: "Suite de IA aplicada",
+      url: "/ai-lab",
+      repo: "https://github.com/miguelcalzada-dev/applied-ai-engineering-showcase",
+      media: "/work/ai-lab.jpg",
     },
     {
       name: "SQLSense AI",
-      description:
-        "Aprende SQL hablando con IA. Traduce lenguaje natural a SQL y viceversa, con un laboratorio efímero de base de datos SQLite que vive en el navegador gracias a WebAssembly. Incluye editor SQL libre, retos guiados y modo dual IA con fallback local.",
-      stack: ["Next.js", "TypeScript", "SQLite WASM", "OpenAI", "Framer Motion", "Tailwind CSS"],
-      type: "Desplegado",
-      color: "#ec4899",
-      github: "https://github.com/miguelcalzada-dev/sqlsense-ai",
+      kind: "SQL con IA · WebAssembly",
       url: "/sqlsense",
+      repo: "https://github.com/miguelcalzada-dev/sqlsense-ai",
+      media: "/work/sqlsense.jpg",
     },
     {
-      name: "ImpactDB MCP",
-      description:
-        "Analizador de linaje de datos e impacto de cambios para PostgreSQL. Conecta tu base, pregunta en lenguaje natural qué se rompería antes de un ALTER / DROP / RENAME y lo visualiza en un grafo interactivo. Expone 4 herramientas del estándar Model Context Protocol (MCP) listas para agentes externos.",
-      stack: ["Next.js", "TypeScript", "PostgreSQL", "MCP", "Groq", "React Flow"],
-      type: "Desplegado",
-      color: "#14b8a6",
-      github: "https://github.com/miguelcalzada-dev/data-lineage-mcp",
-      url: "/impactdb",
-    },
-    {
-      name: "FitCity",
-      description:
-        "Plataforma Full Stack orientada al fitness: gestión de usuarios, check-in en gimnasios, validación de PRs de Powerlifting mediante IA y rankings de la comunidad. Frontend Angular 19 + TailwindCSS, backend FastAPI con Supabase (PostgreSQL).",
-      stack: ["Angular 19", "TailwindCSS", "FastAPI", "Python", "Supabase", "PostgreSQL"],
-      type: "En Desarrollo",
-      color: "#10b981",
-      github: "https://github.com/FitCity-Team/FitCity",
-      url: null,
-    },
-    {
-      name: "Barber Books Template",
-      description:
-        "Plantilla web moderna y elegante para barberías y peluquerías premium. Permite mostrar servicios, portafolio y equipo de barberos, incluyendo un sistema integrado para agenciar y gestionar citas de clientes de forma rápida.",
-      stack: ["HTML", "CSS", "JavaScript"],
-      type: "Sin Desplegar",
-      color: "#f59e0b",
-      github: "https://github.com/miguelcalzada-dev/barber-books-template",
-      url: null,
-    },
-    {
-      name: "Spotify Voice Assistant",
-      description:
-        "Asistente de voz offline para Windows que controla Spotify mediante comandos de voz sin interrumpir el flujo de trabajo. Activa con la palabra \"asistente\" y ofrece más de 20 interacciones para gestionar la reproducción sin conexión a internet.",
-      stack: ["Python", "SpeechRecognition", "Spotipy", "Windows"],
-      type: "Escritorio",
-      color: "#22d3ee",
-      github: "https://github.com/miguelcalzada-dev/spotify_voice_assistant",
-      url: null,
+      name: "Madrid Transit Pulse",
+      kind: "Big Data · movilidad",
+      url: "/madrid-transit",
+      repo: "https://github.com/miguelcalzada-dev/madrid-transit-pulse",
+      media: "/work/madrid-transit.jpg",
     },
   ],
 };
@@ -1165,78 +1121,61 @@ function Skills() {
    PROJECTS
 ────────────────────────────────────────────── */
 function Projects() {
+  const [hover, setHover] = useState<number | null>(null);
+
   return (
-    <section id="proyectos" className="brutalist-section">
-      <div style={{ maxWidth: 1100, margin: "0 auto" }}>
-        <AnimSection>
-          <motion.div variants={fadeUp} style={{ marginBottom: 64, textAlign: "center" }}>
-            <p className="label-text" style={{ color: "var(--accent-primary)", marginBottom: 12 }}>
-              Portafolio
-            </p>
-            <h2 className="brutalist-heading">
-              Proyectos Destacados
-            </h2>
-            <p style={{ color: "var(--text-secondary)", maxWidth: 480, margin: "0 auto" }}>
-              Soluciones que combinan ingeniería robusta con inteligencia artificial aplicada.
-            </p>
-          </motion.div>
+    <section id="proyectos" className="section work">
+      <div className="section__head">
+        <h2>Proyectos</h2>
+      </div>
 
-          <div className="projects-grid">
-            {CV_DATA.projects.map((project, i) => (
-              <motion.div key={i} variants={fadeUp}>
-                <article
-                  className="project-card"
-                  style={{ "--card-accent": project.color } as React.CSSProperties}
-                >
-                  <span className="project-accent" aria-hidden="true" />
+      <div className={`work__ledger${hover !== null ? " is-dimmed" : ""}`}>
+        {CV_DATA.projects.map((project, i) => {
+          const external = !project.url;
+          const href = project.url ?? project.repo;
 
-                  <div className="project-top">
-                    <div
-                      className="project-icon"
-                      style={{ background: `${project.color}15`, borderColor: project.color, color: project.color }}
-                    >
-                      <GitBranch size={20} />
-                    </div>
-                    <span className="tag-chip"
-                      style={{ background: `${project.color}15 !important`, color: `${project.color} !important`, borderColor: `${project.color}40 !important` }}
-                    >
-                      {project.type}
-                    </span>
-                  </div>
+          return (
+            <a
+              key={project.name}
+              className={`work__row${hover === i ? " is-active" : ""}`}
+              href={href}
+              {...(external
+                ? { target: "_blank", rel: "noopener noreferrer" }
+                : {})}
+              onMouseEnter={() => setHover(i)}
+              onMouseLeave={() => setHover(null)}
+              onFocus={() => setHover(i)}
+              onBlur={() => setHover(null)}
+            >
+              <img
+                className="work__thumb"
+                src={project.media}
+                alt={`Interfaz de ${project.name}`}
+                width={1600}
+                height={1000}
+                loading="lazy"
+              />
+              <span className="work__row-in">
+                <span className="work__name">{project.name}</span>
+                <span className="work__meta">{project.kind}</span>
+              </span>
+            </a>
+          );
+        })}
 
-                  <h3 className="project-title">{project.name}</h3>
-                  <p className="project-desc">{project.description}</p>
-
-                  <div className="project-foot">
-                    <div className="project-stack">
-                      {project.stack.map((s) => (
-                        <span key={s} className="tag-chip">{s}</span>
-                      ))}
-                    </div>
-                    <div className="project-actions">
-                      {project.url && (
-                        <a className="project-enter" href={project.url} aria-label={`Abrir ${project.name}`}>
-                          Entrar
-                          <ExternalLink size={14} />
-                        </a>
-                      )}
-                      <a
-                        href={project.github}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        title="Ver en GitHub"
-                        aria-label={`${project.name} en GitHub`}
-                      >
-                        <BrandIcon name="github" size={15} />
-                      </a>
-                    </div>
-                  </div>
-
-                </article>
-              </motion.div>
-            ))}
-          </div>
-        </AnimSection>
+        <div className="work__preview" aria-hidden="true">
+          {CV_DATA.projects.map((project, i) => (
+            <img
+              key={project.name}
+              src={project.media}
+              alt=""
+              width={1600}
+              height={1000}
+              className={hover === i ? "is-on" : ""}
+              loading="lazy"
+            />
+          ))}
+        </div>
       </div>
     </section>
   );
