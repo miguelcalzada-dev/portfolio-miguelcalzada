@@ -2,14 +2,14 @@ import type { MetadataRoute } from "next";
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: "Miguel Calzada — Software, datos e IA en producción",
-    short_name: "Miguel Calzada",
+    name: "Miguel Angel Calzada Martin - Software Developer",
+    short_name: "MC Portfolio",
     description:
-      "Portfolio de Miguel Ángel Calzada Martín: software, datos e IA en producción.",
+      "Portfolio profesional de Miguel Angel Calzada Martin: IA, Big Data, microservicios y DevOps.",
     start_url: "/",
     display: "standalone",
-    background_color: "#E9E5DA",
-    theme_color: "#1937FF",
+    background_color: "#111111",
+    theme_color: "#FF3E00",
     lang: "es",
     icons: [
       {

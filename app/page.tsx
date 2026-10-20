@@ -1,17 +1,32 @@
+import Loader from "@/components/Loader";
+import Motion from "@/components/Motion";
+import ScrollProgress from "@/components/ScrollProgress";
 import Hero from "@/components/Hero";
-import WorkSection from "@/components/WorkSection";
-import Practice from "@/components/Practice";
-import Record from "@/components/Record";
-import ContactSection from "@/components/ContactSection";
+import Work from "@/components/Work";
+import Stack from "@/components/Stack";
+import Experience from "@/components/Experience";
+import Contact from "@/components/Contact";
+import Footer from "@/components/Footer";
+import Chatbot from "@/components/Chatbot";
 
-export default function Home() {
+export default function Portfolio() {
   return (
-    <main id="main" tabIndex={-1}>
-      <Hero />
-      <WorkSection />
-      <Practice />
-      <Record />
-      <ContactSection />
-    </main>
+    <>
+      <Loader />
+      <a className="skip" href="#contenido">
+        Saltar al contenido
+      </a>
+      <Motion />
+      <ScrollProgress />
+      <main className="page" id="contenido">
+        <Hero />
+        <Work />
+        <Stack />
+        <Experience />
+        <Contact />
+        <Footer />
+      </main>
+      <Chatbot />
+    </>
   );
 }
