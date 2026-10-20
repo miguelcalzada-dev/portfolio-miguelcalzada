@@ -180,6 +180,15 @@ label, .label-text, .metadata, .tag-chip, button, .nav-link, .uppercase-mono {
   color: var(--bg-card) !important;
 }
 
+.availability-chip {
+  background: var(--bg-card) !important;
+}
+
+.availability-chip:hover {
+  background: var(--accent-primary) !important;
+  color: var(--bg-card) !important;
+}
+
 .bg-mesh, .gradient-text, .gradient-text-warm {
   background: none !important;
   -webkit-text-fill-color: var(--text-primary) !important;

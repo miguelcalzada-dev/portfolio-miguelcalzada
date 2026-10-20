@@ -537,11 +537,10 @@ function Hero() {
             style={{ marginBottom: 32 }}
           >
             <span
-              className="tag-chip"
+              className="tag-chip availability-chip"
               style={{
                 fontSize: "0.85rem",
                 padding: "8px 16px",
-                background: "var(--bg-card) !important",
               }}
             >
               <div className="dot-glow" style={{ background: "var(--success)" }} />
