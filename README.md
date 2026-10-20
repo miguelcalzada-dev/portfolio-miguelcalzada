@@ -32,11 +32,11 @@ Este repositorio es además el **portal único** del ecosistema: agrupa y sirve 
 
 ## Características
 
-- **Diseño brutalista / editorial** propio, con tipografías display y microinteracciones.
-- **Dark mode** y paleta accesible basada en variables CSS.
-- **Animaciones** con Framer Motion y revelado por scroll.
+- **Diseño editorial propio** basado en un registro de producción: tinta, papel, cobalto y tipografía de contraste.
+- **Arquitectura multipágina**: home, índice de sistemas, cuatro dossiers, sobre mí y contacto.
+- **Dossiers de proyecto** con contexto, funciones, arquitectura, decisiones técnicas, stack y enlaces.
+- **Animaciones** con Framer Motion: transiciones de página, revelados al scroll y microinteracciones.
 - **Asistente conversacional** integrado (FAQ guiada por reglas) para responder dudas sobre perfil, experiencia y disponibilidad.
-- **Sección de proyectos** con enlaces directos a cada aplicación desplegada.
 - **SEO completo**: metadatos, Open Graph con imagen generada dinámicamente, `sitemap.xml`, `robots.txt` y `manifest.webmanifest`.
 - **Portal multi-proyecto**: proxy transparente a cada aplicación vía `next.config.ts`.
 - **Redirecciones canónicas**: `.es`, `www` y la URL antigua `/portfolio` → dominio principal.
@@ -61,8 +61,8 @@ Las URLs de cada destino se centralizan en el objeto `SITES` de [`next.config.ts
 | Lenguaje | TypeScript 5 |
 | UI | React 19 |
 | Animación | Framer Motion |
-| Iconografía | lucide-react |
-| Tipografías | `next/font` (DM Serif Display, Space Grotesk, Space Mono) |
+| Iconografía | SVG propio |
+| Tipografías | `next/font` (Gloock, Archivo, IBM Plex Mono) |
 | Estilos | CSS nativo + Tailwind CSS 4 (PostCSS) |
 | Lint | ESLint 9 (`eslint-config-next`) |
 | Deploy | Vercel |
@@ -74,7 +74,11 @@ Navegador
    │
    ▼
 miguelcalzada.com  (Next.js · Vercel)
-   ├── /              → portfolio (este repo)
+   ├── /              → home editorial
+   ├── /work          → índice de sistemas
+   ├── /work/[slug]   → dossiers de proyecto
+   ├── /about         → perfil y trayectoria
+   ├── /contact       → contacto
    ├── /madrid-transit → rewrite → madrid-transit-pulse.vercel.app
    ├── /sqlsense       → rewrite → sqlsense-ai (Railway)
    ├── /ai-lab         → rewrite → applied-ai-engineering-showcase (Railway)
@@ -83,7 +87,7 @@ miguelcalzada.com  (Next.js · Vercel)
 
 - **Redirecciones de host** (301): `miguelcalzada.es`, `www.miguelcalzada.es` y `www.miguelcalzada.com` → `miguelcalzada.com`.
 - **Rewrites** que actúan como reverse proxy, manteniendo la URL del dominio principal en el navegador.
-- La página principal se renderiza como componente cliente (`app/page.tsx`) por el uso intensivo de animaciones y estado de UI.
+- Las páginas son Server Components; la navegación, el asistente, el índice y las animaciones viven en islas cliente.
 
 ## Puesta en marcha
 
@@ -119,14 +123,35 @@ npm start
 
 ```text
 app/
-  layout.tsx            # Layout raíz, fuentes y metadatos SEO
-  page.tsx              # Landing: hero, experiencia, skills, proyectos y chatbot
+  layout.tsx            # Layout raíz, fuentes, cabecera, pie y metadatos SEO
+  page.tsx              # Home: hero, sistemas, práctica, registro y contacto
+  work/page.tsx         # Índice de sistemas
+  work/[slug]/page.tsx  # Dossier de cada proyecto
+  about/page.tsx        # Perfil, experiencia, formación y principios
+  contact/page.tsx      # Contacto directo
+  not-found.tsx         # 404 editorial
   opengraph-image.tsx   # Imagen Open Graph generada dinámicamente
   robots.ts             # robots.txt
   sitemap.ts            # sitemap.xml
   manifest.ts           # manifest.webmanifest
-  globals.css           # Design system (variables, utilidades)
+  globals.css           # Design system, composición y responsive
   icon.svg              # Favicon
+components/
+  SiteHeader.tsx        # Cabecera, navegación e índice a pantalla completa
+  SiteFooter.tsx        # Pie editorial
+  Hero.tsx              # Primera viewport y registro de sistemas
+  ProjectLedger.tsx     # Índice de proyectos con vista previa
+  Practice.tsx          # Capacidades técnicas
+  Record.tsx            # Experiencia, formación e idiomas
+  ContactSection.tsx    # Cierre y contacto
+  Chatbot.tsx           # Asistente conversacional
+  Reveal.tsx            # Revelado al scroll
+  PageTransition.tsx    # Transición entre rutas
+  icons.tsx             # Iconografía SVG propia
+  site-data.ts          # Fuente de datos del portfolio
+content.md              # Fuente de verdad del contenido
+PRODUCT.md              # Contexto de producto
+DESIGN.md               # Sistema de diseño y reglas visuales
 next.config.ts          # Redirecciones canónicas y rewrites multi-proyecto
 ```
 

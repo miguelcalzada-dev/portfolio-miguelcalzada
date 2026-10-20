@@ -1,9 +1,9 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { AnimatePresence, motion } from "framer-motion";
-import { Send, MessageSquare, X } from "lucide-react";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { SITE } from "./site-data";
+import { Chat, Close, Send } from "./icons";
 
 type Message = { id: number; role: "user" | "bot"; text: string };
 
@@ -11,7 +11,7 @@ const KB: { test: RegExp; reply: string }[] = [
   {
     test: /\b(hola|buenas|hey|hello|hi|saludos)\b|qué tal|que tal|cómo est|como est/,
     reply:
-      "Hola. Soy el asistente de Miguel Ángel. Puedo contarte sobre su perfil, experiencia, formación, stack, proyectos, disponibilidad o cómo contactarle. ¿Qué quieres saber?",
+      "Hola. Soy el asistente de Miguel. Puedo contarte sobre su perfil, experiencia, formación, stack, proyectos, disponibilidad o cómo contactarle. ¿Qué quieres saber?",
   },
   {
     test: /quién es|quien es|quién eres|perfil|resumen|sobre él|sobre el/,
@@ -36,7 +36,7 @@ const KB: { test: RegExp; reply: string }[] = [
   {
     test: /proyecto|portafolio|portfolio|repositori|qué ha construido|qué has hecho/,
     reply:
-      "Cuatro proyectos desplegados: ImpactDB MCP (linaje de datos para PostgreSQL con herramientas MCP), Applied AI Solutions (suite de IA con Gemini), SQLSense AI (SQL con IA y SQLite WASM en el navegador) y Madrid Transit Pulse (Big Data de movilidad en tiempo real). Los tienes en la sección Proyectos.",
+      "Cuatro proyectos desplegados: ImpactDB MCP (linaje de datos para PostgreSQL con herramientas MCP), Applied AI Solutions (suite de IA con Gemini), SQLSense AI (SQL con IA y SQLite WASM en el navegador) y Madrid Transit Pulse (Big Data de movilidad en tiempo real). Los tienes en la sección Sistemas.",
   },
   {
     test: /impactdb|linaje|lineage|\bmcp\b/,
@@ -58,127 +58,172 @@ const KB: { test: RegExp; reply: string }[] = [
   },
 ];
 
-function reply(message: string): string {
-  const msg = message.toLowerCase().trim();
-  for (const item of KB) if (item.test.test(msg)) return item.reply;
-  return "No estoy seguro de eso. Puedo contarte sobre experiencia, formación, stack, proyectos, disponibilidad o contacto. ¿Sobre qué quieres saber?";
-}
-
 const SUGGESTIONS = [
   "¿Cuál es tu experiencia?",
   "¿Qué stack usas?",
   "¿Estás disponible?",
 ];
 
+function getReply(message: string) {
+  const msg = message.toLowerCase().trim();
+  for (const item of KB) if (item.test.test(msg)) return item.reply;
+  return "No estoy seguro de eso. Puedo contarte sobre experiencia, formación, stack, proyectos, disponibilidad o contacto. ¿Sobre qué quieres saber?";
+}
+
 export default function Chatbot() {
+  const reduce = useReducedMotion();
   const [open, setOpen] = useState(false);
   const [show, setShow] = useState(false);
   const [messages, setMessages] = useState<Message[]>([
     {
       id: 0,
       role: "bot",
-      text: "Hola. Soy el asistente de Miguel Ángel. Pregúntame por su experiencia, stack, proyectos o disponibilidad.",
+      text: "Hola. Soy el asistente de Miguel. Pregúntame por su experiencia, stack, proyectos o disponibilidad.",
     },
   ]);
   const [input, setInput] = useState("");
+  const [pending, setPending] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
+  const panelRef = useRef<HTMLDivElement>(null);
   const endRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const onScroll = () => setShow(window.scrollY > window.innerHeight * 0.7);
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
+    const timer = window.setTimeout(() => setShow(true), 700);
+    return () => window.clearTimeout(timer);
   }, []);
 
   useEffect(() => {
-    if (open) endRef.current?.scrollIntoView({ block: "end" });
+    if (open) {
+      endRef.current?.scrollIntoView({ block: "end" });
+      window.setTimeout(() => inputRef.current?.focus(), 80);
+    }
   }, [messages, open]);
 
   useEffect(() => {
-    if (open) setTimeout(() => inputRef.current?.focus(), 80);
+    if (!open) return;
+
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setOpen(false);
+    };
+
+    document.addEventListener("keydown", onKeyDown);
+    return () => document.removeEventListener("keydown", onKeyDown);
   }, [open]);
 
   function send(text: string) {
     const value = text.trim();
     if (!value) return;
-    setMessages((m) => [...m, { id: Date.now(), role: "user", text: value }]);
+
+    setMessages((current) => [
+      ...current,
+      { id: Date.now(), role: "user", text: value },
+    ]);
     setInput("");
-    setTimeout(() => {
-      setMessages((m) => [
-        ...m,
-        { id: Date.now() + 1, role: "bot", text: reply(value) },
+    setPending(true);
+
+    window.setTimeout(() => {
+      setMessages((current) => [
+        ...current,
+        { id: Date.now() + 1, role: "bot", text: getReply(value) },
       ]);
-    }, 500);
+      setPending(false);
+    }, 420);
   }
 
   return (
     <>
-      <button
-        type="button"
-        className={`bot-launch${show && !open ? " is-show" : ""}`}
-        aria-label="Abrir asistente"
-        aria-hidden={!show}
-        tabIndex={show ? 0 : -1}
-        onClick={() => setOpen(true)}
-      >
-        <MessageSquare size={22} aria-hidden="true" />
-      </button>
+      <AnimatePresence>
+        {show && !open && (
+          <motion.button
+            type="button"
+            className="assistant-trigger"
+            aria-label="Abrir asistente"
+            aria-expanded={false}
+            aria-controls="assistant-panel"
+            onClick={() => setOpen(true)}
+            initial={reduce ? false : { opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={reduce ? undefined : { opacity: 0, y: 8 }}
+            transition={{ duration: reduce ? 0 : 0.24, ease: [0.16, 1, 0.3, 1] }}
+          >
+            <Chat size={17} />
+            <span>Asistente</span>
+          </motion.button>
+        )}
+      </AnimatePresence>
 
       <AnimatePresence>
         {open && (
           <motion.div
-            className="bot-panel"
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 16 }}
-            transition={{ duration: 0.22, ease: [0.22, 1, 0.36, 1] }}
+            ref={panelRef}
+            id="assistant-panel"
+            className="assistant"
             role="dialog"
-            aria-label="Asistente"
+            aria-labelledby="assistant-title"
+            initial={reduce ? false : { opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={reduce ? undefined : { opacity: 0, y: 12 }}
+            transition={{ duration: reduce ? 0 : 0.24, ease: [0.16, 1, 0.3, 1] }}
           >
-            <div className="bot-panel__head">
-              <span className="bot-panel__title">Asistente · Miguel Ángel</span>
+            <div className="assistant__head">
+              <div>
+                <p className="assistant__label mono">Asistente</p>
+                <h2 id="assistant-title">Miguel Calzada</h2>
+              </div>
               <button
                 type="button"
-                className="bot-panel__close"
+                className="assistant__close"
                 aria-label="Cerrar asistente"
                 onClick={() => setOpen(false)}
               >
-                <X size={18} aria-hidden="true" />
+                <Close size={18} />
               </button>
             </div>
 
-            <div className="bot-panel__body">
-              {messages.map((m) => (
-                <div
-                  key={m.id}
-                  className={`bot-bubble bot-bubble--${m.role === "user" ? "user" : "bot"}`}
+            <div className="assistant__messages" role="log" aria-live="polite">
+              {messages.map((message) => (
+                <p
+                  key={message.id}
+                  className={`assistant__message assistant__message--${message.role}`}
                 >
-                  {m.text}
-                </div>
+                  {message.text}
+                </p>
               ))}
+              {pending && (
+                <p className="assistant__message assistant__message--bot assistant__message--typing">
+                  Escribiendo…
+                </p>
+              )}
               <div ref={endRef} />
             </div>
 
             {messages.length === 1 && (
-              <div className="bot-panel__suggest">
-                {SUGGESTIONS.map((s) => (
-                  <button key={s} type="button" onClick={() => send(s)}>
-                    {s}
+              <div className="assistant__suggestions" aria-label="Preguntas sugeridas">
+                {SUGGESTIONS.map((suggestion) => (
+                  <button
+                    key={suggestion}
+                    type="button"
+                    onClick={() => send(suggestion)}
+                  >
+                    {suggestion}
                   </button>
                 ))}
               </div>
             )}
 
             <form
-              className="bot-panel__form"
-              onSubmit={(e) => {
-                e.preventDefault();
+              className="assistant__form"
+              onSubmit={(event) => {
+                event.preventDefault();
                 send(input);
               }}
             >
+              <label className="sr-only" htmlFor="assistant-input">
+                Tu pregunta
+              </label>
               <input
                 ref={inputRef}
+                id="assistant-input"
                 name="pregunta"
                 type="text"
                 inputMode="text"
@@ -186,12 +231,11 @@ export default function Chatbot() {
                 autoComplete="off"
                 spellCheck={false}
                 value={input}
-                onChange={(e) => setInput(e.target.value)}
+                onChange={(event) => setInput(event.target.value)}
                 placeholder="Escribe tu pregunta…"
-                aria-label="Tu pregunta"
               />
               <button type="submit" aria-label="Enviar" disabled={!input.trim()}>
-                <Send size={16} aria-hidden="true" />
+                <Send size={16} />
               </button>
             </form>
           </motion.div>

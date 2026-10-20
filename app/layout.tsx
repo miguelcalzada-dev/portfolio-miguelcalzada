@@ -1,70 +1,72 @@
 import type { Metadata, Viewport } from "next";
-import { DM_Serif_Display, Space_Grotesk, Space_Mono } from "next/font/google"; // taste-skill-ignore
+import { Archivo, Gloock, IBM_Plex_Mono } from "next/font/google";
 import "./globals.css";
-import CustomCursor from "@/components/CustomCursor";
+import SiteHeader from "@/components/SiteHeader";
+import SiteFooter from "@/components/SiteFooter";
+import PageTransition from "@/components/PageTransition";
+import Chatbot from "@/components/Chatbot";
 
-const dmSerifDisplay = DM_Serif_Display({
+const gloock = Gloock({
   weight: "400",
   subsets: ["latin"],
-  variable: "--font-dm-serif",
+  variable: "--font-gloock",
   display: "swap",
 });
 
-const spaceGrotesk = Space_Grotesk({
+const archivo = Archivo({
   subsets: ["latin"],
-  variable: "--font-space-grotesk",
+  variable: "--font-archivo",
   display: "swap",
 });
 
-const spaceMono = Space_Mono({ // taste-skill-ignore
-  weight: ["400", "700"],
+const plexMono = IBM_Plex_Mono({
+  weight: ["400", "500"],
   subsets: ["latin"],
-  variable: "--font-space-mono",
+  variable: "--font-plex-mono",
   display: "swap",
 });
 
-// Familias de la marca: serif de titulares, grotesca de texto y mono de etiquetas.
-const fontVars = `${dmSerifDisplay.variable} ${spaceGrotesk.variable} ${spaceMono.variable}`; // taste-skill-ignore
+const fontVars = `${gloock.variable} ${archivo.variable} ${plexMono.variable}`;
 
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
-  themeColor: "#eae8e3",
+  themeColor: "#E9E5DA",
   colorScheme: "light",
 };
 
 const SITE_URL = "https://miguelcalzada.com";
-const TITLE = "Miguel Ángel Calzada · Desarrollador Full-Stack e IA";
+const TITLE = "Miguel Calzada — Software, datos e IA en producción";
 const DESCRIPTION =
-  "Desarrollador Full-Stack especializado en Inteligencia Artificial y Big Data desde Madrid. Diseño y despliego APIs, microservicios y productos de datos reales sobre AWS.";
+  "Portfolio de Miguel Ángel Calzada Martín, Software Developer en Madrid. Cuatro sistemas públicos de IA, datos y web, con sus decisiones técnicas y su código.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   alternates: { canonical: "/" },
   title: {
     default: TITLE,
-    template: "%s | Miguel Ángel Calzada",
+    template: "%s · Miguel Calzada",
   },
   description: DESCRIPTION,
-  applicationName: "Miguel Ángel Calzada · Portfolio",
+  applicationName: "Miguel Calzada · Portfolio",
   authors: [{ name: "Miguel Ángel Calzada Martín", url: SITE_URL }],
   creator: "Miguel Ángel Calzada Martín",
   publisher: "Miguel Ángel Calzada Martín",
   category: "technology",
   keywords: [
-    "Miguel Ángel Calzada",
+    "Miguel Calzada",
+    "Miguel Ángel Calzada Martín",
     "Software Developer",
     "Full-Stack",
     "Inteligencia Artificial",
     "Big Data",
-    "Node.js",
-    "React",
     "Next.js",
     "TypeScript",
     "Python",
+    "Java",
+    "AWS",
     "Docker",
     "Kubernetes",
-    "Machine Learning",
     "RAG",
     "LLM",
     "Madrid",
@@ -73,16 +75,16 @@ export const metadata: Metadata = {
     type: "website",
     locale: "es_ES",
     url: SITE_URL,
-    siteName: "Miguel Ángel Calzada",
+    siteName: "Miguel Calzada",
     title: TITLE,
     description:
-      "Desarrollador Full-Stack e IA desde Madrid. APIs, microservicios y productos de datos reales desplegados en producción.",
+      "Software, datos e IA en producción. Cuatro sistemas públicos con sus decisiones técnicas y su código.",
   },
   twitter: {
     card: "summary_large_image",
     title: TITLE,
     description:
-      "Desarrollador Full-Stack e IA desde Madrid: APIs, microservicios y productos de datos reales.",
+      "Software, datos e IA en producción. Cuatro sistemas públicos con sus decisiones técnicas y su código.",
   },
   robots: {
     index: true,
@@ -102,15 +104,22 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="es" className={fontVars} suppressHydrationWarning>
-      <body className="antialiased">
-        <script
-          dangerouslySetInnerHTML={{
-            __html: "document.documentElement.classList.add('js')",
-          }}
-        />
-        {children}
-        <CustomCursor />
+    <html lang="es" className={fontVars}>
+      <body>
+        <a className="skip" href="#main">
+          Saltar al contenido
+        </a>
+        <SiteHeader />
+        <PageTransition>{children}</PageTransition>
+        <SiteFooter />
+        <Chatbot />
+        <noscript>
+          <style>{`
+            [data-page-transition], [data-reveal] { opacity: 1 !important; transform: none !important; }
+            .site-header__nav { display: flex !important; }
+            .index-trigger { display: none !important; }
+          `}</style>
+        </noscript>
       </body>
     </html>
   );
