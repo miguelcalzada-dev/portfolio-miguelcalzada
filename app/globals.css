@@ -610,7 +610,7 @@ h2.brutalist-heading {
 }
 
 .work {
-  background: var(--bg-card);
+  background: var(--bg-primary);
 }
 
 .work__ledger {

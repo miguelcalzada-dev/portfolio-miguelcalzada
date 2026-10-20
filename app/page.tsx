@@ -3,7 +3,6 @@
 import { useState, useEffect, useRef } from "react";
 import { motion, useInView, AnimatePresence, type Variants, useScroll, useMotionValueEvent } from "framer-motion";
 import {
-  Code2,
   Brain,
   Database,
   Globe,
@@ -371,10 +370,18 @@ function Navbar() {
           }}
         >
           {/* Logo icon */}
-          <a href="#hero" style={{ display: "flex", alignItems: "center", gap: 10, textDecoration: "none", flexShrink: 0 }}>
-            <div style={{ width: 32, height: 32, background: "var(--accent-primary)", border: "2px solid var(--border-main)", display: "flex", alignItems: "center", justifyContent: "center" }}>
-              <Code2 size={16} color="var(--bg-card)" />
-            </div>
+          <a
+            href="#hero"
+            aria-label="Miguel Calzada, inicio"
+            style={{ display: "flex", alignItems: "center", gap: 10, textDecoration: "none", flexShrink: 0 }}
+          >
+            <img
+              src="/icon.svg"
+              alt=""
+              width={32}
+              height={32}
+              style={{ display: "block", border: "2px solid var(--border-main)" }}
+            />
           </a>
           {/* Enlaces centrados */}
           <div
@@ -387,7 +394,7 @@ function Navbar() {
               gap: 32,
             }}
           >
-            {["experiencia", "skills", "proyectos"].map((s) => (
+            {["proyectos", "experiencia", "skills"].map((s) => (
               <a key={s} href={`#${s}`} className="nav-link" style={{ textTransform: "capitalize" }}>
                 {s}
               </a>
@@ -473,7 +480,7 @@ function Navbar() {
               </button>
             </div>
             <div style={{ flex: 1, display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", gap: 32 }}>
-              {["experiencia", "skills", "proyectos"].map((s) => (
+              {["proyectos", "experiencia", "skills"].map((s) => (
                 <a
                   key={s}
                   href={`#${s}`}
@@ -1584,9 +1591,9 @@ export default function Portfolio() {
     <main style={{ overflowX: "hidden", maxWidth: "100vw", width: "100%" }}>
       <Navbar />
       <Hero />
+      <Projects />
       <Experience />
       <Skills />
-      <Projects />
       <Footer />
       <AIChatbot />
     </main>
