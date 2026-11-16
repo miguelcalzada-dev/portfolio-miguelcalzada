@@ -6,6 +6,7 @@ const SITES = {
   sqlsense: "https://sqlsense-ai-production.up.railway.app",
   aiLab: "https://web-production-2ec10.up.railway.app",
   impactdb: "https://data-lineage-mcp-production.up.railway.app",
+  londres: "https://londres-navidad-2026-production.up.railway.app",
 };
 
 const nextConfig: NextConfig = {
@@ -33,6 +34,8 @@ const nextConfig: NextConfig = {
       // URL antigua del portfolio cuando vivia bajo /portfolio
       { source: "/portfolio", destination: "/", permanent: true },
       { source: "/portfolio/:path*", destination: "/:path*", permanent: true },
+      // /londres -> /londres/ (trailing slash para que los assets relativos funcionen)
+      { source: "/londres", destination: "/londres/", permanent: true },
     ];
   },
 
@@ -50,6 +53,9 @@ const nextConfig: NextConfig = {
 
       { source: "/impactdb", destination: `${SITES.impactdb}/impactdb` },
       { source: "/impactdb/:path*", destination: `${SITES.impactdb}/impactdb/:path*` },
+
+      { source: "/londres/", destination: `${SITES.londres}/` },
+      { source: "/londres/:path*", destination: `${SITES.londres}/:path*` },
     ];
   },
 
@@ -73,6 +79,8 @@ const nextConfig: NextConfig = {
       { source: "/ai-lab/:path*", headers: noStore },
       { source: "/impactdb", headers: noStore },
       { source: "/impactdb/:path*", headers: noStore },
+      { source: "/londres", headers: noStore },
+      { source: "/londres/:path*", headers: noStore },
     ];
   },
 };
