@@ -34,8 +34,6 @@ const nextConfig: NextConfig = {
       // URL antigua del portfolio cuando vivia bajo /portfolio
       { source: "/portfolio", destination: "/", permanent: true },
       { source: "/portfolio/:path*", destination: "/:path*", permanent: true },
-      // /londres -> /londres/ (trailing slash para que los assets relativos funcionen)
-      { source: "/londres", destination: "/londres/", permanent: true },
     ];
   },
 
@@ -54,7 +52,7 @@ const nextConfig: NextConfig = {
       { source: "/impactdb", destination: `${SITES.impactdb}/impactdb` },
       { source: "/impactdb/:path*", destination: `${SITES.impactdb}/impactdb/:path*` },
 
-      { source: "/londres/", destination: `${SITES.londres}/` },
+      { source: "/londres", destination: `${SITES.londres}` },
       { source: "/londres/:path*", destination: `${SITES.londres}/:path*` },
     ];
   },
